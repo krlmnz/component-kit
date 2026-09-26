@@ -5,58 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Map Layers — Component Kit</title>
 <link rel="stylesheet" href="global.css">
-<style>
-
-  .kit-frame { width: 340px; max-width: 100%; }
-
-  .upload-btn {
-    display: inline-flex; align-items: center; gap: var(--space-05);
-    font-size: var(--text-sm); font-weight: 600;
-    padding: var(--space-05) var(--space-1);
-    background: var(--surface-2); color: var(--text);
-    border-radius: var(--radius-sm);
-    align-self: flex-start;
-  }
-  .upload-btn:hover { background: var(--border); }
-  .upload-btn svg { width: 16px; height: 16px; color: var(--text-2); }
-
-  .plain-field {
-    border: none; background: none; width: 100%;
-    font-family: inherit; color: var(--text);
-    border-radius: var(--radius-sm);
-    padding: var(--space-025) var(--space-05);
-    transition: background var(--duration-fast) var(--ease);
-  }
-  .plain-field:hover { background: var(--surface-2); }
-  .plain-field:focus-visible, .plain-field:focus { outline: none; background: var(--surface-2); box-shadow: var(--focus-ring); }
-  .plain-field--title { font-size: var(--text-xl); font-weight: 700; }
-  .plain-field--title::placeholder { color: var(--text-2); font-weight: 700; }
-  .plain-field--desc { font-size: var(--text-sm); color: var(--text-2); }
-  .plain-field--desc::placeholder { color: var(--text-2); }
-
-  /* Reuse the Tabs component pattern for the Places/Design switch */
-  .tabs__list { display: flex; gap: var(--space-2); border-bottom: 1px solid var(--border); }
-  .tabs__tab { font-size: var(--text-base); font-weight: 600; color: var(--text-2); padding: var(--space-1) var(--space-0125); border-bottom: 2px solid transparent; margin-bottom: -1px; }
-  .tabs__tab[aria-selected="true"] { color: var(--text); border-color: var(--accent); }
-  .tabs__tab .tabs__count { color: var(--text-2); font-weight: 400; margin-left: var(--space-025); }
-
-  .list-row__handle svg { width: 12px; height: 16px; }
-
-  /* Layer header row (swatch + label at the top of the layer-detail panel) */
-  .layer-head {
-    display: flex; align-items: center; gap: var(--space-1);
-    padding: var(--space-1);
-  }
-  .layer-head .swatch { --swatch-size: 40px; }
-  .layer-head__title { font-size: var(--text-lg); font-weight: 700; }
-
-  .section-label { font-size: var(--text-base); font-weight: 700; margin-bottom: var(--space-025); }
-
-  .tile--icon svg { width: 55%; height: 55%; }
-  .subgrid-label { font-size: var(--text-sm); font-weight: 700; margin-bottom: var(--space-05); }
-  .subgrid-pair { display: flex; gap: var(--space-1); }
-  .subgrid-pair > div { flex: 1; min-width: 0; }
-</style>
 </head>
 <body>
 <header class="theme-toggle">
@@ -65,14 +13,14 @@
 
 <main class="stage">
   <h1 class="stage__title">Map Layers</h1>
-  <p class="stage__label">List view (draggable rows) and layer-detail view (combo rows + tile grids)</p>
+  <p class="stage__label">Drag a handle to reorder. Layer detail uses a fill combo and a border combo.</p>
 
   <div class="stage__row" style="align-items:flex-start;">
 
     <!-- Map settings / layers list -->
     <section class="panel panel--pop kit-frame">
       <header class="panel__header">
-        <div class="panel__heading"><h2 class="panel__title">Color Library</h2></div>
+        <div class="panel__heading"><h2 class="panel__title">Map Layers</h2></div>
         <div class="panel__actions">
           <button class="icon-btn" aria-label="Close">
             <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -91,12 +39,13 @@
           <input class="plain-field plain-field--desc" type="text" placeholder="Add a description" value="">
         </div>
 
-        <div class="tabs__list" role="tablist" style="margin-top: var(--space-1);">
-          <button class="tabs__tab" role="tab" aria-selected="true">Places <span class="tabs__count">9</span></button>
-          <button class="tabs__tab" role="tab" aria-selected="false">Design</button>
-        </div>
-
-        <div style="display:flex; flex-direction:column;">
+        <div class="tabs" data-tabs>
+          <div class="tabs__list" role="tablist" aria-label="Map layers">
+            <button class="tabs__tab" type="button" role="tab" id="layers-places-tab" aria-selected="true" aria-controls="layers-places">Places <span class="tabs__count">4</span></button>
+            <button class="tabs__tab" type="button" role="tab" id="layers-design-tab" aria-selected="false" aria-controls="layers-design">Design</button>
+          </div>
+          <div class="tabs__panel" id="layers-places" role="tabpanel" aria-labelledby="layers-places-tab">
+        <div id="layer-list" style="display:flex; flex-direction:column;">
           <div class="list-row list-row--active">
             <span class="list-row__handle" aria-hidden="true">
               <svg viewBox="0 0 12 16" fill="currentColor"><circle cx="3" cy="3" r="1.2"/><circle cx="9" cy="3" r="1.2"/><circle cx="3" cy="8" r="1.2"/><circle cx="9" cy="8" r="1.2"/><circle cx="3" cy="13" r="1.2"/><circle cx="9" cy="13" r="1.2"/></svg>
@@ -131,12 +80,16 @@
             <span class="list-row__label">Water</span>
             <span class="list-row__trailing"><span class="swatch swatch--sm" style="--swatch-color:#7EC8E3;"></span><button class="visibility-toggle" type="button" aria-label="Hide Water layer" aria-pressed="true"><svg class="visibility-toggle__open" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1.5 8s2.4-4 6.5-4 6.5 4 6.5 4-2.4 4-6.5 4-6.5-4-6.5-4Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="1.8" stroke="currentColor" stroke-width="1.3"/></svg><svg class="visibility-toggle__closed" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m2 2 12 12M6.3 4.3A7.7 7.7 0 0 1 8 4c4.1 0 6.5 4 6.5 4a12 12 0 0 1-2.2 2.5M4.2 5.2C2.5 6.3 1.5 8 1.5 8s2.4 4 6.5 4c.7 0 1.3-.1 1.9-.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>
           </div>
-          <div class="list-row">
-            <span class="list-row__handle" aria-hidden="true">
-              <svg viewBox="0 0 12 16" fill="currentColor"><circle cx="3" cy="3" r="1.2"/><circle cx="9" cy="3" r="1.2"/><circle cx="3" cy="8" r="1.2"/><circle cx="9" cy="8" r="1.2"/><circle cx="3" cy="13" r="1.2"/><circle cx="9" cy="13" r="1.2"/></svg>
-            </span>
-            <span class="list-row__label">Water</span>
-            <span class="list-row__trailing"><span class="swatch swatch--sm" style="--swatch-color:#7EC8E3;"></span><button class="visibility-toggle" type="button" aria-label="Hide Water layer" aria-pressed="true"><svg class="visibility-toggle__open" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1.5 8s2.4-4 6.5-4 6.5 4 6.5 4-2.4 4-6.5 4-6.5-4-6.5-4Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="1.8" stroke="currentColor" stroke-width="1.3"/></svg><svg class="visibility-toggle__closed" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m2 2 12 12M6.3 4.3A7.7 7.7 0 0 1 8 4c4.1 0 6.5 4 6.5 4a12 12 0 0 1-2.2 2.5M4.2 5.2C2.5 6.3 1.5 8 1.5 8s2.4 4 6.5 4c.7 0 1.3-.1 1.9-.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>
+        </div>
+          </div>
+          <div class="tabs__panel" id="layers-design" role="tabpanel" aria-labelledby="layers-design-tab" hidden>
+            <label class="field">
+              <span class="field__label">Basemap</span>
+              <select class="select" aria-label="Basemap">
+                <option>Light</option>
+                <option>Terrain</option>
+              </select>
+            </label>
           </div>
         </div>
 
@@ -155,34 +108,46 @@
       </header>
 
       <div class="layer-head" style="border-bottom:1px solid var(--border);">
-        <span class="swatch" style="--swatch-color:#D8DEE1;"></span>
+        <span class="swatch" style="--swatch-color:#7EC8E3;"></span>
         <span class="layer-head__title">Water</span>
       </div>
 
-      <div class="panel--flush">
         <div class="prop-row">
-         
-<span class="field-label" style="font-size:var(--text-base); font-weight:700;">Fill</span>
-          <!-- combo buttons input for colors -->
-          <div class="combo" role="group" aria-label="Fill color and weight">
-            <span class="swatch" style="--swatch-color:#C3DDD6;"></span>
+          <span class="field-label">Fill</span>
+          <div class="combo" role="group" aria-label="Fill color">
+            <span class="swatch" style="--swatch-color:#7EC8E3;"></span>
             <label class="combo__hex">
               <span class="combo__prefix">#</span>
-              <input class="combo__input" type="text" value="C3DDD6" maxlength="6" pattern="[0-9A-Fa-f]{6}" inputmode="text" autocomplete="off" aria-label="Fill hex color">
+              <input class="combo__input" type="text" value="7EC8E3" maxlength="6" pattern="[0-9A-Fa-f]{6}" inputmode="text" autocomplete="off" aria-label="Fill hex color">
             </label>
             <label class="combo__opacity">
               <input class="combo__input" type="number" value="100" min="0" max="100" step="1" inputmode="numeric" aria-label="Fill opacity percentage">
               <span class="combo__suffix">%</span>
             </label>
+          </div>
+        </div>
+
+        <div class="prop-row">
+          <span class="field-label">Border</span>
+          <div class="combo" role="group" aria-label="Border color and weight">
+            <span class="swatch" style="--swatch-color:#1B4F6B;"></span>
+            <label class="combo__hex">
+              <span class="combo__prefix">#</span>
+              <input class="combo__input" type="text" value="1B4F6B" maxlength="6" pattern="[0-9A-Fa-f]{6}" inputmode="text" autocomplete="off" aria-label="Border hex color">
+            </label>
+            <label class="combo__opacity">
+              <input class="combo__input" type="number" value="100" min="0" max="100" step="1" inputmode="numeric" aria-label="Border opacity percentage">
+              <span class="combo__suffix">%</span>
+            </label>
             <label class="combo__width">
               <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 5h12M2 8h12M2 11h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-              <input class="combo__input" type="number" value="1" min="0" step="0.5" inputmode="decimal" aria-label="Fill stroke weight">
+              <input class="combo__input" type="number" value="1" min="0" step="0.5" inputmode="decimal" aria-label="Border weight">
             </label>
           </div>
         </div>
 
         <div class="prop-row">
-          <span class="field-label" style="font-size:var(--text-base); font-weight:700;">Pattern</span>
+          <span class="field-label">Pattern</span>
           <div class="tile-grid" role="listbox" aria-label="Fill pattern">
             <button class="tile tile--empty" role="option" aria-label="None" aria-selected="false">
               <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M4 12 12 4" stroke="currentColor" stroke-width="1.2"/></svg>
@@ -201,7 +166,7 @@
         <div class="prop-row">
           <div class="subgrid-pair">
             <div>
-              <p class="subgrid-label">Density</p>
+              <p class="field-label">Density</p>
               <div class="tile-grid tile-grid--compact" role="listbox" aria-label="Pattern density">
                 <button class="tile tile--icon" role="option" aria-label="Sparse" aria-selected="false"><svg viewBox="0 0 16 16" fill="none"><path d="M1 8q3-2 6 0t8 0" stroke="currentColor" stroke-width="1"/></svg></button>
                 <button class="tile tile--icon tile--selected" role="option" aria-label="Regular" aria-selected="true"><svg viewBox="0 0 16 16" fill="none"><path d="M1 6q2-2 4 0t4 0 4 0M1 10q2-2 4 0t4 0 4 0" stroke="currentColor" stroke-width="1.1"/></svg></button>
@@ -210,7 +175,7 @@
               </div>
             </div>
             <div>
-              <p class="subgrid-label">Line Weight</p>
+              <p class="field-label">Line Weight</p>
               <div class="tile-grid tile-grid--compact" role="listbox" aria-label="Pattern line weight">
                 <button class="tile tile--icon tile--selected" role="option" aria-label="Thin" aria-selected="true"><svg viewBox="0 0 16 16" fill="none"><path d="M1 6q2-2 4 0t4 0 4 0M1 10q2-2 4 0t4 0 4 0" stroke="currentColor" stroke-width="0.7"/></svg></button>
                 <button class="tile tile--icon" role="option" aria-label="Regular" aria-selected="false"><svg viewBox="0 0 16 16" fill="none"><path d="M1 6q2-2 4 0t4 0 4 0M1 10q2-2 4 0t4 0 4 0" stroke="currentColor" stroke-width="1.1"/></svg></button>
@@ -220,18 +185,56 @@
             </div>
           </div>
         </div>
-      </div>
     </section>
 
   </div>
 </main>
 <script>
+  document.querySelectorAll('[data-tabs]').forEach(function (root) {
+    root.querySelectorAll('[role="tab"]').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        root.querySelectorAll('[role="tab"]').forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+        root.querySelectorAll('[role="tabpanel"]').forEach(function (p) { p.hidden = true; });
+        tab.setAttribute('aria-selected', 'true');
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        if (panel) panel.hidden = false;
+      });
+    });
+  });
+
   document.querySelectorAll('.visibility-toggle').forEach(function (toggle) {
     toggle.addEventListener('click', function () {
       var visible = toggle.getAttribute('aria-pressed') === 'true';
       var layerName = toggle.closest('.list-row').querySelector('.list-row__label').textContent.trim();
       toggle.setAttribute('aria-pressed', String(!visible));
       toggle.setAttribute('aria-label', (visible ? 'Show ' : 'Hide ') + layerName + ' layer');
+    });
+  });
+
+  var layerList = document.getElementById('layer-list');
+  var draggedRow = null;
+  layerList.querySelectorAll('.list-row').forEach(function (row) {
+    var handle = row.querySelector('.list-row__handle');
+    handle.addEventListener('pointerdown', function () {
+      row.draggable = true;
+    });
+    row.addEventListener('dragstart', function (event) {
+      draggedRow = row;
+      row.classList.add('list-row--dragging');
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', row.querySelector('.list-row__label').textContent.trim());
+    });
+    row.addEventListener('dragend', function () {
+      row.draggable = false;
+      row.classList.remove('list-row--dragging');
+      draggedRow = null;
+    });
+    row.addEventListener('dragover', function (event) {
+      event.preventDefault();
+      if (!draggedRow || draggedRow === row) return;
+      var rect = row.getBoundingClientRect();
+      var after = event.clientY > rect.top + rect.height / 2;
+      layerList.insertBefore(draggedRow, after ? row.nextSibling : row);
     });
   });
 </script>

@@ -32,6 +32,6 @@ Adding a color, extracting from an image, and copying a step onto the palette ar
 
 ## Residuals
 
-- Layout classes for this panel (`.cs-*`) stay in the page stylesheet. Moving them into `global.css` is a separate consolidation.
+- Layout classes for this panel (`.cs-*`) live in `global.css` with the rest of the component chrome. The page keeps the ramp math.
 - The shared `.swatch` draws each chip, endpoint, ramp step, and popover cell. The hex field uses `.combo` / `.combo__hex`. Endpoint hex is a label beside the swatch, not a fake text input.
 - Step hex is the swatch name and tooltip, not an 8px caption under every cell.

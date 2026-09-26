@@ -180,7 +180,7 @@
 <div class="docs-subsection" id="type">
 <header class="docs-subsection__header">
 <h3>Type</h3>
-<p>Fluid type tokens scale through the same system used by component labels, titles, controls, and documentation.</p>
+<p>Type tokens are fixed sizes. Component labels, titles, controls, and this page use the same steps.</p>
 </header>
 <div class="data-table-wrap">
 <table class="data-table">
@@ -190,27 +190,48 @@
 <tr><td><code class="code-inline">--text-sm</code></td><td>Controls and supporting copy</td><td style="font-size:var(--text-sm);">Supporting copy</td></tr>
 <tr><td><code class="code-inline">--text-base</code></td><td>Body and form content</td><td style="font-size:var(--text-base);">Body content</td></tr>
 <tr><td><code class="code-inline">--text-lg</code></td><td>Component headings</td><td style="font-size:var(--text-lg);">Component heading</td></tr>
+<tr><td><code class="code-inline">--text-xl</code></td><td>Page and panel titles</td><td style="font-size:var(--text-xl);">Page title</td></tr>
+<tr><td><code class="code-inline">--text-2xl</code></td><td>Documentation title</td><td style="font-size:var(--text-2xl);">Documentation title</td></tr>
 </tbody>
 </table>
 </div>
-</div><div class="docs-subsection" id="radius"><header class="docs-subsection__header"><h3>Radius</h3><p>The token values remain aligned with the original system. The audit makes <code class="code-inline">--radius-sm</code> (6px) the default component radius; 12px is reserved for deliberately larger surfaces.</p></header><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead><tbody><tr><td><code class="code-inline">--radius-sm</code></td><td>6px</td><td>Panels, inputs, buttons, tiles, menus, previews</td></tr><tr><td><code class="code-inline">--radius</code></td><td>12px</td><td>Large surfaces such as modal dialogs</td></tr><tr><td><code class="code-inline">--radius-full</code></td><td>9999px</td><td>Pills, chips, switches, circular controls</td></tr></tbody></table></div></div><div class="docs-subsection" id="controls"><header class="docs-subsection__header"><h3>Control sizing</h3><p>Compact component geometry is tokenized separately from layout spacing, so dense editor inputs can shrink without changing page-level rhythm.</p></header><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Token / utility</th><th>Value</th><th>Use</th></tr></thead><tbody><tr><td><code class="code-inline">--control-height-xs</code> / <code class="code-inline">.input--xs</code></td><td>28px</td><td>Dense numeric/value controls</td></tr><tr><td><code class="code-inline">--control-height-sm</code> / <code class="code-inline">.input--sm</code></td><td>32px</td><td>Hex, opacity, compact editor fields</td></tr><tr><td><code class="code-inline">--control-height-md</code></td><td>36px</td><td>Default text/select controls</td></tr><tr><td><code class="code-inline">--control-width-hex</code> / <code class="code-inline">.input--hex</code></td><td>88px</td><td>Hex values</td></tr><tr><td><code class="code-inline">--control-width-compact</code> / <code class="code-inline">.input--compact</code></td><td>56px</td><td>Opacity, line weight, short numeric values</td></tr></tbody></table></div></div>
+</div><div class="docs-subsection" id="radius"><header class="docs-subsection__header"><h3>Radius</h3><p>The token values remain aligned with the original system. The audit makes <code class="code-inline">--radius-sm</code> (6px) the default component radius; 12px is reserved for deliberately larger surfaces.</p></header><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead><tbody><tr><td><code class="code-inline">--radius-sm</code></td><td>6px</td><td>Panels, inputs, buttons, tiles, menus, previews</td></tr><tr><td><code class="code-inline">--radius</code></td><td>12px</td><td>Large surfaces such as modal dialogs</td></tr><tr><td><code class="code-inline">--radius-full</code></td><td>9999px</td><td>Pills, chips, switches, circular controls</td></tr></tbody></table></div></div><div class="docs-subsection" id="controls"><header class="docs-subsection__header"><h3>Control sizing</h3><p>Editor panels size hex, opacity, and weight with <code class="code-inline">.combo</code> at <code class="code-inline">--control-height-sm</code>. The <code class="code-inline">.input--*</code> utilities are for a lone field, not a substitute for that combo.</p></header><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Token / utility</th><th>Value</th><th>Use</th></tr></thead><tbody><tr><td><code class="code-inline">--control-height-xs</code> / <code class="code-inline">--icon-btn-size</code></td><td>28px</td><td><code class="code-inline">.icon-btn</code> and default <code class="code-inline">.btn--icon</code>. <code class="code-inline">.input--xs</code> is the lone-field height.</td></tr><tr><td><code class="code-inline">--control-height-sm</code> / <code class="code-inline">.input--sm</code></td><td>32px</td><td><code class="code-inline">.combo</code> segments. <code class="code-inline">.btn--icon.btn--md</code> uses this height.</td></tr><tr><td><code class="code-inline">--control-height-md</code></td><td>36px</td><td>Default text and select. <code class="code-inline">.btn--icon.btn--lg</code> uses this height.</td></tr><tr><td><code class="code-inline">--control-width-hex</code> / <code class="code-inline">.input--hex</code></td><td>88px</td><td><code class="code-inline">.combo__hex</code>. Do not use <code class="code-inline">.input--hex</code> alone inside a panel.</td></tr><tr><td><code class="code-inline">--control-width-compact</code> / <code class="code-inline">.input--compact</code></td><td>56px</td><td><code class="code-inline">.combo__opacity</code> and <code class="code-inline">.combo__width</code>.</td></tr></tbody></table></div></div>
 </div>
 </section>
 <section class="docs-section" id="shared-primitives">
 <header class="docs-section__header">
 <span class="eyebrow">Foundations</span>
 <h2>Shared primitives</h2>
-<p>Buttons, panels, navigation, documentation utilities, and preview framing are defined globally so component pages do not need to duplicate those rules.</p>
+<p>Link <code class="code-inline">global.css</code> once. These classes are the kit. A page <code class="code-inline">&lt;style&gt;</code> block is only for specimen layout that is not a component, such as the Place Card state key. <code class="code-inline">.kit-frame</code> is the shared 340px specimen column. Canonical tabs, search, and icon-button choices are in <code class="code-inline">docs/PATTERNS.md</code>.</p>
 </header>
 <div class="data-table-wrap">
 <table class="data-table">
 <thead><tr><th>Primitive</th><th>Purpose</th><th>Source</th></tr></thead>
 <tbody>
-<tr><td><code class="code-inline">.btn</code></td><td>Actions and icon buttons</td><td><code class="code-inline">global.css</code></td></tr>
-<tr><td><code class="code-inline">.panel</code></td><td>Cards, dialogs, dropdowns, editor surfaces</td><td><code class="code-inline">global.css</code></td></tr>
-<tr><td><code class="code-inline">.side-nav</code></td><td>Nested reference navigation</td><td><code class="code-inline">global.css</code></td></tr>
-<tr><td><code class="code-inline">.component-preview</code></td><td>Live standalone-file preview frame</td><td><code class="code-inline">global.css</code></td></tr>
-<tr><td><code class="code-inline">.input / .select / .textarea</code></td><td>Shared form geometry and compact size utilities</td><td><code class="code-inline">global.css</code></td></tr></tbody>
+<tr><td><code class="code-inline">.btn</code> / <code class="code-inline">.btn--icon</code></td><td>Text actions. <code class="code-inline">.btn--icon</code> is the bordered icon-only button and shares its box with <code class="code-inline">.icon-btn</code>.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.icon-btn</code></td><td>Canonical icon-only control for panel headers, toolbars, and tips. Size is <code class="code-inline">--icon-btn-size</code>.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.panel</code></td><td>Cards, dialogs, menus, and editor surfaces. Put <code class="code-inline">.panel--flush</code> on the panel, not on a wrapper.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.field</code> / <code class="code-inline">.input</code> / <code class="code-inline">.select</code> / <code class="code-inline">.textarea</code></td><td>Shared form geometry.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.input-group</code></td><td>Search and other fields with a leading icon and an optional clear button.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.switch</code> / <code class="code-inline">.checkbox-row</code> / <code class="code-inline">.radio-row</code></td><td>Toggle and choice rows.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.combo</code></td><td>Hex, opacity, and optional weight. Fill omits <code class="code-inline">.combo__width</code>; border includes it. Swatch and hex are the same color.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.swatch</code></td><td>Color chip, including the saved palette grid (<code class="code-inline">.swatch-grid</code>).</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.tile</code> / <code class="code-inline">.tile-grid</code></td><td>Selectable icon and pattern tiles.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.list-row</code></td><td>Layer or place row. Drag the handle to reorder in the Map Layers specimen.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.visibility-toggle</code></td><td>Show or hide a layer.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.prop-row</code> / <code class="code-inline">.field-label</code></td><td>Labelled property stack.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.badge</code> / <code class="code-inline">.chip</code></td><td>Status and filter chips.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.tabs</code></td><td>Underline tabs, plus <code class="code-inline">.tabs--pill</code>. Each tab has <code class="code-inline">aria-controls</code>.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.menu</code> / <code class="code-inline">.menu-list</code></td><td>Dropdown menu on a <code class="code-inline">.panel--pop.panel--flush</code> body.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">dialog.modal</code></td><td>Native dialog. Closed dialogs stay out of the accessibility tree. The body is a <code class="code-inline">.panel.panel--pop</code>.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.alert</code> / <code class="code-inline">.toast</code></td><td>Inline banners and floating toasts.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.tooltip</code></td><td>Hover and focus helper text.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.color-picker</code></td><td>Picker anatomy. The Color Library specimen does not wire the field to the swatch.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.icon-picker-trigger</code> / <code class="code-inline">.icon-edit-panel</code></td><td>Place Card icon editor. <code class="code-inline">.icon-picker-trigger--empty</code> is the dashed empty state.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.layer-head</code> / <code class="code-inline">.plain-field</code> / <code class="code-inline">.upload-btn</code></td><td>Map Layers title, description, and upload.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.cs-*</code></td><td>Color Scale panel chrome. Ramp math stays in <code class="code-inline">color-scale.html</code>.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.side-nav</code> / <code class="code-inline">.component-preview</code></td><td>Documentation navigation and the live preview frame.</td><td><code class="code-inline">global.css</code></td></tr>
+</tbody>
 </table>
 </div>
 </section>
@@ -219,7 +240,7 @@
 <div class="docs-section__heading">
 <span class="eyebrow">Components</span>
 <h2>Map editor</h2>
-<p>Every component is shown here from its standalone HTML file. The nested navigation links directly to each preview, and the filename beside each preview opens that same source as a standalone page.</p>
+<p>Every component is shown here from its standalone HTML file. Shared chrome is in <code class="code-inline">global.css</code>. The nested navigation links directly to each preview, and the filename beside each preview opens that same source as a standalone page.</p>
 </div>
 <button aria-controls="map-editor-content" aria-expanded="true" aria-label="Collapse Map editor" class="docs-section__toggle" type="button">
 <svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
@@ -239,7 +260,7 @@
 </article>
 <article class="docs-subsection component-reference" id="component-color-library">
 <header class="component-reference__header">
-<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Color + Icon Library</h3><p class="component-reference__description">Picker field, swatch grid, search, icon tiles, and joined value inputs.</p></div>
+<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Color + Icon Library</h3><p class="component-reference__description">Static picker anatomy, a swatch grid, an <code class="code-inline">.input-group</code> search, icon tiles, and combos whose swatch matches the hex.</p></div>
 <a aria-label="Open color-library.html as a standalone page" class="component-reference__source" href="color-library.html"><span>color-library.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
 </header>
 <div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="color-library.html?embed=1" title="Color + Icon Library live component reference"></iframe></div>
@@ -253,7 +274,7 @@
 </article>
 <article class="docs-subsection component-reference" id="component-map-layers">
 <header class="component-reference__header">
-<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Map Layers</h3><p class="component-reference__description">Draggable rows, fill and border combos, pattern selection, and layer controls.</p></div>
+<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Map Layers</h3><p class="component-reference__description">Drag a row handle to reorder. Fill and border combos, pattern tiles, and visibility. Places and Design use the shared tabs.</p></div>
 <a aria-label="Open map-layers.html as a standalone page" class="component-reference__source" href="map-layers.html"><span>map-layers.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
 </header>
 <div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="map-layers.html?embed=1" title="Map Layers live component reference"></iframe></div>

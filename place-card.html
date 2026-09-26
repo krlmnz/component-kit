@@ -6,59 +6,7 @@
 <title>Place Card — Component Kit</title>
 <link rel="stylesheet" href="global.css">
 <style>
-  .kit-frame { width: 340px; max-width: 100%; }
-
-  .icon-picker-trigger {
-    width: 56px;
-    height: 56px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    color: var(--text);
-    transition: background var(--duration-fast) var(--ease),
-                border-color var(--duration-fast) var(--ease),
-                color var(--duration-fast) var(--ease);
-  }
-  .icon-picker-trigger:hover { background: var(--surface-2); }
-  .icon-picker-trigger:focus-visible {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--accent-wash);
-    color: var(--accent-text);
-  }
-  .icon-picker-trigger[aria-expanded="true"] {
-    border-color: var(--accent);
-    background: var(--accent-soft);
-    color: var(--accent-text);
-  }
-  .icon-picker-trigger svg { width: 28px; height: 28px; }
-
-  .place-card__body { display: flex; flex-direction: column; gap: var(--space-1); }
-  .place-card__icon-row { display: flex; align-items: flex-start; gap: var(--space-05); }
-
-  .icon-edit-panel {
-    flex: 1;
-    min-width: 0;
-    padding: var(--space-05);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface-2);
-  }
-  .icon-edit-panel[hidden] { display: none; }
-  .icon-edit-panel__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-05);
-    margin-bottom: var(--space-05);
-  }
-  .icon-edit-panel__title { font-size: var(--text-sm); font-weight: 700; }
-  .icon-edit-panel .tile-grid { --tile-cols: 5; }
-  .icon-edit-panel .tile { background: var(--surface); }
-
+  /* Specimen legend for the icon trigger. Not product chrome. */
   .state-key {
     display: grid;
     grid-template-columns: auto 1fr;
