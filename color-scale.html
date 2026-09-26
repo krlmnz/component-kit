@@ -13,15 +13,15 @@
 
 <main class="stage">
   <h1 class="stage__title">Color Scale</h1>
-  <p class="stage__label">Perceptual brand → data scales for maps and charts</p>
+  <p class="stage__label">Sequential OKLab ramps from design tokens. Fixed seed, one error red.</p>
 
   <div class="stage__row" style="align-items:flex-start;">
     <section class="panel panel--pop kit-frame" aria-label="Color Scale">
       <header class="panel__header">
         <div class="panel__heading"><h2 class="panel__title">Color Scale</h2></div>
         <div class="panel__actions">
-          <button class="icon-btn" type="button" id="csShuffle" aria-label="Shuffle scales" title="Shuffle scales">
-            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 2h4v4M2 14 14 2M6 14H2v-4M14 10v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <button class="icon-btn" type="button" id="csRandomize" aria-label="Randomize scales" title="Randomize scales">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4.5h3.2c.7 0 1.3.3 1.8.9L9.2 8.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11.5h3.2c.7 0 1.3-.3 1.8-.9L10.8 6.4c.5-.6 1.1-.9 1.8-.9H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.5 3 14 4.5 11.5 6M11.5 10 14 11.5 11.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <button class="icon-btn" type="button" id="csAddScale" aria-label="Add scale" title="Add scale">
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -35,10 +35,13 @@
       <div class="panel__body cs-stack">
         <div class="cs-stack">
           <div class="cs-section-label">Your colors</div>
-          <p class="cs-helper">Paste hex, upload an image, or click a scale swatch to pull it into this palette.</p>
+          <p class="cs-helper">Accent, success, warn, and error are the --accent, --success, --warn, and --error tokens. The other chips are categorical brand paints, not a second ramp.</p>
           <div class="cs-palette" id="csPalette"></div>
-          <div class="cs-add">
-            <input id="csHexInput" type="text" placeholder="#1A7EAA or rgb()" autocomplete="off" spellcheck="false" aria-label="Add color">
+          <div class="combo cs-add">
+            <label class="combo__hex" id="csHexField">
+              <span class="combo__prefix">#</span>
+              <input class="combo__input" id="csHexInput" type="text" placeholder="1A7EAA or rgb()" autocomplete="off" spellcheck="false" aria-label="Add color">
+            </label>
             <button class="btn btn--secondary btn--sm" type="button" id="csHexAdd">Add</button>
           </div>
           <label class="cs-upload" id="csUpload">
@@ -53,7 +56,7 @@
           <span class="cs-helper" id="csCount">0</span>
         </div>
         <div class="cs-scales" id="csScales"></div>
-        <p class="cs-note">Scales mix endpoints in OKLab (perceptual). Click a swatch to copy and add it to Your colors.</p>
+        <p class="cs-note">Sequential ramps mix the two ends in OKLab, then reduce chroma until the color fits in sRGB, so lightness moves in one direction. That is the choropleth default. Diverging ramps pass through white (#FFFFFF, not the theme surface, so the center stays light in both themes) and are for data with a meaningful middle. Endpoint pairs closer than OKLab ΔL 0.08 are marked unsafe — accent, success, and error sit near the same lightness. The specimen seed is fixed. Randomize runs only from the header control.</p>
       </div>
     </section>
   </div>
@@ -62,8 +65,8 @@
 <div class="cs-pop" id="csPop" role="dialog" aria-label="Choose color" hidden>
   <div class="cs-pop__title">Choose color</div>
   <div class="cs-pop__specials">
-    <button type="button" class="cs-pop__spec" data-hex="#FFFFFF"><span class="cs-pop__spec-swatch" style="background:#fff"></span><span class="cs-pop__spec-label">White</span></button>
-    <button type="button" class="cs-pop__spec" data-hex="#111416"><span class="cs-pop__spec-swatch" style="background:#111416"></span><span class="cs-pop__spec-label">Black</span></button>
+    <button type="button" class="cs-pop__spec" data-hex="#FFFFFF"><span class="swatch" style="--swatch-color:#FFFFFF"></span><span class="cs-pop__spec-label">White</span></button>
+    <button type="button" class="cs-pop__spec" data-hex="#111416"><span class="swatch" style="--swatch-color:#111416"></span><span class="cs-pop__spec-label">Black</span></button>
   </div>
   <div class="cs-pop__grid" id="csPopGrid"></div>
 </div>
@@ -72,11 +75,43 @@
 <script src="component-embed.js"></script>
 <script>
 (function () {
-  const BRAND = [
-    "#A7CADA","#00A470","#2592C2","#434340","#A77943",
-    "#BACD2F","#D556AA","#F89B17","#FCF9E8","#FCFBA0",
-    "#FF4E4F","#FFE901","#FFF8DC"
+  // Stable specimen. Do not shuffle on load. Status anchors resolve from
+  // tokens at render time; categorical paints stay hex because they are
+  // brand colors, not semantic tokens. Error is only --error.
+  // MIN_LIGHTNESS_DELTA is OKLab L. Accent/success/error cluster near ΔL 0.01;
+  // the next real step in this palette (warn vs accent) is about 0.14.
+  const MIN_LIGHTNESS_DELTA = 0.08;
+  const DIVERGE_MID = "#FFFFFF";
+  const RAMP_STOPS = 11;
+  const REVERSAL_EPS = 0.01;
+
+  const TOKEN_ANCHORS = [
+    { label: "Accent", token: "--accent", fallback: "#1A7EAA" },
+    { label: "Success", token: "--success", fallback: "#00A470" },
+    { label: "Warn", token: "--warn", fallback: "#F89B17" },
+    { label: "Error", token: "--error", fallback: "#DA3540" }
   ];
+  const BRAND_PAINTS = [
+    { label: "Cream", hex: "#FCF9E8" },
+    { label: "Cornsilk", hex: "#FFF8DC" },
+    { label: "Pale yellow", hex: "#FCFBA0" },
+    { label: "Yellow", hex: "#FFE901" },
+    { label: "Mist", hex: "#A7CADA" },
+    { label: "Lime", hex: "#BACD2F" },
+    { label: "Earth", hex: "#A77943" },
+    { label: "Magenta", hex: "#D556AA" },
+    { label: "Ink", hex: "#434340" }
+  ];
+  const SCALE_PRESETS = [
+    { a: { hex: "#FCF9E8" }, b: { token: "--accent", fallback: "#1A7EAA" }, mode: "sequential", steps: 7 },
+    { a: { hex: "#FFF8DC" }, b: { token: "--error", fallback: "#DA3540" }, mode: "sequential", steps: 7 },
+    { a: { hex: "#FCFBA0" }, b: { hex: "#434340" }, mode: "sequential", steps: 7 },
+    { a: { hex: "#A7CADA" }, b: { hex: "#434340" }, mode: "sequential", steps: 7 },
+    { a: { hex: "#FFE901" }, b: { hex: "#D556AA" }, mode: "sequential", steps: 7 },
+    { a: { hex: "#FCF9E8" }, b: { token: "--success", fallback: "#00A470" }, mode: "sequential", steps: 7 },
+    { a: { hex: "#FFFFFF" }, b: { token: "--warn", fallback: "#F89B17" }, mode: "sequential", steps: 7 }
+  ];
+
   const ALLOWED = ["image/png","image/jpeg","image/gif","image/webp","image/svg+xml"];
   const BAR_VALS = [0.28,0.65,0.42,0.87,0.35,0.78,0.55,0.19,0.96,0.48];
   const CHORO = [
@@ -87,13 +122,21 @@
     [0.06,0.16,0.30,0.44,0.34,0.20]
   ];
 
-  let globals = [];
+  let palette = [];
   let scales = [];
   let idCtr = 0;
   let popCtx = null;
 
+  function uid(prefix) { return prefix + (++idCtr); }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function cloneRef(ref) {
+    return ref.token ? { token: ref.token, fallback: ref.fallback } : { hex: ref.hex };
+  }
+
   function hexToRgb(hex) {
-    hex = hex.replace(/^#/,"");
+    hex = hex.replace(/^#/, "");
     if (hex.length === 3) hex = hex.split("").map(c => c + c).join("");
     const n = parseInt(hex, 16);
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
@@ -121,15 +164,39 @@
       0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
     ];
   }
-  function oklabToRgb(L, a, b) {
+  function oklabToLinear(L, a, b) {
     const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
     const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
     const s_ = L - 0.0894841775 * a - 1.2914855480 * b;
     const l = l_ * l_ * l_, m = m_ * m_ * m_, s = s_ * s_ * s_;
-    const lr = +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
-    const lg = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
-    const lb = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s;
-    return [linearToSrgb(lr), linearToSrgb(lg), linearToSrgb(lb)];
+    return [
+      +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+      -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+      -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
+    ];
+  }
+  function inGamut(rgb) {
+    const eps = 1e-4;
+    return rgb.every(c => c >= -eps && c <= 1 + eps);
+  }
+  // Keep OKLab L (and hue) by scaling chroma until the color is inside sRGB.
+  // Clamping RGB instead flattens lightness on saturated pairs.
+  function gamutMapOklab(L, a, b) {
+    if (inGamut(oklabToLinear(L, a, b))) return { L, a, b, reduced: false };
+    let lo = 0, hi = 1;
+    for (let i = 0; i < 24; i++) {
+      const mid = (lo + hi) / 2;
+      if (inGamut(oklabToLinear(L, a * mid, b * mid))) lo = mid;
+      else hi = mid;
+    }
+    return { L, a: a * lo, b: b * lo, reduced: true };
+  }
+  function oklabToHex(L, a, b) {
+    const [lr, lg, lb] = oklabToLinear(L, a, b);
+    return rgbToHex(linearToSrgb(lr), linearToSrgb(lg), linearToSrgb(lb));
+  }
+  function oklabL(hex) {
+    return rgbToOklab(...hexToRgb(hex))[0];
   }
   function deltaE(hexA, hexB) {
     const [L1, a1, b1] = rgbToOklab(...hexToRgb(hexA));
@@ -142,26 +209,95 @@
     const L = A[0] + (B[0] - A[0]) * t;
     const a = A[1] + (B[1] - A[1]) * t;
     const b = A[2] + (B[2] - A[2]) * t;
-    return rgbToHex(...oklabToRgb(L, a, b));
+    const mapped = gamutMapOklab(L, a, b);
+    return oklabToHex(mapped.L, mapped.a, mapped.b);
   }
-  function makeBlendScale(aHex, bHex) {
-    return Array.from({ length: 11 }, (_, i) => blendPerceptual(aHex, bHex, i / 10));
+  function mixStop(aHex, bHex, t, mode) {
+    if (mode === "diverging") {
+      if (t <= 0.5) return blendPerceptual(aHex, DIVERGE_MID, t / 0.5);
+      return blendPerceptual(DIVERGE_MID, bHex, (t - 0.5) / 0.5);
+    }
+    return blendPerceptual(aHex, bHex, t);
+  }
+  function makeRamp(aHex, bHex, mode) {
+    return Array.from({ length: RAMP_STOPS }, (_, i) => mixStop(aHex, bHex, i / (RAMP_STOPS - 1), mode));
   }
   function sampleColors(colors, n) {
-    if (n >= colors.length) return colors;
+    if (n >= colors.length) return colors.slice();
     if (n === 1) return [colors[Math.floor(colors.length / 2)]];
     return Array.from({ length: n }, (_, i) =>
       colors[Math.round(i * (colors.length - 1) / (n - 1))]
     );
   }
+  function assessRamp(colors, mode) {
+    const ls = colors.map(oklabL);
+    const endDelta = Math.abs(ls[0] - ls[ls.length - 1]);
+    if (mode === "diverging") {
+      const mid = ls[Math.floor((ls.length - 1) / 2)];
+      const rise = Math.min(mid - ls[0], mid - ls[ls.length - 1]);
+      if (rise < MIN_LIGHTNESS_DELTA) {
+        return { safe: false, reason: "diverge-flat", delta: rise };
+      }
+      return { safe: true, reason: "diverging", delta: rise };
+    }
+    if (endDelta < MIN_LIGHTNESS_DELTA) {
+      return { safe: false, reason: "flat", delta: endDelta };
+    }
+    const dir = Math.sign(ls[ls.length - 1] - ls[0]);
+    for (let i = 1; i < ls.length; i++) {
+      if ((ls[i] - ls[i - 1]) * dir < -REVERSAL_EPS) {
+        return { safe: false, reason: "nonmonotonic", delta: endDelta };
+      }
+    }
+    return { safe: true, reason: "sequential", delta: endDelta };
+  }
+  function warnText(assessment) {
+    const d = assessment.delta.toFixed(2);
+    if (assessment.reason === "flat") {
+      return "Unsafe for a choropleth: lightness barely changes (OKLab ΔL " + d + "). Sequential ramps need a lighter end and a darker end.";
+    }
+    if (assessment.reason === "nonmonotonic") {
+      return "Unsafe for a choropleth: lightness does not move in one direction along this ramp.";
+    }
+    if (assessment.reason === "diverge-flat") {
+      return "Unsafe diverging ramp: both ends need to be darker than the white midpoint (OKLab ΔL " + d + ").";
+    }
+    return "";
+  }
+  function previewLabel(mode, safe) {
+    const name = mode === "diverging" ? "Diverging map" : "Map / choropleth";
+    return safe ? name : name + " — unsafe";
+  }
+
+  function tokenHex(name, fallback) {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return parseColor(raw) || fallback;
+  }
+  function resolveRef(ref) {
+    if (!ref) return "#FFFFFF";
+    if (ref.token) return tokenHex(ref.token, ref.fallback);
+    return ref.hex;
+  }
+  function entryHex(entry) {
+    if (entry.token) return tokenHex(entry.token, entry.fallback);
+    return entry.hex;
+  }
+  function refKey(ref) {
+    return ref.token ? "token:" + ref.token : "hex:" + String(ref.hex).toUpperCase();
+  }
+
   function getSteps(sc) {
-    return sampleColors(makeBlendScale(sc.colorA, sc.colorB || "#FFFFFF"), sc.steps || 11);
+    return sampleColors(makeRamp(resolveRef(sc.colorA), resolveRef(sc.colorB), sc.mode), sc.steps || 7);
+  }
+  function fullRamp(sc) {
+    return makeRamp(resolveRef(sc.colorA), resolveRef(sc.colorB), sc.mode || "sequential");
   }
   function valueToColor(steps, v) {
     return steps[Math.round(Math.max(0, Math.min(1, v)) * (steps.length - 1))];
   }
   function parseColor(raw) {
-    raw = raw.trim();
+    if (!raw) return null;
+    raw = String(raw).trim();
     if (/^[0-9A-Fa-f]{3}$/.test(raw)) raw = "#" + raw;
     if (/^[0-9A-Fa-f]{6}$/.test(raw)) raw = "#" + raw;
     if (/^#[0-9A-Fa-f]{3}$/.test(raw)) {
@@ -182,27 +318,37 @@
     } catch (e) { return null; }
   }
 
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+  function scaleFromPreset(preset) {
+    return {
+      id: uid("s"),
+      colorA: cloneRef(preset.a),
+      colorB: cloneRef(preset.b),
+      mode: preset.mode,
+      steps: preset.steps
+    };
+  }
+  function sameEnds(sc, preset) {
+    return refKey(sc.colorA) === refKey(preset.a) && refKey(sc.colorB) === refKey(preset.b) && sc.mode === preset.mode;
+  }
+  function safePairs(entries) {
+    const pairs = [];
+    for (let i = 0; i < entries.length; i++) {
+      for (let j = 0; j < entries.length; j++) {
+        if (i === j) continue;
+        const ha = entryHex(entries[i]);
+        const hb = entryHex(entries[j]);
+        if (!ha || !hb || ha === hb) continue;
+        if (Math.abs(oklabL(ha) - oklabL(hb)) < MIN_LIGHTNESS_DELTA) continue;
+        pairs.push([
+          entries[i].token ? { token: entries[i].token, fallback: entries[i].fallback } : { hex: entries[i].hex },
+          entries[j].token ? { token: entries[j].token, fallback: entries[j].fallback } : { hex: entries[j].hex }
+        ]);
+      }
     }
-    return a;
-  }
-  function pickRandom(arr, exclude) {
-    const pool = arr.filter(c => c !== exclude);
-    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : arr[0] || "#2592C2";
-  }
-  function createScale(colorA, colorB) {
-    const pool = globals.length >= 2 ? globals : BRAND;
-    const a = colorA || pickRandom(pool, null);
-    const b = colorB || pickRandom(pool, a);
-    return { id: ++idCtr, colorA: a, colorB: b, steps: 7 };
+    return pairs;
   }
 
-  function buildBarSVG(sc) {
-    const steps = getSteps(sc);
+  function buildBarSVG(steps) {
     const sorted = [...BAR_VALS].sort((a, b) => a - b);
     const W = 200, H = 44, pad = 1, barW = W / BAR_VALS.length;
     const rects = BAR_VALS.map((v, i) => {
@@ -211,113 +357,158 @@
       const h = Math.max(3, v * H);
       return `<rect x="${(i * barW + pad).toFixed(1)}" y="${(H - h).toFixed(1)}" width="${(barW - pad * 2).toFixed(1)}" height="${h.toFixed(1)}" fill="${color}" rx="1.5"/>`;
     }).join("");
-    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${rects}</svg>`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${rects}</svg>`;
   }
-  function buildChoroSVG(sc) {
-    const steps = getSteps(sc);
+  function buildChoroSVG(steps) {
     const ROWS = CHORO.length, COLS = CHORO[0].length, W = 200, H = 44;
     const cw = W / COLS, ch = H / ROWS;
     const cells = CHORO.flatMap((row, ri) => row.map((v, ci) => {
       const color = valueToColor(steps, v);
       return `<rect x="${(ci * cw).toFixed(1)}" y="${(ri * ch).toFixed(1)}" width="${Math.ceil(cw + 0.5)}" height="${Math.ceil(ch + 0.5)}" fill="${color}"/>`;
     })).join("");
-    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${cells}</svg>`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${cells}</svg>`;
   }
 
   function flash(el) {
     el.classList.add("is-flash");
     setTimeout(() => el.classList.remove("is-flash"), 700);
   }
-  function copyAndMaybeAdd(hex, el, add) {
-    navigator.clipboard.writeText(hex).catch(() => {});
+  function copyHex(hex, el) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(hex).catch(() => {});
+    }
     if (el) flash(el);
-    if (add) addGlobal(hex);
   }
 
   function renderPalette() {
     const grid = document.getElementById("csPalette");
-    if (!globals.length) {
+    if (!palette.length) {
       grid.innerHTML = `<span class="cs-empty">No colors yet.</span>`;
       return;
     }
-    grid.innerHTML = globals.map(h => `
-      <span class="cs-pal" style="background:${h}">
-        <button type="button" class="cs-pal__copy" data-hex="${h}" aria-label="Copy ${h}" title="${h} — click to copy"></button>
-        <button type="button" class="cs-pal__x" data-remove="${h}" aria-label="Remove ${h}">✕</button>
-      </span>`).join("");
+    grid.innerHTML = palette.map(entry => {
+      const hex = entryHex(entry);
+      const name = entry.label || hex;
+      return `
+      <span class="cs-chip">
+        <button type="button" class="swatch" style="--swatch-color:${esc(hex)}" title="${esc(name)} ${esc(hex)} — click to copy" data-hex="${esc(hex)}" aria-label="Copy ${esc(name)} ${esc(hex)}"></button>
+        <button type="button" class="cs-chip__remove" data-remove="${esc(entry.id)}" aria-label="Remove ${esc(name)}">
+          <svg viewBox="0 0 8 8" fill="none" aria-hidden="true"><path d="M1 1l6 6M7 1 1 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+      </span>`;
+    }).join("");
   }
 
   function cardHTML(sc) {
-    const steps = sc.steps || 7;
-    const opts = [5, 7, 9, 11].map(n =>
-      `<button type="button" class="cs-steps__opt${n === steps ? " is-active" : ""}" data-steps="${n}" data-id="${sc.id}">${n}</button>`
-    ).join("");
-    const colors = getSteps(sc);
-    const swatches = colors.map(hex => `
+    const mode = sc.mode || "sequential";
+    const stepsN = sc.steps || 7;
+    const ramp = fullRamp(sc);
+    const assessment = assessRamp(ramp, mode);
+    const steps = sampleColors(ramp, stepsN);
+    const hexA = resolveRef(sc.colorA);
+    const hexB = resolveRef(sc.colorB);
+    const modeOpts = ["sequential", "diverging"].map(name => {
+      const label = name === "sequential" ? "Sequential" : "Diverging";
+      const pressed = name === mode ? "true" : "false";
+      const active = name === mode ? " is-active" : "";
+      return `<button type="button" class="cs-steps__opt${active}" data-mode="${name}" data-id="${esc(sc.id)}" aria-pressed="${pressed}">${label}</button>`;
+    }).join("");
+    const stepOpts = [5, 7, 9, 11].map(n => {
+      const pressed = n === stepsN ? "true" : "false";
+      const active = n === stepsN ? " is-active" : "";
+      return `<button type="button" class="cs-steps__opt${active}" data-steps="${n}" data-id="${esc(sc.id)}" aria-pressed="${pressed}">${n}</button>`;
+    }).join("");
+    const swatches = steps.map((hex, i) => `
       <div class="cs-step">
-        <button type="button" class="cs-swatch" style="background:${hex}" title="${hex} — add to palette" data-add="${hex}" aria-label="Add ${hex} to palette">
-          <span class="cs-swatch__flash" aria-hidden="true">+</span>
-        </button>
-        <div class="cs-hex">${hex}</div>
+        <button type="button" class="swatch" style="--swatch-color:${esc(hex)}" title="${esc(hex)} — copy and add to the palette" data-add="${esc(hex)}" aria-label="Step ${i + 1} of ${stepsN}, ${esc(hex)}. Copy and add to the palette"></button>
       </div>`).join("");
+    const warn = assessment.safe ? "" : `<p class="cs-warn" role="status">${esc(warnText(assessment))}</p>`;
+    const readout = mode === "diverging"
+      ? `${esc(hexA)} → white → ${esc(hexB)} · white is ${assessment.delta.toFixed(2)} lighter than the closer end`
+      : `${esc(hexA)} → ${esc(hexB)} · OKLab ΔL ${assessment.delta.toFixed(2)} · ${oklabL(hexB) < oklabL(hexA) ? "lightness falls toward the end" : "lightness rises toward the end"}`;
     return `
       <div class="cs-card__top">
         <div class="cs-card__ends">
-          <span>From</span>
-          <button type="button" class="cs-dot" style="background:${sc.colorA}" data-dot="${sc.id}" data-end="A" title="${sc.colorA}" aria-label="From color ${sc.colorA}"></button>
-          <span>→</span>
-          <button type="button" class="cs-dot" style="background:${sc.colorB}" data-dot="${sc.id}" data-end="B" title="${sc.colorB}" aria-label="To color ${sc.colorB}"></button>
-        </div>
-        <div style="display:flex;align-items:center;gap:4px;">
-          <div class="cs-steps">
-            <span class="cs-steps__label">Steps</span>
-            <div class="cs-steps__opts">${opts}</div>
+          <div class="cs-end">
+            <button type="button" class="swatch swatch--sm" style="--swatch-color:${esc(hexA)}" data-dot="${esc(sc.id)}" data-end="A" title="Start ${esc(hexA)}" aria-label="Start color ${esc(hexA)}. Choose another color."></button>
+            <span class="cs-end__hex">${esc(hexA)}</span>
           </div>
-          <button type="button" class="icon-btn" data-remove-scale="${sc.id}" aria-label="Remove scale" title="Remove">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </button>
+          <span class="cs-arrow" aria-hidden="true">→</span>
+          <div class="cs-end">
+            <button type="button" class="swatch swatch--sm" style="--swatch-color:${esc(hexB)}" data-dot="${esc(sc.id)}" data-end="B" title="End ${esc(hexB)}" aria-label="End color ${esc(hexB)}. Choose another color."></button>
+            <span class="cs-end__hex">${esc(hexB)}</span>
+          </div>
+        </div>
+        <button type="button" class="icon-btn" data-remove-scale="${esc(sc.id)}" aria-label="Remove scale" title="Remove scale">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="cs-controls">
+        <div class="cs-steps">
+          <span class="cs-steps__label">Ramp</span>
+          <div class="cs-steps__opts" role="group" aria-label="Ramp type">${modeOpts}</div>
+        </div>
+        <div class="cs-steps">
+          <span class="cs-steps__label">Steps</span>
+          <div class="cs-steps__opts" role="group" aria-label="Number of steps">${stepOpts}</div>
         </div>
       </div>
+      <p class="cs-readout">${readout}</p>
+      ${warn}
       <div class="cs-row">${swatches}</div>
       <div class="cs-previews">
-        <div><div class="cs-preview__label">Bar chart</div>${buildBarSVG(sc)}</div>
-        <div><div class="cs-preview__label">Map / choropleth</div>${buildChoroSVG(sc)}</div>
+        <div><div class="cs-preview__label">Bar chart</div>${buildBarSVG(steps)}</div>
+        <div><div class="cs-preview__label">${esc(previewLabel(mode, assessment.safe))}</div>${buildChoroSVG(steps)}</div>
       </div>`;
   }
 
   function renderScales() {
+    closePop();
     const list = document.getElementById("csScales");
     document.getElementById("csCount").textContent = scales.length ? `${scales.length} scale${scales.length === 1 ? "" : "s"}` : "empty";
     if (!scales.length) {
-      list.innerHTML = `<p class="cs-helper">Add a scale or shuffle to start.</p>`;
+      list.innerHTML = `<p class="cs-helper">Add a scale to start.</p>`;
       return;
     }
-    list.innerHTML = scales.map(sc => `<div class="cs-card" id="sc${sc.id}" data-id="${sc.id}">${cardHTML(sc)}</div>`).join("");
+    list.innerHTML = scales.map(sc => {
+      const assessment = assessRamp(fullRamp(sc), sc.mode || "sequential");
+      const unsafe = assessment.safe ? "" : " cs-card--unsafe";
+      return `<div class="cs-card${unsafe}" id="sc${esc(sc.id)}" data-id="${esc(sc.id)}">${cardHTML(sc)}</div>`;
+    }).join("");
   }
 
-  function addGlobal(hex) {
-    hex = hex.toUpperCase();
-    if (!globals.includes(hex)) {
-      globals.push(hex);
-      renderPalette();
-      if (document.getElementById("csPop").classList.contains("is-open")) renderPopGrid();
-    }
+  function render() {
+    renderPalette();
+    renderScales();
   }
-  function removeGlobal(hex) {
-    globals = globals.filter(c => c !== hex.toUpperCase());
+
+  function addGlobal(hex, label) {
+    hex = hex.toUpperCase();
+    if (palette.some(entry => entryHex(entry) === hex)) return;
+    palette.push({ id: uid("c"), hex, label: label || hex });
+    renderPalette();
+    if (document.getElementById("csPop").classList.contains("is-open")) renderPopGrid();
+  }
+  function removeGlobal(id) {
+    palette = palette.filter(entry => entry.id !== id);
     renderPalette();
     if (document.getElementById("csPop").classList.contains("is-open")) renderPopGrid();
   }
 
+  function activeHex() {
+    if (!popCtx) return null;
+    const sc = scales.find(s => s.id === popCtx.id);
+    if (!sc) return null;
+    return resolveRef(popCtx.end === "A" ? sc.colorA : sc.colorB);
+  }
   function renderPopGrid() {
-    const active = popCtx
-      ? (popCtx.end === "A"
-          ? scales.find(s => s.id === popCtx.id)?.colorA
-          : scales.find(s => s.id === popCtx.id)?.colorB)
-      : null;
-    document.getElementById("csPopGrid").innerHTML = globals.map(h =>
-      `<button type="button" class="cs-pop__cell${h === active ? " is-selected" : ""}" style="background:${h}" data-pick="${h}" title="${h}" aria-label="${h}"></button>`
-    ).join("");
+    const current = activeHex();
+    document.getElementById("csPopGrid").innerHTML = palette.map(entry => {
+      const hex = entryHex(entry);
+      const selected = hex === current ? " swatch--selected" : "";
+      const tokenAttr = entry.token ? ` data-token="${esc(entry.token)}" data-fallback="${esc(entry.fallback)}"` : "";
+      return `<button type="button" class="swatch${selected}" style="--swatch-color:${esc(hex)}" data-pick="${esc(hex)}"${tokenAttr} title="${esc(entry.label || hex)} ${esc(hex)}" aria-label="${esc(entry.label || hex)} ${esc(hex)}"></button>`;
+    }).join("");
   }
   function openPop(id, end, el) {
     const pop = document.getElementById("csPop");
@@ -327,7 +518,7 @@
     popCtx = { id, end, opener: el };
     renderPopGrid();
     const rect = el.getBoundingClientRect();
-    const popW = 180, popH = 200;
+    const popW = 196, popH = 220;
     let left = rect.left, top = rect.bottom + 6;
     if (left + popW > window.innerWidth - 8) left = window.innerWidth - popW - 8;
     if (top + popH > window.innerHeight - 8) top = rect.top - popH - 6;
@@ -341,21 +532,26 @@
   function closePop(restore) {
     const pop = document.getElementById("csPop");
     const opener = popCtx && popCtx.opener;
+    if (!pop.classList.contains("is-open")) {
+      pop.hidden = true;
+      popCtx = null;
+      return;
+    }
     pop.classList.remove("is-open");
     pop.hidden = true;
     popCtx = null;
     if (restore && opener && opener.isConnected) opener.focus();
   }
-  function pickColor(hex) {
+  function pickRef(ref) {
     if (!popCtx) return;
     const sc = scales.find(s => s.id === popCtx.id);
     const id = popCtx.id;
     const end = popCtx.end;
     if (!sc) return;
-    if (end === "A") sc.colorA = hex; else sc.colorB = hex;
+    if (end === "A") sc.colorA = ref; else sc.colorB = ref;
     closePop(false);
     renderScales();
-    const dot = document.querySelector(`.cs-dot[data-dot="${id}"][data-end="${end}"]`);
+    const dot = document.querySelector(`[data-dot="${CSS.escape(id)}"][data-end="${end}"]`);
     if (dot) dot.focus();
   }
 
@@ -392,36 +588,51 @@
   }
 
   function init() {
-    globals = shuffle(BRAND).slice(0, 6);
-    scales = [];
-    for (let i = 0; i < 3; i++) scales.push(createScale());
-    renderPalette();
-    renderScales();
+    palette = TOKEN_ANCHORS.concat(BRAND_PAINTS).map(entry => Object.assign({ id: uid("c") }, entry));
+    scales = SCALE_PRESETS.slice(0, 3).map(scaleFromPreset);
+    render();
   }
 
   document.getElementById("csAddScale").addEventListener("click", () => {
-    scales.unshift(createScale());
+    const preset = SCALE_PRESETS.find(p => !scales.some(sc => sameEnds(sc, p)));
+    if (preset) scales.unshift(scaleFromPreset(preset));
+    else {
+      const pairs = safePairs(palette);
+      const pair = pairs[0] || [
+        palette[0] ? (palette[0].token ? { token: palette[0].token, fallback: palette[0].fallback } : { hex: palette[0].hex }) : { hex: "#FFFFFF" },
+        palette[1] ? (palette[1].token ? { token: palette[1].token, fallback: palette[1].fallback } : { hex: palette[1].hex }) : { hex: "#111416" }
+      ];
+      scales.unshift({ id: uid("s"), colorA: pair[0], colorB: pair[1], mode: "sequential", steps: 7 });
+    }
     renderScales();
   });
-  document.getElementById("csShuffle").addEventListener("click", () => {
-    const pool = globals.length >= 2 ? globals : BRAND;
+
+  document.getElementById("csRandomize").addEventListener("click", () => {
+    const pairs = safePairs(palette);
+    if (!scales.length || !pairs.length) return;
     scales.forEach(sc => {
-      sc.colorA = pickRandom(pool, null);
-      sc.colorB = pickRandom(pool, sc.colorA);
+      const pair = pairs[Math.floor(Math.random() * pairs.length)];
+      sc.colorA = cloneRef(pair[0]);
+      sc.colorB = cloneRef(pair[1]);
+      sc.mode = "sequential";
     });
     renderScales();
   });
 
   function tryAddHex() {
     const inp = document.getElementById("csHexInput");
+    const field = document.getElementById("csHexField");
     const parts = inp.value.split(/[\s,;]+/).filter(Boolean);
     let added = 0;
     parts.forEach(p => { const h = parseColor(p); if (h) { addGlobal(h); added++; } });
-    if (added) { inp.value = ""; inp.classList.remove("is-err"); inp.removeAttribute("aria-invalid"); }
-    else {
-      inp.classList.add("is-err");
+    if (added) {
+      inp.value = "";
+      field.classList.remove("is-err");
+      inp.removeAttribute("aria-invalid");
+    } else {
+      field.classList.add("is-err");
       inp.setAttribute("aria-invalid", "true");
-      setTimeout(() => { inp.classList.remove("is-err"); inp.removeAttribute("aria-invalid"); }, 900);
+      setTimeout(() => { field.classList.remove("is-err"); inp.removeAttribute("aria-invalid"); }, 900);
     }
   }
   document.getElementById("csHexAdd").addEventListener("click", tryAddHex);
@@ -433,37 +644,47 @@
     const rem = e.target.closest("[data-remove]");
     if (rem) { removeGlobal(rem.dataset.remove); return; }
     const pal = e.target.closest("[data-hex]");
-    if (pal) copyAndMaybeAdd(pal.dataset.hex, null, false);
+    if (pal) copyHex(pal.dataset.hex, pal);
   });
 
   document.getElementById("csScales").addEventListener("click", e => {
     const add = e.target.closest("[data-add]");
-    if (add) { copyAndMaybeAdd(add.dataset.add, add, true); return; }
+    if (add) { copyHex(add.dataset.add, add); addGlobal(add.dataset.add); return; }
+    const modeBtn = e.target.closest("[data-mode]");
+    if (modeBtn) {
+      const sc = scales.find(s => s.id === modeBtn.dataset.id);
+      if (sc) { sc.mode = modeBtn.dataset.mode; renderScales(); }
+      return;
+    }
     const step = e.target.closest("[data-steps]");
     if (step) {
-      const sc = scales.find(s => s.id === +step.dataset.id);
+      const sc = scales.find(s => s.id === step.dataset.id);
       if (sc) { sc.steps = +step.dataset.steps; renderScales(); }
       return;
     }
     const rem = e.target.closest("[data-remove-scale]");
     if (rem) {
-      scales = scales.filter(s => s.id !== +rem.dataset.removeScale);
+      scales = scales.filter(s => s.id !== rem.dataset.removeScale);
       renderScales();
       return;
     }
     const dot = e.target.closest("[data-dot]");
-    if (dot) openPop(+dot.dataset.dot, dot.dataset.end, dot);
+    if (dot) openPop(dot.dataset.dot, dot.dataset.end, dot);
   });
 
   document.getElementById("csPop").addEventListener("click", e => {
     e.stopPropagation();
     const pick = e.target.closest("[data-pick]");
-    if (pick) pickColor(pick.dataset.pick);
+    if (pick) {
+      if (pick.dataset.token) pickRef({ token: pick.dataset.token, fallback: pick.dataset.fallback });
+      else pickRef({ hex: pick.dataset.pick });
+      return;
+    }
     const spec = e.target.closest("[data-hex]");
-    if (spec) pickColor(spec.dataset.hex);
+    if (spec) pickRef({ hex: spec.dataset.hex });
   });
   document.addEventListener("click", e => {
-    if (!e.target.closest("#csPop") && !e.target.closest(".cs-dot")) closePop(false);
+    if (!e.target.closest("#csPop") && !e.target.closest("[data-dot]")) closePop(false);
   });
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && document.getElementById("csPop").classList.contains("is-open")) {
@@ -502,6 +723,9 @@
     e.preventDefault(); upload.classList.remove("is-drag");
     handleFile(e.dataTransfer.files[0]);
   });
+
+  new MutationObserver(() => { if (palette.length) render(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
   init();
 })();

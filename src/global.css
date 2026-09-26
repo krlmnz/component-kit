@@ -1412,7 +1412,8 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 
 /* Color Scale chrome ---------------------------------------------
    Ramp math stays in color-scale.html. These rules are the panel
-   chrome only; they are not a second token scale. */
+   chrome only; they are not a second token scale. Chips, endpoints,
+   steps, and popover cells use the shared .swatch. */
 .cs-stack { display: flex; flex-direction: column; gap: var(--space-1); }
 .cs-section-label {
   font-size: var(--text-xs);
@@ -1423,68 +1424,38 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 }
 .cs-helper { font-size: var(--text-xs); color: var(--text-2); line-height: 1.45; }
 
-.cs-palette { display: flex; flex-wrap: wrap; gap: var(--space-05); }
-.cs-pal {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
-  cursor: pointer;
-  flex-shrink: 0;
+.cs-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-05);
+  padding-top: var(--space-025);
 }
-.cs-pal:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
-.cs-pal__copy {
-  position: absolute;
-  inset: 0;
-  padding: 0;
-  border-radius: inherit;
-  background: transparent;
-}
-.cs-pal__x {
-  display: inline-flex;
+.cs-chip { position: relative; }
+.cs-chip__remove {
   position: absolute;
   top: -6px;
   right: -6px;
-  z-index: 1;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   padding: 0;
   border-radius: var(--radius-full);
   background: var(--text);
   color: var(--surface);
   border: none;
-  font-size: 8px;
-  font-weight: 800;
-  line-height: 1;
-  cursor: pointer;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  pointer-events: none;
+  z-index: 1;
 }
-.cs-pal:hover .cs-pal__x,
-.cs-pal:focus-within .cs-pal__x {
-  opacity: 1;
-  pointer-events: auto;
-}
+.cs-chip__remove svg { width: 8px; height: 8px; }
+.cs-chip:hover .cs-chip__remove,
+.cs-chip:focus-within .cs-chip__remove { opacity: 1; }
 .cs-empty { font-size: var(--text-xs); color: var(--text-2); font-style: italic; }
 
-.cs-add { display: flex; gap: var(--space-05); }
-.cs-add input {
-  flex: 1;
-  min-width: 0;
-  height: var(--control-height-sm);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--text);
-  padding: 0 var(--space-05);
-  font: inherit;
-  font-size: var(--text-sm);
-}
-.cs-add input:focus-visible { outline: none; border-color: var(--accent); box-shadow: var(--focus-ring); }
-.cs-add input.is-err { border-color: var(--error); }
+.cs-add { align-items: center; }
+.cs-add .combo__hex { flex: 1 1 auto; }
+.cs-add .combo__hex.is-err { border-color: var(--error); box-shadow: var(--error-ring); }
 
 .cs-upload {
   position: relative;
@@ -1518,11 +1489,12 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 }
 .cs-toolbar__title { font-size: var(--text-base); font-weight: 700; }
 
+/* Three seed cards stay in view; more scales scroll. */
 .cs-scales {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  max-height: 420px;
+  max-height: 1280px;
   overflow: auto;
   padding-right: 2px;
 }
@@ -1536,28 +1508,40 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   padding: var(--space-1);
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-05);
 }
+.cs-card--unsafe { border-color: var(--warn); }
 .cs-card__top {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-05);
+}
+.cs-card__ends {
+  display: flex;
+  align-items: center;
+  gap: var(--space-05);
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.cs-end { display: flex; align-items: center; gap: var(--space-025); min-width: 0; }
+.cs-end__hex {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .02em;
+}
+.cs-arrow { font-size: var(--text-xs); color: var(--text-2); font-weight: 700; }
+
+.cs-controls {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-05);
 }
-.cs-card__ends { display: flex; align-items: center; gap: 6px; }
-.cs-card__ends span { font-size: var(--text-xs); color: var(--text-2); font-weight: 600; }
-.cs-dot {
-  width: 22px;
-  height: 22px;
-  border-radius: var(--radius-full);
-  border: 2px solid var(--surface);
-  box-shadow: 0 0 0 1px var(--border);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.cs-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-.cs-steps { display: flex; align-items: center; gap: 4px; }
+.cs-steps { display: flex; align-items: center; gap: var(--space-025); }
 .cs-steps__label { font-size: var(--text-xs); color: var(--text-2); font-weight: 600; }
 .cs-steps__opts {
   display: flex;
@@ -1572,64 +1556,51 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   background: transparent;
   color: var(--text-2);
   font: inherit;
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: 700;
-  padding: 2px 6px;
+  padding: 2px var(--space-025);
   border-radius: calc(var(--radius-sm) - 2px);
   cursor: pointer;
 }
 .cs-steps__opt.is-active { background: var(--surface-2); color: var(--text); box-shadow: var(--shadow); }
 
 .cs-row { display: flex; gap: 2px; }
-.cs-step { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; align-items: center; }
-.cs-swatch {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 3px;
-  cursor: pointer;
-  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
-  position: relative;
-  overflow: hidden;
-}
-.cs-swatch:hover { transform: scaleY(1.08); z-index: 1; }
-.cs-swatch__flash {
-  display: none;
-  position: absolute;
-  inset: 0;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,.5);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-}
-.cs-swatch.is-flash .cs-swatch__flash { display: flex; }
-.cs-hex {
-  font-size: 8px;
+.cs-step { flex: 1; min-width: 0; }
+.cs-step .swatch { width: 100%; height: auto; aspect-ratio: 1; }
+.cs-step .swatch.is-flash { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); }
+
+.cs-readout {
+  font-size: var(--text-xs);
   color: var(--text-2);
+  line-height: 1.4;
   font-variant-numeric: tabular-nums;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+}
+.cs-warn {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--surface);
+  border-left: 3px solid var(--warn);
+  border-radius: var(--radius-sm);
+  padding: var(--space-025) var(--space-05);
 }
 
-.cs-previews { display: flex; flex-direction: column; gap: 6px; }
+.cs-previews { display: flex; flex-direction: column; gap: var(--space-05); }
 .cs-preview__label {
-  font-size: 9px;
+  font-size: var(--text-xs);
   font-weight: 700;
   color: var(--text-2);
   text-transform: uppercase;
   letter-spacing: .06em;
   margin-bottom: 2px;
 }
-.cs-preview svg { display: block; width: 100%; height: 44px; border-radius: 4px; }
+.cs-preview svg { display: block; width: 100%; height: 44px; border-radius: var(--radius-sm); }
 
 .cs-pop {
   position: fixed;
   z-index: 40;
   display: none;
-  width: 180px;
+  width: 196px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -1644,38 +1615,36 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   color: var(--text-2);
   text-transform: uppercase;
   letter-spacing: .06em;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-05);
 }
-.cs-pop__specials { display: flex; gap: 4px; margin-bottom: 6px; }
+.cs-pop__specials { display: flex; gap: var(--space-025); margin-bottom: var(--space-05); }
 .cs-pop__spec {
   flex: 1;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: none;
-  padding: 4px;
+  background: var(--surface);
+  padding: var(--space-025);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  align-items: center;
+  align-items: stretch;
 }
-.cs-pop__spec-swatch { width: 100%; height: 16px; border-radius: 3px; border: 1px solid var(--border); }
-.cs-pop__spec-label { font-size: 8px; font-weight: 700; color: var(--text-2); text-transform: uppercase; }
-.cs-pop__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-.cs-pop__cell {
-  aspect-ratio: 1;
-  border-radius: 4px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--text) 10%, transparent);
+.cs-pop__spec .swatch { width: 100%; height: 16px; pointer-events: none; }
+.cs-pop__spec-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-2);
+  text-transform: uppercase;
+  text-align: center;
 }
-.cs-pop__cell.is-selected,
-.cs-pop__cell:hover { border-color: var(--text); }
+.cs-pop__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-025); }
+.cs-pop__grid .swatch { width: 100%; height: auto; aspect-ratio: 1; }
 
 .cs-note {
-  font-size: 10px;
+  font-size: var(--text-xs);
   color: var(--text-2);
-  line-height: 1.4;
+  line-height: 1.45;
   padding-top: var(--space-05);
   border-top: 1px solid var(--border);
 }
