@@ -6,50 +6,11 @@
 <title>Modal — Component Kit</title>
 <link rel="stylesheet" href="global.css">
 <style>
-
-  /* Native <dialog> stays out of the a11y tree until showModal().
-     Do not set display on .modal except under [open] — an unconditional
-     display value overrides the UA closed state and puts the dialog back. */
-  .modal {
-    border: none;
-    padding: 0;
-    margin: 0;
-    background: transparent;
-    color: inherit;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    max-height: none;
-  }
-  .modal:not([open]) { display: none; }
-  .modal[open] {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-2);
-    overflow: auto;
-  }
-  .modal::backdrop { background: rgba(17, 20, 22, .45); }
-
-  .modal[open]::backdrop { animation: modal-fade var(--duration) var(--ease); }
-  .modal[open] .panel { animation: modal-panel-in var(--duration) var(--ease); }
-  @keyframes modal-fade { from { opacity: 0; } }
-  @keyframes modal-panel-in {
-    from { opacity: 0; transform: translateY(var(--space-05)) scale(.98); }
-    to { opacity: 1; transform: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .modal[open]::backdrop,
-    .modal[open] .panel { animation: none; }
-  }
-
-  .modal .panel {
-    width: 100%; max-width: 420px;
-    border-radius: var(--radius);
-  }
-
+  /* Specimen layout only — dialog chrome is dialog.modal in global.css. */
   .modal-demo-card {
-    display: flex; flex-direction: column; gap: var(--space-1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
     max-width: 260px;
   }
   .modal-field {

@@ -5,29 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tabs — Component Kit</title>
 <link rel="stylesheet" href="global.css">
-<style>
-
-  .tabs__list {
-    display: flex; gap: var(--space-1);
-    border-bottom: 1px solid var(--border);
-  }
-  .tabs__tab {
-    font-size: var(--text-sm); font-weight: 600; color: var(--text-2);
-    padding: var(--space-05);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: color var(--duration-fast) var(--ease), border-color var(--duration-fast) var(--ease);
-  }
-  .tabs__tab:hover { color: var(--text); }
-  .tabs__tab[aria-selected="true"] { color: var(--accent-text); border-color: var(--accent); }
-  .tabs__panel { padding-top: var(--space-1); font-size: var(--text-sm); color: var(--text-2); }
-  .tabs__panel[hidden] { display: none; }
-
-  /* pill variant */
-  .tabs--pill .tabs__list { border-bottom: none; background: var(--surface-2); padding: var(--space-025); border-radius: var(--radius-full); display: inline-flex; }
-  .tabs--pill .tabs__tab { border-radius: var(--radius-full); border-bottom: none; margin-bottom: 0; padding: var(--space-05) var(--space-1); }
-  .tabs--pill .tabs__tab[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
-</style>
 </head>
 <body>
 <header class="theme-toggle">
@@ -43,14 +20,14 @@
     </header>
     <div class="panel__body">
       <div class="tabs" data-tabs>
-        <div class="tabs__list" role="tablist">
-          <button class="tabs__tab" role="tab" aria-selected="true" data-tab-target="t1">Places</button>
-          <button class="tabs__tab" role="tab" aria-selected="false" data-tab-target="t2">Legend</button>
-          <button class="tabs__tab" role="tab" aria-selected="false" data-tab-target="t3">Guests</button>
+        <div class="tabs__list" role="tablist" aria-label="Map sections">
+          <button class="tabs__tab" type="button" role="tab" id="tab-t1" aria-selected="true" aria-controls="t1">Places</button>
+          <button class="tabs__tab" type="button" role="tab" id="tab-t2" aria-selected="false" aria-controls="t2">Legend</button>
+          <button class="tabs__tab" type="button" role="tab" id="tab-t3" aria-selected="false" aria-controls="t3">Guests</button>
         </div>
-        <div class="tabs__panel" id="t1" role="tabpanel">14 pins across 4 categories.</div>
-        <div class="tabs__panel" id="t2" role="tabpanel" hidden>Stay, Eat, See, Do — with custom colors.</div>
-        <div class="tabs__panel" id="t3" role="tabpanel" hidden>3 guests have viewed this map.</div>
+        <div class="tabs__panel" id="t1" role="tabpanel" aria-labelledby="tab-t1">14 pins across 4 categories.</div>
+        <div class="tabs__panel" id="t2" role="tabpanel" aria-labelledby="tab-t2" hidden>Stay, Eat, See, Do — with custom colors.</div>
+        <div class="tabs__panel" id="t3" role="tabpanel" aria-labelledby="tab-t3" hidden>3 guests have viewed this map.</div>
       </div>
     </div>
   </section>
@@ -61,12 +38,12 @@
     </header>
     <div class="panel__body">
       <div class="tabs tabs--pill" data-tabs>
-        <div class="tabs__list" role="tablist">
-          <button class="tabs__tab" role="tab" aria-selected="true" data-tab-target="p1">Edit</button>
-          <button class="tabs__tab" role="tab" aria-selected="false" data-tab-target="p2">Preview</button>
+        <div class="tabs__list" role="tablist" aria-label="Editor mode">
+          <button class="tabs__tab" type="button" role="tab" id="tab-p1" aria-selected="true" aria-controls="p1">Edit</button>
+          <button class="tabs__tab" type="button" role="tab" id="tab-p2" aria-selected="false" aria-controls="p2">Preview</button>
         </div>
-        <div class="tabs__panel" id="p1" role="tabpanel">Editing view.</div>
-        <div class="tabs__panel" id="p2" role="tabpanel" hidden>Preview view.</div>
+        <div class="tabs__panel" id="p1" role="tabpanel" aria-labelledby="tab-p1">Editing view.</div>
+        <div class="tabs__panel" id="p2" role="tabpanel" aria-labelledby="tab-p2" hidden>Preview view.</div>
       </div>
     </div>
   </section>
@@ -79,7 +56,8 @@
         root.querySelectorAll('[role="tab"]').forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
         root.querySelectorAll('[role="tabpanel"]').forEach(function (p) { p.hidden = true; });
         tab.setAttribute('aria-selected', 'true');
-        document.getElementById(tab.dataset.tabTarget).hidden = false;
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        if (panel) panel.hidden = false;
       });
     });
   });

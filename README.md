@@ -28,6 +28,8 @@ Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`
 - **`.tile` / `.tile-grid`** — selectable icon and pattern tiles
 - **`.panel`** — kit chrome for editor panels
 
+Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, Map Layers, and Place Card also live in `global.css`. See `docs/PATTERNS.md` for the canonical tabs, search, and icon-button patterns.
+
 ## Recent fixes
 
 - Place Card: choosing an icon applies it to the trigger
