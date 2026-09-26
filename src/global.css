@@ -56,6 +56,11 @@
   --control-width-compact: 56px;
   --textarea-min-height: 80px;
 
+  /* Touch icon-button target. Compact .icon-btn stays --control-height-xs / 16px glyph. */
+  --control-height-touch: 44px;
+  --icon-btn-size-touch: var(--control-height-touch);
+  --icon-size-md: 20px;
+
   --focus-ring: 0 0 0 3px var(--accent-soft);
   --error-ring: 0 0 0 3px var(--error-soft);
   --selected-ring: 0 0 0 1px var(--accent);
@@ -183,6 +188,19 @@ svg { display: block; }
 .btn--icon.btn--sm { padding: var(--space-025); }
 .btn--icon.btn--lg { padding: var(--space-1); }
 .btn--full { width: 100%; }
+
+/* Bordered/filled twin of .icon-btn--touch (44×44, 20×20 glyph). */
+.btn--icon.btn--touch {
+  width: var(--icon-btn-size-touch);
+  height: var(--icon-btn-size-touch);
+  padding: 0;
+  aspect-ratio: auto;
+  flex: none;
+}
+.btn--icon.btn--touch svg {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
 
 /* Form controls ----------------------------------------------------
    Shared input geometry. Size variants are intentionally small and
@@ -512,6 +530,15 @@ svg { display: block; }
 .icon-btn:hover { background: var(--surface-2); color: var(--text); }
 .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
 .icon-btn svg { width: 16px; height: 16px; }
+.icon-btn--touch {
+  width: var(--icon-btn-size-touch);
+  height: var(--icon-btn-size-touch);
+  flex: none;
+}
+.icon-btn--touch svg {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
 
 /* ── Focus & scroll baseline ──────────────────────────────────────── */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
