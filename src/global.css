@@ -35,6 +35,14 @@
   --accent-soft:  color-mix(in srgb, var(--accent) 12%, var(--surface));
   --accent-wash:  color-mix(in srgb, var(--accent) 6%, var(--surface));
 
+  /* Primary is ink, not the blue accent. Accent stays links, tabs,
+     selection, and the focus ring. Hover is charcoal; active steps
+     back toward ink, darker than the hover. */
+  --btn-primary:        #000000;
+  --btn-primary-hover:  #24272B;
+  --btn-primary-active: #111416;
+  --on-btn-primary:     #FFFFFF;
+
   --success: #00A470;
   --success-text: #0E7850;
   --success-soft: color-mix(in srgb, var(--success) 14%, var(--surface));
@@ -91,6 +99,12 @@
   --accent-hover: #177A9E;
   --on-accent:    #FFFFFF;
   --accent-text:  #2399DC;
+  /* Inverted plate: a light fill with ink type, so the solid control
+     still reads against the dark surface. */
+  --btn-primary:        #FFFFFF;
+  --btn-primary-hover:  #F2F2F2;
+  --btn-primary-active: #E5E5E5;
+  --on-btn-primary:     #111416;
   --success:      #00A470;
   --success-text: #14AA75;
   --warn:         #F89B17;
@@ -202,8 +216,9 @@ svg { display: block; }
 .btn--md { font-size: var(--text-sm); padding: var(--space-05) var(--space-1); }
 .btn--lg { font-size: var(--text-base); padding: var(--space-1) var(--space-2); }
 
-.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.btn--primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn--primary { background: var(--btn-primary); border-color: var(--btn-primary); color: var(--on-btn-primary); }
+.btn--primary:hover:not(:disabled) { background: var(--btn-primary-hover); border-color: var(--btn-primary-hover); }
+.btn--primary:active:not(:disabled) { background: var(--btn-primary-active); border-color: var(--btn-primary-active); }
 .btn--secondary { background: var(--surface); color: var(--text); border-color: var(--border); }
 .btn--secondary:hover:not(:disabled) { background: var(--surface-2); }
 .btn--ghost { background: transparent; color: var(--text); border-color: transparent; }
