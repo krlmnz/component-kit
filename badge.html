@@ -8,7 +8,7 @@
 </head>
 <body>
 <header class="theme-toggle">
-  <button class="btn" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
+  <button class="btn" type="button" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
 </header>
 
 <main class="stage">
@@ -40,9 +40,9 @@
       <span class="chip"><span class="chip__swatch" style="background:var(--success);"></span>Eat</span>
       <span class="chip"><span class="chip__swatch" style="background:var(--warn);"></span>See</span>
       <span class="chip">Do
-        <span class="chip__remove" role="button" aria-label="Remove Do filter">
-          <svg viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1 1 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        </span>
+        <button class="chip__remove" type="button" aria-label="Remove Do filter">
+          <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l8 8M9 1 1 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
       </span>
     </div>
   </section>

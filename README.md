@@ -20,6 +20,8 @@ Open `index.html` at the repository root. That is the same tree Pages serves. Wh
 
 After changing a file under `src/`, copy that file to the repository root so the live site stays in sync. Leave `src/.codepen/` only under `src/`.
 
+Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`](docs/CONTRAST.md).
+
 ## Design system atoms
 
 - **`.combo`** — shared strip for color/stroke: optional `.swatch` + `.combo__hex` + `.combo__opacity` + `.combo__width` (all `--control-height-sm`)

@@ -8,7 +8,7 @@
 </head>
 <body>
 <header class="theme-toggle">
-  <button class="btn" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
+  <button class="btn" type="button" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
 </header>
 
 <main class="stage">
@@ -35,9 +35,9 @@
             <div class="color-picker__cursor"></div>
           </div>
           <div class="color-picker__controls">
-            <span class="color-picker__eyedropper" role="button" tabindex="0" aria-label="Pick color from screen">
-              <svg viewBox="0 0 16 16" fill="none"><path d="M11 2.5 13.5 5 5 13.5H2.5V11z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-            </span>
+            <button class="color-picker__eyedropper" type="button" aria-label="Pick color from screen">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11 2.5 13.5 5 5 13.5H2.5V11z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            </button>
             <div class="color-picker__sliders">
               <input class="slider slider--hue" type="range" min="0" max="360" value="150" aria-label="Hue">
               <input class="slider slider--alpha" type="range" min="0" max="100" value="100" aria-label="Opacity">
@@ -87,10 +87,10 @@
       </header>
       <div class="panel__body">
         <div class="input-group" style="margin-bottom: var(--space-1);">
-          <svg class="input-group__icon" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="m13 13-2.7-2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <svg class="input-group__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="m13 13-2.7-2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
           <input class="input" type="text" value="Value" aria-label="Search icons">
           <button class="input-group__clear" type="button" aria-label="Clear search">
-            <svg viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1 1 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l8 8M9 1 1 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
           </button>
         </div>
 
@@ -161,6 +161,17 @@
 
   </div>
 </main>
+<script>
+  document.querySelectorAll('.input-group').forEach(function (field) {
+    var input = field.querySelector('input');
+    var clear = field.querySelector('.input-group__clear');
+    if (!input || !clear) return;
+    clear.addEventListener('click', function () {
+      input.value = '';
+      input.focus();
+    });
+  });
+</script>
 <script src="component-embed.js"></script>
 </body>
 </html>

@@ -21,4 +21,4 @@ Put `.panel--flush` on the `.panel`, not on a wrapper. A combo’s swatch and he
 - Color Scale ramp math stays in `color-scale.html`. Only the `.cs-*` rules moved.
 - The Color Library picker is a static anatomy diagram. The field does not write the swatch.
 - Map Layers reorders when you drag a handle with a pointer. This reference does not reorder from the keyboard.
-- Dialog, menu, and toast open/close behavior is unchanged in this pass.
+- Dialogs are native `<dialog class="modal">` elements. Closed dialogs stay out of the accessibility tree; focus moves in, stays inside, and returns to the opener. Menus hide their panels until opened. Toasts announce through polite and assertive live regions.

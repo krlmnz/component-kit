@@ -8,7 +8,7 @@
 </head>
 <body>
 <header class="theme-toggle">
-  <button class="btn" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
+  <button class="btn" type="button" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
 </header>
 
 <main class="stage">
@@ -37,8 +37,8 @@
 
         <label class="field field--invalid">
           <span class="field__label">Latitude</span>
-          <input class="input" type="text" value="200.4">
-          <span class="field__error">Must be between -90 and 90.</span>
+          <input class="input" type="text" value="200.4" aria-invalid="true" aria-describedby="latitude-error">
+          <span class="field__error" id="latitude-error">Must be between -90 and 90.</span>
         </label>
 
         <label class="field field--disabled">
