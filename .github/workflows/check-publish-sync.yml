@@ -1,0 +1,21 @@
+name: Check publish copy
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  src-root-sync:
+    name: Compare root with src/
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compare kit files
+        run: sh ./scripts/check-publish-sync.sh
