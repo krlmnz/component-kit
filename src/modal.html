@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modal — Component Kit</title>
+<link rel="stylesheet" href="global.css">
+<style>
+
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(17, 20, 22, .45);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--space-2);
+    z-index: 200;
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--duration) var(--ease);
+  }
+  .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+  .modal-overlay .panel {
+    width: 100%; max-width: 420px;
+    border-radius: var(--radius);
+    transform: translateY(var(--space-05)) scale(.98);
+    opacity: 0;
+    transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
+  }
+  .modal-overlay.is-open .panel { transform: translateY(0) scale(1); opacity: 1; }
+
+  .modal-demo-card {
+    display: flex; flex-direction: column; gap: var(--space-1);
+    max-width: 260px;
+  }
+</style>
+</head>
+<body>
+<header class="theme-toggle">
+  <button class="btn btn--secondary" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
+</header>
+
+<main class="stage">
+  <h1 class="stage__title">Modal / Dialog</h1>
+  <p class="stage__label">Built on the same .panel shell — panel--pop for elevation</p>
+
+  <div class="stage__row">
+    <div class="modal-demo-card">
+      <button class="btn btn--primary" onclick="document.getElementById('modal-confirm').classList.add('is-open')">Open confirm dialog</button>
+    </div>
+    <div class="modal-demo-card">
+      <button class="btn btn--secondary" onclick="document.getElementById('modal-form').classList.add('is-open')">Open form dialog</button>
+    </div>
+  </div>
+
+  <!-- Confirm / destructive modal -->
+  <div class="modal-overlay" id="modal-confirm" onclick="if(event.target===this) this.classList.remove('is-open')">
+    <section class="panel panel--pop" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title">
+      <header class="panel__header">
+        <div class="panel__heading">
+          <h2 class="panel__title" id="modal-confirm-title">Delete this map?</h2>
+          <p class="panel__subtitle">This can't be undone</p>
+        </div>
+        <div class="panel__actions">
+          <button class="icon-btn" aria-label="Close" onclick="document.getElementById('modal-confirm').classList.remove('is-open')">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="panel__body">
+        <p style="font-size: var(--text-sm); color: var(--text-2);">"Chile 2026" and its 14 pins will be permanently removed for you and any guests with the link.</p>
+      </div>
+      <footer class="panel__footer">
+        <button class="btn btn--secondary" onclick="document.getElementById('modal-confirm').classList.remove('is-open')">Cancel</button>
+        <button class="btn btn--danger" onclick="document.getElementById('modal-confirm').classList.remove('is-open')">Delete map</button>
+      </footer>
+    </section>
+  </div>
+
+  <!-- Form modal -->
+  <div class="modal-overlay" id="modal-form" onclick="if(event.target===this) this.classList.remove('is-open')">
+    <section class="panel panel--pop" role="dialog" aria-modal="true" aria-labelledby="modal-form-title">
+      <header class="panel__header">
+        <div class="panel__heading">
+          <h2 class="panel__title" id="modal-form-title">Invite a guest</h2>
+        </div>
+        <div class="panel__actions">
+          <button class="icon-btn" aria-label="Close" onclick="document.getElementById('modal-form').classList.remove('is-open')">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="panel__body" style="display:flex; flex-direction:column; gap: var(--space-1);">
+        <label style="display:flex; flex-direction:column; gap:var(--space-05); font-size: var(--text-sm);">
+          <span style="font-weight:600;">Email address</span>
+          <input type="email" placeholder="friend@email.com" style="font-size: var(--text-base); padding: var(--space-05) var(--space-1); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text);">
+        </label>
+      </div>
+      <footer class="panel__footer">
+        <button class="btn btn--secondary" onclick="document.getElementById('modal-form').classList.remove('is-open')">Cancel</button>
+        <button class="btn btn--primary" onclick="document.getElementById('modal-form').classList.remove('is-open')">Send invite</button>
+      </footer>
+    </section>
+  </div>
+</main>
+<script src="component-embed.js"></script>
+</body>
+</html>

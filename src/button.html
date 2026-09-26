@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Button — Component Kit</title>
+<link rel="stylesheet" href="global.css">
+</head>
+<body>
+<header class="theme-toggle">
+  <button class="btn btn--secondary btn--sm" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
+</header>
+
+<main class="stage">
+  <h1 class="stage__title">Button</h1>
+
+  <section>
+    <p class="stage__label">Variants — medium</p>
+    <div class="stage__row">
+      <button class="btn btn--primary btn--md">Primary</button>
+      <button class="btn btn--secondary btn--md">Secondary</button>
+      <button class="btn btn--ghost btn--md">Ghost</button>
+      <button class="btn btn--danger btn--md">Danger</button>
+      <button class="btn btn--link btn--md">Link button</button>
+    </div>
+  </section>
+
+  <section>
+    <p class="stage__label">Sizes — primary</p>
+    <div class="stage__row" style="align-items:center;">
+      <button class="btn btn--primary btn--sm">Small</button>
+      <button class="btn btn--primary btn--md">Medium</button>
+      <button class="btn btn--primary btn--lg">Large</button>
+    </div>
+  </section>
+
+  <section>
+    <p class="stage__label">With icon / icon-only / disabled</p>
+    <div class="stage__row" style="align-items:center;">
+      <button class="btn btn--primary btn--md">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Add place
+      </button>
+      <button class="btn btn--secondary btn--icon btn--md" aria-label="Settings">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.4" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.4 3.6l-1.1 1.1M4.7 11.3l-1.1 1.1M12.4 12.4l-1.1-1.1M4.7 4.7 3.6 3.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+      <button class="btn btn--primary btn--md" disabled>Disabled</button>
+    </div>
+  </section>
+
+  <section>
+    <p class="stage__label">Full width</p>
+    <div class="stage__row">
+      <button class="btn btn--primary btn--md btn--full">Publish map</button>
+    </div>
+  </section>
+</main>
+<script src="component-embed.js"></script>
+</body>
+</html>

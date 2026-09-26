@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Component Kit reference documentation with live previews rendered from standalone component HTML files." name="description"/>
+<title>Component Kit — Reference</title>
+<link href="global.css" rel="stylesheet"/>
+</head>
+<body class="docs-page">
+<header class="docs-topbar">
+<button aria-controls="docs-sidebar" aria-expanded="false" aria-label="Open documentation navigation" class="btn btn--secondary btn--icon btn--sm docs-menu-button" id="docs-menu-button" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path></svg>
+</button>
+<a aria-label="Component Kit home" class="docs-topbar__brand" href="#overview">
+<span aria-hidden="true" class="docs-topbar__mark">CK</span>
+<span class="docs-topbar__name">Component Kit</span>
+<span class="docs-topbar__meta">Reference</span>
+</a>
+<div class="docs-topbar__actions">
+<button aria-label="Toggle color theme" class="btn btn--secondary btn--icon btn--sm" id="theme-button" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M13.1 10.2A5.5 5.5 0 0 1 5.8 2.9 5.5 5.5 0 1 0 13.1 10.2Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.4"></path></svg>
+</button>
+</div>
+</header>
+<div aria-hidden="true" class="docs-overlay" id="docs-overlay"></div>
+<div class="docs-layout">
+<aside aria-label="Documentation navigation" class="docs-sidebar" id="docs-sidebar">
+<nav class="side-nav">
+<div class="side-nav__group">
+<div class="side-nav__label">Start here</div>
+<ul class="side-nav__list">
+<li><a class="side-nav__link" href="#overview">Overview</a></li>
+<li><a class="side-nav__link" href="#documentation-template">Documentation template</a></li>
+</ul>
+</div>
+<div class="side-nav__group">
+<div class="side-nav__label">Foundations</div>
+<ul class="side-nav__list">
+<li class="side-nav__tree" data-nav-tree="">
+<div class="side-nav__row">
+<a class="side-nav__link" href="#tokens">Design tokens</a>
+<button aria-controls="nav-tokens" aria-expanded="true" aria-label="Collapse Design tokens" class="side-nav__toggle" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</button>
+</div>
+<ul class="side-nav__list" id="nav-tokens">
+<li><a class="side-nav__link" href="#spacing">Spacing</a></li>
+<li><a class="side-nav__link" href="#color">Color</a></li>
+<li><a class="side-nav__link" href="#type">Type</a></li>
+<li><a class="side-nav__link" href="#radius">Radius</a></li><li><a class="side-nav__link" href="#controls">Control sizing</a></li></ul>
+</li>
+<li><a class="side-nav__link" href="#shared-primitives">Shared primitives</a></li>
+</ul>
+</div>
+<div class="side-nav__group">
+<div class="side-nav__label">Components</div>
+<ul class="side-nav__list">
+<li class="side-nav__tree" data-nav-tree="">
+<div class="side-nav__row">
+<a class="side-nav__link" href="#map-editor">Map editor</a>
+<button aria-controls="nav-map-editor" aria-expanded="true" aria-label="Collapse Map editor" class="side-nav__toggle" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</button>
+</div>
+<ul class="side-nav__list" id="nav-map-editor">
+<li><a class="side-nav__link" href="#component-color-library">Color + icon library</a></li>
+<li><a class="side-nav__link" href="#component-color-scale">Color scale</a></li>
+<li><a class="side-nav__link" href="#component-place-card">Place card</a></li>
+<li><a class="side-nav__link" href="#component-map-layers">Map layers</a></li>
+<li><a class="side-nav__link" href="#component-button">Button</a></li>
+<li><a class="side-nav__link" href="#component-inputs">Form inputs</a></li>
+
+<li><a class="side-nav__link" href="#component-modal">Modal / dialog</a></li>
+<li><a class="side-nav__link" href="#component-tabs">Tabs</a></li>
+<li><a class="side-nav__link" href="#component-toast">Toast / alert</a></li>
+<li><a class="side-nav__link" href="#component-badge">Badge / chip</a></li>
+<li><a class="side-nav__link" href="#component-tooltip">Tooltip</a></li>
+<li><a class="side-nav__link" href="#component-dropdown">Dropdown / menu</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="side-nav__group">
+<div class="side-nav__label">Authoring</div>
+<ul class="side-nav__list">
+<li><a class="side-nav__link" href="#page-structure">Single-source pattern</a></li>
+<li><a class="side-nav__link" href="#responsive-behavior">Responsive behavior</a></li>
+</ul>
+</div>
+</nav>
+<div class="docs-sidebar__footer">
+      Standalone component files and this documentation page share <code class="code-inline">global.css</code>. Component previews load the standalone HTML files directly.
+    </div>
+</aside>
+<main class="docs-main">
+<div class="docs-content">
+<section class="docs-hero" id="overview">
+<span class="eyebrow">Reference template</span>
+<h1>One component source, shown everywhere.</h1>
+<p class="lede">Every component below is rendered from its dedicated HTML file. Edit <code class="code-inline">place-card.html</code> and the Place Card preview here changes too; edit a token in <code class="code-inline">global.css</code> and both standalone components and this documentation shell update together.</p>
+<div class="docs-hero__actions">
+<a class="btn btn--primary" href="#map-editor">Browse live components</a>
+<a class="btn btn--secondary" href="#tokens">Inspect tokens</a>
+</div>
+<div class="callout">
+<svg aria-hidden="true" class="callout__icon" fill="none" viewbox="0 0 20 20"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"></circle><path d="M10 9v5M10 6.2v.01" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path></svg>
+<div>
+<div class="callout__title">Single source of truth</div>
+<p class="callout__body">The index does not copy component markup. Each preview is the corresponding standalone HTML file in embed mode, while shared visual rules remain in <code class="code-inline">global.css</code>.</p>
+</div>
+</div>
+</section>
+<section class="docs-section" id="documentation-template">
+<header class="docs-section__header">
+<span class="eyebrow">Template</span>
+<h2>Documentation page anatomy</h2>
+<p>The reference template keeps stable deep links on desktop and mobile. Nested navigation can be collapsed without removing the section link itself.</p>
+</header>
+<div class="docs-anatomy">
+<div aria-label="Documentation layout preview" class="docs-preview">
+<div class="docs-preview__frame">
+<div aria-hidden="true" class="docs-preview__nav">
+<div class="docs-preview__nav-line docs-preview__nav-line--active"></div>
+<div class="docs-preview__nav-line"></div>
+<div class="docs-preview__nav-line"></div>
+<div class="docs-preview__nav-line" style="width:72%;"></div>
+<div class="docs-preview__nav-line" style="width:84%;"></div>
+</div>
+<div aria-hidden="true" class="docs-preview__content">
+<div class="docs-preview__eyebrow"></div>
+<div class="docs-preview__title"></div>
+<div class="docs-preview__copy"></div>
+<div class="docs-preview__copy"></div>
+<div class="docs-preview__copy"></div>
+<div class="docs-preview__section"></div>
+</div>
+</div>
+</div>
+<div class="docs-prose">
+<p><strong>Desktop:</strong> sticky left navigation stays visible while the main document scrolls.</p>
+<p><strong>Mobile:</strong> the same navigation becomes an off-canvas drawer.</p>
+<p><strong>Nested sections:</strong> the section label jumps to content while the adjacent chevron only expands or collapses its children.</p>
+<p><strong>Live references:</strong> component examples come from the same HTML files you edit directly.</p>
+</div>
+</div>
+</section>
+<section class="docs-section" data-collapsible-section="" id="tokens">
+<header class="docs-section__header docs-section__header--toggleable">
+<div class="docs-section__heading">
+<span class="eyebrow">Foundations</span>
+<h2>Design tokens</h2>
+<p>Tokens are shared by the documentation shell and every standalone component. The section can collapse without changing its <code class="code-inline">#tokens</code> deep link.</p>
+</div>
+<button aria-controls="tokens-content" aria-expanded="true" aria-label="Collapse Design tokens" class="docs-section__toggle" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</button>
+</header>
+<div class="docs-section__body" id="tokens-content">
+<div class="docs-subsection" id="spacing">
+<header class="docs-subsection__header">
+<h3>Spacing scale</h3>
+<p>The original 12px+ scale remains intact. The audit adds only 2px, 4px, and 8px utility steps for compact controls and panel chrome.</p>
+</header>
+<div class="token-grid"><div class="token-card"><span class="token-card__label">--space-0125</span><span class="token-card__value">2px</span><span class="token-card__sample token-space" style="--token-space:var(--space-0125);"></span></div><div class="token-card"><span class="token-card__label">--space-025</span><span class="token-card__value">4px</span><span class="token-card__sample token-space" style="--token-space:var(--space-025);"></span></div><div class="token-card"><span class="token-card__label">--space-05</span><span class="token-card__value">8px</span><span class="token-card__sample token-space" style="--token-space:var(--space-05);"></span></div><div class="token-card"><span class="token-card__label">--space-1</span><span class="token-card__value">12px</span><span class="token-card__sample token-space" style="--token-space:var(--space-1);"></span></div><div class="token-card"><span class="token-card__label">--space-2</span><span class="token-card__value">24px</span><span class="token-card__sample token-space" style="--token-space:var(--space-2);"></span></div><div class="token-card"><span class="token-card__label">--space-3</span><span class="token-card__value">30px</span><span class="token-card__sample token-space" style="--token-space:var(--space-3);"></span></div><div class="token-card"><span class="token-card__label">--space-4</span><span class="token-card__value">39px</span><span class="token-card__sample token-space" style="--token-space:var(--space-4);"></span></div><div class="token-card"><span class="token-card__label">--space-5</span><span class="token-card__value">63px</span><span class="token-card__sample token-space" style="--token-space:var(--space-5);"></span></div><div class="token-card"><span class="token-card__label">--space-6</span><span class="token-card__value">96px</span><span class="token-card__sample token-space" style="--token-space:var(--space-6);"></span></div></div>
+</div>
+<div class="docs-subsection" id="color">
+<header class="docs-subsection__header">
+<h3>Color</h3>
+<p>Semantic tokens are theme-aware. Toggle the theme in the top bar and the embedded components receive the same theme state.</p>
+</header>
+<div class="token-grid">
+<div class="token-card"><span class="token-card__label">--bg</span><span class="token-card__value">Background</span><span class="token-card__sample color-token" style="--token-color:var(--bg);"></span></div>
+<div class="token-card"><span class="token-card__label">--surface</span><span class="token-card__value">Surface</span><span class="token-card__sample color-token" style="--token-color:var(--surface);"></span></div>
+<div class="token-card"><span class="token-card__label">--text</span><span class="token-card__value">Text</span><span class="token-card__sample color-token" style="--token-color:var(--text);"></span></div>
+<div class="token-card"><span class="token-card__label">--accent</span><span class="token-card__value">Accent</span><span class="token-card__sample color-token" style="--token-color:var(--accent);"></span></div>
+</div>
+</div>
+<div class="docs-subsection" id="type">
+<header class="docs-subsection__header">
+<h3>Type</h3>
+<p>Fluid type tokens scale through the same system used by component labels, titles, controls, and documentation.</p>
+</header>
+<div class="data-table-wrap">
+<table class="data-table">
+<thead><tr><th>Token</th><th>Use</th><th>Sample</th></tr></thead>
+<tbody>
+<tr><td><code class="code-inline">--text-xs</code></td><td>Metadata and compact labels</td><td style="font-size:var(--text-xs);">Reference label</td></tr>
+<tr><td><code class="code-inline">--text-sm</code></td><td>Controls and supporting copy</td><td style="font-size:var(--text-sm);">Supporting copy</td></tr>
+<tr><td><code class="code-inline">--text-base</code></td><td>Body and form content</td><td style="font-size:var(--text-base);">Body content</td></tr>
+<tr><td><code class="code-inline">--text-lg</code></td><td>Component headings</td><td style="font-size:var(--text-lg);">Component heading</td></tr>
+</tbody>
+</table>
+</div>
+</div><div class="docs-subsection" id="radius"><header class="docs-subsection__header"><h3>Radius</h3><p>The token values remain aligned with the original system. The audit makes <code class="code-inline">--radius-sm</code> (6px) the default component radius; 12px is reserved for deliberately larger surfaces.</p></header><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead><tbody><tr><td><code class="code-inline">--radius-sm</code></td><td>6px</td><td>Panels, inputs, buttons, tiles, menus, previews</td></tr><tr><td><code class="code-inline">--radius</code></td><td>12px</td><td>Large surfaces such as modal dialogs</td></tr><tr><td><code class="code-inline">--radius-full</code></td><td>9999px</td><td>Pills, chips, switches, circular controls</td></tr></tbody></table></div></div><div class="docs-subsection" id="controls"><header class="docs-subsection__header"><h3>Control sizing</h3><p>Compact component geometry is tokenized separately from layout spacing, so dense editor inputs can shrink without changing page-level rhythm.</p></header><div class="data-table-wrap"><table class="data-table"><thead><tr><th>Token / utility</th><th>Value</th><th>Use</th></tr></thead><tbody><tr><td><code class="code-inline">--control-height-xs</code> / <code class="code-inline">.input--xs</code></td><td>28px</td><td>Dense numeric/value controls</td></tr><tr><td><code class="code-inline">--control-height-sm</code> / <code class="code-inline">.input--sm</code></td><td>32px</td><td>Hex, opacity, compact editor fields</td></tr><tr><td><code class="code-inline">--control-height-md</code></td><td>36px</td><td>Default text/select controls</td></tr><tr><td><code class="code-inline">--control-width-hex</code> / <code class="code-inline">.input--hex</code></td><td>88px</td><td>Hex values</td></tr><tr><td><code class="code-inline">--control-width-compact</code> / <code class="code-inline">.input--compact</code></td><td>56px</td><td>Opacity, line weight, short numeric values</td></tr></tbody></table></div></div>
+</div>
+</section>
+<section class="docs-section" id="shared-primitives">
+<header class="docs-section__header">
+<span class="eyebrow">Foundations</span>
+<h2>Shared primitives</h2>
+<p>Buttons, panels, navigation, documentation utilities, and preview framing are defined globally so component pages do not need to duplicate those rules.</p>
+</header>
+<div class="data-table-wrap">
+<table class="data-table">
+<thead><tr><th>Primitive</th><th>Purpose</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td><code class="code-inline">.btn</code></td><td>Actions and icon buttons</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.panel</code></td><td>Cards, dialogs, dropdowns, editor surfaces</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.side-nav</code></td><td>Nested reference navigation</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.component-preview</code></td><td>Live standalone-file preview frame</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.input / .select / .textarea</code></td><td>Shared form geometry and compact size utilities</td><td><code class="code-inline">global.css</code></td></tr></tbody>
+</table>
+</div>
+</section>
+<section class="docs-section" data-collapsible-section="" id="map-editor">
+<header class="docs-section__header docs-section__header--toggleable">
+<div class="docs-section__heading">
+<span class="eyebrow">Components</span>
+<h2>Map editor</h2>
+<p>Every component is shown here from its standalone HTML file. The nested navigation links directly to each preview, and the filename beside each preview opens that same source as a standalone page.</p>
+</div>
+<button aria-controls="map-editor-content" aria-expanded="true" aria-label="Collapse Map editor" class="docs-section__toggle" type="button">
+<svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</button>
+</header>
+<div class="docs-section__body" id="map-editor-content">
+<div class="component-source-note">
+<span aria-hidden="true">↳</span>
+<p><strong>Edit the source file, not this index.</strong> For example, change <code class="code-inline">place-card.html</code> and reload this page; the Place Card preview below is that exact file.</p>
+</div>
+<article class="docs-subsection component-reference" id="component-color-scale">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Color Scale</h3><p class="component-reference__description">Perceptual OKLab brand→data scales. Paste hex, extract from images, click swatches into the palette, preview bars and choropleths.</p></div>
+<a aria-label="Open color-scale.html as a standalone page" class="component-reference__source" href="color-scale.html"><span>color-scale.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="color-scale.html?embed=1" title="Color Scale live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-color-library">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Color + Icon Library</h3><p class="component-reference__description">Picker field, swatch grid, search, icon tiles, and joined value inputs.</p></div>
+<a aria-label="Open color-library.html as a standalone page" class="component-reference__source" href="color-library.html"><span>color-library.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="color-library.html?embed=1" title="Color + Icon Library live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-place-card">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Place Card</h3><p class="component-reference__description">Icon trigger, name, description, and shared panel anatomy.</p></div>
+<a aria-label="Open place-card.html as a standalone page" class="component-reference__source" href="place-card.html"><span>place-card.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="place-card.html?embed=1" title="Place Card live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-map-layers">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Editor panel</span><h3 class="component-reference__title">Map Layers</h3><p class="component-reference__description">Draggable rows, fill and border combos, pattern selection, and layer controls.</p></div>
+<a aria-label="Open map-layers.html as a standalone page" class="component-reference__source" href="map-layers.html"><span>map-layers.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="map-layers.html?embed=1" title="Map Layers live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-button">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Action</span><h3 class="component-reference__title">Button</h3><p class="component-reference__description">Primary, secondary, ghost, danger, link, icon, disabled, and size variants.</p></div>
+<a aria-label="Open button.html as a standalone page" class="component-reference__source" href="button.html"><span>button.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="button.html?embed=1" title="Button live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-inputs">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Form</span><h3 class="component-reference__title">Form Inputs</h3><p class="component-reference__description">Text, select, textarea, checkbox, radio, switch, help, and error states.</p></div>
+<a aria-label="Open inputs.html as a standalone page" class="component-reference__source" href="inputs.html"><span>inputs.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="inputs.html?embed=1" title="Form Inputs live component reference"></iframe></div>
+</article>
+
+<article class="docs-subsection component-reference" id="component-modal">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Overlay</span><h3 class="component-reference__title">Modal / Dialog</h3><p class="component-reference__description">Confirm and form dialog examples built on the shared panel shell.</p></div>
+<a aria-label="Open modal.html as a standalone page" class="component-reference__source" href="modal.html"><span>modal.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="modal.html?embed=1" title="Modal / Dialog live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-tabs">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Navigation</span><h3 class="component-reference__title">Tabs</h3><p class="component-reference__description">Underline and pill tab treatments with interactive states.</p></div>
+<a aria-label="Open tabs.html as a standalone page" class="component-reference__source" href="tabs.html"><span>tabs.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="tabs.html?embed=1" title="Tabs live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-toast">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Feedback</span><h3 class="component-reference__title">Toast / Alert</h3><p class="component-reference__description">Inline banners and transient floating feedback.</p></div>
+<a aria-label="Open toast.html as a standalone page" class="component-reference__source" href="toast.html"><span>toast.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="toast.html?embed=1" title="Toast / Alert live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-badge">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Status</span><h3 class="component-reference__title">Badge / Chip</h3><p class="component-reference__description">Statuses, counts, filter chips, swatches, and removable values.</p></div>
+<a aria-label="Open badge.html as a standalone page" class="component-reference__source" href="badge.html"><span>badge.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="badge.html?embed=1" title="Badge / Chip live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-tooltip">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Disclosure</span><h3 class="component-reference__title">Tooltip</h3><p class="component-reference__description">Hover and focus helper text for compact actions.</p></div>
+<a aria-label="Open tooltip.html as a standalone page" class="component-reference__source" href="tooltip.html"><span>tooltip.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="tooltip.html?embed=1" title="Tooltip live component reference"></iframe></div>
+</article>
+<article class="docs-subsection component-reference" id="component-dropdown">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Menu</span><h3 class="component-reference__title">Dropdown / Menu</h3><p class="component-reference__description">Sort and overflow action menus using the shared popover panel.</p></div>
+<a aria-label="Open dropdown.html as a standalone page" class="component-reference__source" href="dropdown.html"><span>dropdown.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="dropdown.html?embed=1" title="Dropdown / Menu live component reference"></iframe></div>
+</article>
+</div>
+</section>
+<section class="docs-section" id="page-structure">
+<header class="docs-section__header">
+<span class="eyebrow">Authoring</span>
+<h2>Single-source component pattern</h2>
+<p>Keep each component editable as a normal HTML file. The index references it instead of duplicating its markup.</p>
+</header>
+<pre class="code-block"><code>&lt;!-- place-card.html: edit this file directly --&gt;
+&lt;link rel="stylesheet" href="global.css"&gt;
+...
+&lt;script src="component-embed.js"&gt;&lt;/script&gt;
+
+&lt;!-- index.html: render that same source file --&gt;
+&lt;iframe
+  class="component-preview"
+  src="place-card.html?embed=1"
+  title="Place Card live component reference"&gt;
+&lt;/iframe&gt;</code></pre>
+<div class="docs-prose">
+<p><code class="code-inline">component-embed.js</code> only changes presentation when the file is embedded: it hides demo-page chrome, reports its content height to the index, and receives the documentation theme. It does not contain component markup.</p>
+</div>
+</section>
+<section class="docs-section" id="responsive-behavior">
+<header class="docs-section__header">
+<span class="eyebrow">Authoring</span>
+<h2>Responsive behavior</h2>
+<p>The information architecture remains the same across breakpoints, including every component anchor.</p>
+</header>
+<div class="docs-prose">
+<ul>
+<li>Desktop keeps the navigation sticky and independently scrollable.</li>
+<li>Below 860px, navigation becomes an off-canvas drawer with overlay and Escape-key support.</li>
+<li>Nested navigation trees can collapse independently from the content sections they link to.</li>
+<li>Design Tokens and Map editor can also collapse in the document; following a deep link reopens the relevant section automatically.</li>
+<li>Component iframes resize to their own content to avoid nested scrolling.</li>
+</ul>
+</div>
+</section>
+</div>
+</main>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var menuButton = document.getElementById('docs-menu-button');
+  var overlay = document.getElementById('docs-overlay');
+  var themeButton = document.getElementById('theme-button');
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.side-nav__link[href^="#"]'));
+  var frames = Array.prototype.slice.call(document.querySelectorAll('.component-preview'));
+
+  function setNav(open) {
+    root.dataset.navOpen = open ? 'true' : 'false';
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Close documentation navigation' : 'Open documentation navigation');
+  }
+
+  function setTree(toggle, open) {
+    var list = document.getElementById(toggle.getAttribute('aria-controls'));
+    if (!list) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', (open ? 'Collapse ' : 'Expand ') + toggle.closest('[data-nav-tree]').querySelector('.side-nav__link').textContent.trim());
+    list.hidden = !open;
+  }
+
+  function setSection(section, open) {
+    var toggle = section.querySelector(':scope > .docs-section__header .docs-section__toggle');
+    if (!toggle) return;
+    var body = document.getElementById(toggle.getAttribute('aria-controls'));
+    if (!body) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', (open ? 'Collapse ' : 'Expand ') + section.querySelector('h2').textContent.trim());
+    body.hidden = !open;
+  }
+
+  function revealHashTarget() {
+    if (!window.location.hash) return;
+    var target = document.querySelector(window.location.hash);
+    if (!target) return;
+    var collapsible = target.closest('[data-collapsible-section]');
+    if (collapsible) setSection(collapsible, true);
+
+    var activeLink = document.querySelector('.side-nav__link[href="' + window.location.hash + '"]');
+    if (activeLink) {
+      var tree = activeLink.closest('[data-nav-tree]');
+      if (tree) {
+        var toggle = tree.querySelector(':scope > .side-nav__row .side-nav__toggle');
+        if (toggle) setTree(toggle, true);
+      }
+    }
+  }
+
+  function currentTheme() {
+    return root.dataset.theme === 'dark' ? 'dark' : '';
+  }
+
+  function syncFrameTheme(frame) {
+    if (!frame.contentWindow) return;
+    frame.contentWindow.postMessage({ type: 'component-kit:theme', theme: currentTheme() }, '*');
+  }
+
+  function syncAllFrameThemes() {
+    frames.forEach(syncFrameTheme);
+  }
+
+  menuButton.addEventListener('click', function () {
+    setNav(root.dataset.navOpen !== 'true');
+  });
+  overlay.addEventListener('click', function () { setNav(false); });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') setNav(false);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.side-nav__toggle'), function (toggle) {
+    toggle.addEventListener('click', function () {
+      setTree(toggle, toggle.getAttribute('aria-expanded') !== 'true');
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-collapsible-section]'), function (section) {
+    var toggle = section.querySelector(':scope > .docs-section__header .docs-section__toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function () {
+      setSection(section, toggle.getAttribute('aria-expanded') !== 'true');
+    });
+  });
+
+  navLinks.forEach(function (link) {
+    link.addEventListener('click', function () {
+      var target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        var collapsible = target.closest('[data-collapsible-section]');
+        if (collapsible) setSection(collapsible, true);
+      }
+      setNav(false);
+    });
+  });
+
+  themeButton.addEventListener('click', function () {
+    if (root.dataset.theme === 'dark') root.removeAttribute('data-theme');
+    else root.dataset.theme = 'dark';
+    try { localStorage.setItem('component-kit-theme', currentTheme()); } catch (e) {}
+    syncAllFrameThemes();
+  });
+
+  try {
+    if (localStorage.getItem('component-kit-theme') === 'dark') root.dataset.theme = 'dark';
+  } catch (e) {}
+
+  frames.forEach(function (frame) {
+    frame.addEventListener('load', function () { syncFrameTheme(frame); });
+  });
+
+  window.addEventListener('message', function (event) {
+    var data = event.data || {};
+    if (data.type !== 'component-kit:resize' || !Number.isFinite(data.height)) return;
+    frames.forEach(function (frame) {
+      if (frame.contentWindow === event.source) {
+        frame.style.height = Math.max(120, data.height) + 'px';
+      }
+    });
+  });
+
+  function updateCurrent() {
+    var visible = navLinks.map(function (link) {
+      return { link: link, section: document.querySelector(link.getAttribute('href')) };
+    }).filter(function (item) {
+      return item.section && item.section.offsetParent !== null;
+    });
+    if (!visible.length) return;
+
+    var target = visible[0].section;
+    var threshold = 112;
+    visible.forEach(function (item) {
+      if (item.section.getBoundingClientRect().top <= threshold) target = item.section;
+    });
+
+    navLinks.forEach(function (link) {
+      if (target && link.getAttribute('href') === '#' + target.id) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
+  revealHashTarget();
+  syncAllFrameThemes();
+  updateCurrent();
+
+  window.addEventListener('hashchange', function () {
+    revealHashTarget();
+    window.setTimeout(updateCurrent, 0);
+  });
+  document.addEventListener('scroll', updateCurrent, { passive: true });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 860) setNav(false);
+    updateCurrent();
+  });
+})();
+</script>
+</body>
+</html>
