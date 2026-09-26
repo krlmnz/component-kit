@@ -21,20 +21,28 @@
   --radius-sm:    6px;
   --radius-full: 9999px;
 
-  /* Core color tokens stay aligned with the original palette. */
+  /* Color. *-text tokens are the AA label colors (11–12px). Fills are
+     button backgrounds, icons, and tint sources. Soft/wash mixes are
+     opaque so badge and alert contrast does not depend on the parent. */
   --bg:        #FAFAFA;   --surface:   #FFFFFF;
   --surface-2: #F2F2F2;
-  --text:      #111416;   --text-2:    #6B7280;
-  --border:    #E5E5E5;   --accent:    #2592C2;
-  --accent-hover: #1F7FAB;
+  --text:      #111416;   --text-2:    #666D7B;
+  --border:    #8A8A8C;   --accent:    #1A7EAA;
+  --accent-hover: #18749C;
   --accent-text:  #1B6E96;
   --on-accent:    #FFFFFF;
-  --accent-soft:  color-mix(in srgb, var(--accent) 12%, transparent);
-  --accent-wash:  color-mix(in srgb, var(--accent) 6%, transparent);
+  --accent-soft:  color-mix(in srgb, var(--accent) 12%, var(--surface));
+  --accent-wash:  color-mix(in srgb, var(--accent) 6%, var(--surface));
 
   --success: #00A470;
+  --success-text: #0E7850;
+  --success-soft: color-mix(in srgb, var(--success) 14%, var(--surface));
+  --success-wash: color-mix(in srgb, var(--success) 8%, var(--surface));
   --warn:    #F89B17;
-  --error:   #E5484D;
+  --warn-text: #9F5A03;
+  --warn-soft: color-mix(in srgb, var(--warn) 16%, var(--surface));
+  --warn-wash: color-mix(in srgb, var(--warn) 10%, var(--surface));
+  --error:   #DA3540;
   --error-text: #C62A42;
   --error-soft: #FFECEC;
 
@@ -56,7 +64,7 @@
   --control-width-compact: 56px;
   --textarea-min-height: 80px;
 
-  --focus-ring: 0 0 0 3px var(--accent-soft);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
   --error-ring: 0 0 0 3px var(--error-soft);
   --selected-ring: 0 0 0 1px var(--accent);
 
@@ -69,10 +77,19 @@
   --bg:      #111416;  --surface:  #1C1F22;
   --surface-2: #24272B;
   --text:    #FFFFFF;  --text-2:   #9CA3AF;
-  --border:  #434547;
-  --accent-text: #69C4EA;
-  --error-text: #FF8B91;
-  --error-soft: #3A1E20;
+  --border:  #6E7271;
+  /* Fills are restated so dark mode does not silently keep a light-only value. */
+  --accent:       #1A7EAA;
+  --accent-hover: #177A9E;
+  --on-accent:    #FFFFFF;
+  --accent-text:  #2399DC;
+  --success:      #00A470;
+  --success-text: #14AA75;
+  --warn:         #F89B17;
+  --warn-text:    #F89B17;
+  --error:        #DA3540;
+  --error-text:   #FF8B91;
+  --error-soft:   #3A1E20;
   --shadow:      0 1px 3px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.28);
   --shadow-pop:  0 8px 32px rgba(0,0,0,.5), 0 2px 8px rgba(0,0,0,.3);
 }
@@ -93,7 +110,12 @@ body {
 
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; background: none; border: none; }
-a { color: var(--accent-text); }
+a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
 svg { display: block; }
 
 /* ── Layout scaffold (for kit demo pages only) ────────────────────── */
@@ -154,6 +176,7 @@ svg { display: block; }
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
+  text-decoration: none;
   transition: background var(--duration-fast) var(--ease),
               border-color var(--duration-fast) var(--ease),
               color var(--duration-fast) var(--ease),
@@ -177,7 +200,14 @@ svg { display: block; }
 .btn--ghost:hover:not(:disabled) { background: var(--surface-2); }
 .btn--danger { background: var(--error); border-color: var(--error); color: var(--on-accent); }
 .btn--danger:hover:not(:disabled) { filter: brightness(.92); }
-.btn--link { background: transparent; border-color: transparent; color: var(--accent-text); padding-inline: var(--space-025); }
+.btn--link {
+  background: transparent;
+  border-color: transparent;
+  color: var(--accent-text);
+  padding-inline: var(--space-025);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
 .btn--link:hover:not(:disabled) { background: transparent; text-decoration: underline; }
 .btn--icon { padding: var(--space-05); aspect-ratio: 1; }
 .btn--icon.btn--sm { padding: var(--space-025); }

@@ -44,7 +44,7 @@
     padding: 0 var(--space-05); font: inherit; font-size: var(--text-sm);
   }
   .cs-add input:focus-visible { outline: none; border-color: var(--accent); box-shadow: var(--focus-ring); }
-  .cs-add input.is-err { border-color: #FF4E4F; }
+  .cs-add input.is-err { border-color: var(--error); }
 
   .cs-upload {
     position: relative; display: flex; align-items: center; gap: var(--space-05);
@@ -57,7 +57,7 @@
     border-color: var(--accent); background: var(--accent-wash); color: var(--accent-text);
   }
   .cs-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-  .cs-upload.is-err { color: #FF4E4F; border-color: #FF4E4F; }
+  .cs-upload.is-err { color: var(--error-text); border-color: var(--error); }
 
   .cs-toolbar {
     display: flex; align-items: center; justify-content: space-between; gap: var(--space-05);
@@ -188,7 +188,7 @@
           <p class="cs-helper">Paste hex, upload an image, or click a scale swatch to pull it into this palette.</p>
           <div class="cs-palette" id="csPalette"></div>
           <div class="cs-add">
-            <input id="csHexInput" type="text" placeholder="#2592C2 or rgb()" autocomplete="off" spellcheck="false" aria-label="Add color">
+            <input id="csHexInput" type="text" placeholder="#1A7EAA or rgb()" autocomplete="off" spellcheck="false" aria-label="Add color">
             <button class="btn btn--secondary btn--sm" type="button" id="csHexAdd">Add</button>
           </div>
           <div class="cs-upload" id="csUpload">
