@@ -1225,7 +1225,8 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 }
 .icon-picker-trigger--empty {
   border-style: dashed;
-  background: var(--surface-2);
+  border-color: var(--text-2);
+  background: var(--surface);
   color: var(--text-2);
 }
 .icon-picker-trigger svg { width: 28px; height: 28px; }
