@@ -7,35 +7,78 @@
 <link rel="stylesheet" href="global.css">
 <style>
 
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(17, 20, 22, .45);
-    display: flex; align-items: center; justify-content: center;
-    padding: var(--space-2);
-    z-index: 200;
-    opacity: 0; pointer-events: none;
-    transition: opacity var(--duration) var(--ease);
+  /* Native <dialog> stays out of the a11y tree until showModal().
+     Do not set display on .modal except under [open] — an unconditional
+     display value overrides the UA closed state and puts the dialog back. */
+  .modal {
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
   }
-  .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+  .modal:not([open]) { display: none; }
+  .modal[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2);
+    overflow: auto;
+  }
+  .modal::backdrop { background: rgba(17, 20, 22, .45); }
 
-  .modal-overlay .panel {
+  .modal[open]::backdrop { animation: modal-fade var(--duration) var(--ease); }
+  .modal[open] .panel { animation: modal-panel-in var(--duration) var(--ease); }
+  @keyframes modal-fade { from { opacity: 0; } }
+  @keyframes modal-panel-in {
+    from { opacity: 0; transform: translateY(var(--space-05)) scale(.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .modal[open]::backdrop,
+    .modal[open] .panel { animation: none; }
+  }
+
+  .modal .panel {
     width: 100%; max-width: 420px;
     border-radius: var(--radius);
-    transform: translateY(var(--space-05)) scale(.98);
-    opacity: 0;
-    transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
   }
-  .modal-overlay.is-open .panel { transform: translateY(0) scale(1); opacity: 1; }
 
   .modal-demo-card {
     display: flex; flex-direction: column; gap: var(--space-1);
     max-width: 260px;
   }
+  .modal-field {
+    display: flex; flex-direction: column; gap: var(--space-05);
+    font-size: var(--text-sm);
+  }
+  .modal-field__label { font-weight: 600; }
+  .modal-field__input {
+    font-size: var(--text-base);
+    padding: var(--space-05) var(--space-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .modal-field__input:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: var(--focus-ring);
+  }
+  .modal-copy {
+    font-size: var(--text-sm);
+    color: var(--text-2);
+  }
 </style>
 </head>
 <body>
 <header class="theme-toggle">
-  <button class="btn btn--secondary" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
+  <button class="btn btn--secondary" type="button" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
 </header>
 
 <main class="stage">
@@ -44,63 +87,122 @@
 
   <div class="stage__row">
     <div class="modal-demo-card">
-      <button class="btn btn--primary" onclick="document.getElementById('modal-confirm').classList.add('is-open')">Open confirm dialog</button>
+      <button class="btn btn--primary" type="button" data-dialog-open="modal-confirm">Open confirm dialog</button>
     </div>
     <div class="modal-demo-card">
-      <button class="btn btn--secondary" onclick="document.getElementById('modal-form').classList.add('is-open')">Open form dialog</button>
+      <button class="btn btn--secondary" type="button" data-dialog-open="modal-form">Open form dialog</button>
     </div>
   </div>
-
-  <!-- Confirm / destructive modal -->
-  <div class="modal-overlay" id="modal-confirm" onclick="if(event.target===this) this.classList.remove('is-open')">
-    <section class="panel panel--pop" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title">
-      <header class="panel__header">
-        <div class="panel__heading">
-          <h2 class="panel__title" id="modal-confirm-title">Delete this map?</h2>
-          <p class="panel__subtitle">This can't be undone</p>
-        </div>
-        <div class="panel__actions">
-          <button class="icon-btn" aria-label="Close" onclick="document.getElementById('modal-confirm').classList.remove('is-open')">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-      </header>
-      <div class="panel__body">
-        <p style="font-size: var(--text-sm); color: var(--text-2);">"Chile 2026" and its 14 pins will be permanently removed for you and any guests with the link.</p>
-      </div>
-      <footer class="panel__footer">
-        <button class="btn btn--secondary" onclick="document.getElementById('modal-confirm').classList.remove('is-open')">Cancel</button>
-        <button class="btn btn--danger" onclick="document.getElementById('modal-confirm').classList.remove('is-open')">Delete map</button>
-      </footer>
-    </section>
-  </div>
-
-  <!-- Form modal -->
-  <div class="modal-overlay" id="modal-form" onclick="if(event.target===this) this.classList.remove('is-open')">
-    <section class="panel panel--pop" role="dialog" aria-modal="true" aria-labelledby="modal-form-title">
-      <header class="panel__header">
-        <div class="panel__heading">
-          <h2 class="panel__title" id="modal-form-title">Invite a guest</h2>
-        </div>
-        <div class="panel__actions">
-          <button class="icon-btn" aria-label="Close" onclick="document.getElementById('modal-form').classList.remove('is-open')">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-      </header>
-      <div class="panel__body" style="display:flex; flex-direction:column; gap: var(--space-1);">
-        <label style="display:flex; flex-direction:column; gap:var(--space-05); font-size: var(--text-sm);">
-          <span style="font-weight:600;">Email address</span>
-          <input type="email" placeholder="friend@email.com" style="font-size: var(--text-base); padding: var(--space-05) var(--space-1); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text);">
-        </label>
-      </div>
-      <footer class="panel__footer">
-        <button class="btn btn--secondary" onclick="document.getElementById('modal-form').classList.remove('is-open')">Cancel</button>
-        <button class="btn btn--primary" onclick="document.getElementById('modal-form').classList.remove('is-open')">Send invite</button>
-      </footer>
-    </section>
-  </div>
 </main>
+
+<dialog class="modal" id="modal-confirm" aria-labelledby="modal-confirm-title" aria-describedby="modal-confirm-note modal-confirm-desc">
+  <section class="panel panel--pop">
+    <header class="panel__header">
+      <div class="panel__heading">
+        <h2 class="panel__title" id="modal-confirm-title">Delete this map?</h2>
+        <p class="panel__subtitle" id="modal-confirm-note">This can't be undone</p>
+      </div>
+      <div class="panel__actions">
+        <button class="icon-btn" type="button" aria-label="Close" data-dialog-close>
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="panel__body">
+      <p class="modal-copy" id="modal-confirm-desc">"Chile 2026" and its 14 pins will be permanently removed for you and any guests with the link.</p>
+    </div>
+    <footer class="panel__footer">
+      <button class="btn btn--secondary" type="button" data-dialog-close autofocus>Cancel</button>
+      <button class="btn btn--danger" type="button" data-dialog-close>Delete map</button>
+    </footer>
+  </section>
+</dialog>
+
+<dialog class="modal" id="modal-form" aria-labelledby="modal-form-title">
+  <section class="panel panel--pop">
+    <header class="panel__header">
+      <div class="panel__heading">
+        <h2 class="panel__title" id="modal-form-title">Invite a guest</h2>
+      </div>
+      <div class="panel__actions">
+        <button class="icon-btn" type="button" aria-label="Close" data-dialog-close>
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="panel__body" style="display:flex; flex-direction:column; gap: var(--space-1);">
+      <label class="modal-field" for="modal-form-email">
+        <span class="modal-field__label">Email address</span>
+        <input class="modal-field__input" id="modal-form-email" type="email" placeholder="friend@email.com" autocomplete="email" autofocus>
+      </label>
+    </div>
+    <footer class="panel__footer">
+      <button class="btn btn--secondary" type="button" data-dialog-close>Cancel</button>
+      <button class="btn btn--primary" type="button" data-dialog-close>Send invite</button>
+    </footer>
+  </section>
+</dialog>
+
+<script>
+(function () {
+  var openers = new WeakMap();
+
+  function tabbable(container) {
+    return Array.prototype.filter.call(container.querySelectorAll('a[href], button, input, select, textarea, [tabindex]'), function (el) {
+      if (el.disabled || el.tabIndex < 0 || el.closest('[hidden]')) return false;
+      var style = window.getComputedStyle(el);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    });
+  }
+
+  function openDialog(dialog, opener) {
+    if (!dialog || dialog.open || typeof dialog.showModal !== 'function') return;
+    openers.set(dialog, opener || document.activeElement);
+    dialog.showModal();
+  }
+
+  document.addEventListener('click', function (event) {
+    var opener = event.target.closest('[data-dialog-open]');
+    if (opener) {
+      openDialog(document.getElementById(opener.getAttribute('data-dialog-open')), opener);
+      return;
+    }
+    var closer = event.target.closest('[data-dialog-close]');
+    if (closer) {
+      var dialog = closer.closest('dialog');
+      if (dialog) dialog.close();
+    }
+  });
+
+  document.querySelectorAll('dialog.modal').forEach(function (dialog) {
+    dialog.addEventListener('click', function (event) {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', function (event) {
+      if (event.key !== 'Tab') return;
+      var items = tabbable(dialog);
+      if (!items.length) {
+        event.preventDefault();
+        return;
+      }
+      var first = items[0];
+      var last = items[items.length - 1];
+      var active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialog.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+    dialog.addEventListener('close', function () {
+      var opener = openers.get(dialog);
+      if (opener && opener.isConnected) opener.focus();
+    });
+  });
+})();
+</script>
 <script src="component-embed.js"></script>
 </body>
 </html>

@@ -21,17 +21,25 @@
   .cs-pal {
     position: relative; width: 28px; height: 28px; border-radius: var(--radius-sm);
     border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
-    cursor: pointer; flex-shrink: 0;
+    flex-shrink: 0;
   }
   .cs-pal:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+  .cs-pal__copy {
+    position: absolute; inset: 0; padding: 0;
+    border-radius: inherit; background: transparent;
+  }
   .cs-pal__x {
-    display: none; position: absolute; top: -6px; right: -6px;
-    width: 14px; height: 14px; border-radius: 50%;
+    display: inline-flex; position: absolute; top: -6px; right: -6px; z-index: 1;
+    width: 14px; height: 14px; padding: 0; border-radius: 50%;
     background: var(--text); color: var(--surface); border: none;
     font-size: 8px; font-weight: 800; line-height: 1; cursor: pointer;
     align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
   }
-  .cs-pal:hover .cs-pal__x { display: inline-flex; }
+  .cs-pal:hover .cs-pal__x,
+  .cs-pal:focus-within .cs-pal__x {
+    opacity: 1; pointer-events: auto;
+  }
   .cs-empty { font-size: var(--text-xs); color: var(--text-2); font-style: italic; }
 
   .cs-add {
@@ -53,9 +61,10 @@
     color: var(--text-2); font-size: var(--text-sm); font-weight: 500;
     cursor: pointer;
   }
-  .cs-upload:hover, .cs-upload.is-drag {
+  .cs-upload:hover, .cs-upload.is-drag, .cs-upload:focus-within {
     border-color: var(--accent); background: var(--accent-wash); color: var(--accent-text);
   }
+  .cs-upload:focus-within { box-shadow: var(--focus-ring); }
   .cs-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .cs-upload.is-err { color: var(--error-text); border-color: var(--error); }
 
@@ -129,6 +138,7 @@
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: var(--space-1); box-shadow: var(--shadow-pop);
   }
+  .cs-pop[hidden] { display: none; }
   .cs-pop.is-open { display: block; }
   .cs-pop__title {
     font-size: var(--text-xs); font-weight: 700; color: var(--text-2);
@@ -191,11 +201,11 @@
             <input id="csHexInput" type="text" placeholder="#1A7EAA or rgb()" autocomplete="off" spellcheck="false" aria-label="Add color">
             <button class="btn btn--secondary btn--sm" type="button" id="csHexAdd">Add</button>
           </div>
-          <div class="cs-upload" id="csUpload">
-            <input type="file" id="csFile" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml">
+          <label class="cs-upload" id="csUpload">
+            <input type="file" id="csFile" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml" aria-labelledby="csUploadText">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 11V3M8 3 5 6M8 3l3 3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span id="csUploadText">Upload image to extract</span>
-          </div>
+          </label>
         </div>
 
         <div class="cs-toolbar">
@@ -209,7 +219,7 @@
   </div>
 </main>
 
-<div class="cs-pop" id="csPop" role="dialog" aria-label="Choose color">
+<div class="cs-pop" id="csPop" role="dialog" aria-label="Choose color" hidden>
   <div class="cs-pop__title">Choose color</div>
   <div class="cs-pop__specials">
     <button type="button" class="cs-pop__spec" data-hex="#FFFFFF"><span class="cs-pop__spec-swatch" style="background:#fff"></span><span class="cs-pop__spec-label">White</span></button>
@@ -391,9 +401,10 @@
       return;
     }
     grid.innerHTML = globals.map(h => `
-      <button type="button" class="cs-pal" style="background:${h}" title="${h} — click to copy" data-hex="${h}">
-        <span class="cs-pal__x" data-remove="${h}" aria-label="Remove">✕</span>
-      </button>`).join("");
+      <span class="cs-pal" style="background:${h}">
+        <button type="button" class="cs-pal__copy" data-hex="${h}" aria-label="Copy ${h}" title="${h} — click to copy"></button>
+        <button type="button" class="cs-pal__x" data-remove="${h}" aria-label="Remove ${h}">✕</button>
+      </span>`).join("");
   }
 
   function cardHTML(sc) {
@@ -404,8 +415,8 @@
     const colors = getSteps(sc);
     const swatches = colors.map(hex => `
       <div class="cs-step">
-        <button type="button" class="cs-swatch" style="background:${hex}" title="${hex} — add to palette" data-add="${hex}">
-          <span class="cs-swatch__flash">+</span>
+        <button type="button" class="cs-swatch" style="background:${hex}" title="${hex} — add to palette" data-add="${hex}" aria-label="Add ${hex} to palette">
+          <span class="cs-swatch__flash" aria-hidden="true">+</span>
         </button>
         <div class="cs-hex">${hex}</div>
       </div>`).join("");
@@ -413,9 +424,9 @@
       <div class="cs-card__top">
         <div class="cs-card__ends">
           <span>From</span>
-          <button type="button" class="cs-dot" style="background:${sc.colorA}" data-dot="${sc.id}" data-end="A" title="${sc.colorA}"></button>
+          <button type="button" class="cs-dot" style="background:${sc.colorA}" data-dot="${sc.id}" data-end="A" title="${sc.colorA}" aria-label="From color ${sc.colorA}"></button>
           <span>→</span>
-          <button type="button" class="cs-dot" style="background:${sc.colorB}" data-dot="${sc.id}" data-end="B" title="${sc.colorB}"></button>
+          <button type="button" class="cs-dot" style="background:${sc.colorB}" data-dot="${sc.id}" data-end="B" title="${sc.colorB}" aria-label="To color ${sc.colorB}"></button>
         </div>
         <div style="display:flex;align-items:center;gap:4px;">
           <div class="cs-steps">
@@ -465,15 +476,15 @@
           : scales.find(s => s.id === popCtx.id)?.colorB)
       : null;
     document.getElementById("csPopGrid").innerHTML = globals.map(h =>
-      `<button type="button" class="cs-pop__cell${h === active ? " is-selected" : ""}" style="background:${h}" data-pick="${h}" title="${h}"></button>`
+      `<button type="button" class="cs-pop__cell${h === active ? " is-selected" : ""}" style="background:${h}" data-pick="${h}" title="${h}" aria-label="${h}"></button>`
     ).join("");
   }
   function openPop(id, end, el) {
     const pop = document.getElementById("csPop");
     if (pop.classList.contains("is-open") && popCtx && popCtx.id === id && popCtx.end === end) {
-      closePop(); return;
+      closePop(true); return;
     }
-    popCtx = { id, end };
+    popCtx = { id, end, opener: el };
     renderPopGrid();
     const rect = el.getBoundingClientRect();
     const popW = 180, popH = 200;
@@ -482,19 +493,30 @@
     if (top + popH > window.innerHeight - 8) top = rect.top - popH - 6;
     pop.style.left = Math.max(8, left) + "px";
     pop.style.top = Math.max(8, top) + "px";
+    pop.hidden = false;
     pop.classList.add("is-open");
+    const first = pop.querySelector("button");
+    if (first) first.focus();
   }
-  function closePop() {
-    document.getElementById("csPop").classList.remove("is-open");
+  function closePop(restore) {
+    const pop = document.getElementById("csPop");
+    const opener = popCtx && popCtx.opener;
+    pop.classList.remove("is-open");
+    pop.hidden = true;
     popCtx = null;
+    if (restore && opener && opener.isConnected) opener.focus();
   }
   function pickColor(hex) {
     if (!popCtx) return;
     const sc = scales.find(s => s.id === popCtx.id);
+    const id = popCtx.id;
+    const end = popCtx.end;
     if (!sc) return;
-    if (popCtx.end === "A") sc.colorA = hex; else sc.colorB = hex;
-    closePop();
+    if (end === "A") sc.colorA = hex; else sc.colorB = hex;
+    closePop(false);
     renderScales();
+    const dot = document.querySelector(`.cs-dot[data-dot="${id}"][data-end="${end}"]`);
+    if (dot) dot.focus();
   }
 
   async function extractColors(file) {
@@ -555,8 +577,12 @@
     const parts = inp.value.split(/[\s,;]+/).filter(Boolean);
     let added = 0;
     parts.forEach(p => { const h = parseColor(p); if (h) { addGlobal(h); added++; } });
-    if (added) { inp.value = ""; inp.classList.remove("is-err"); }
-    else { inp.classList.add("is-err"); setTimeout(() => inp.classList.remove("is-err"), 900); }
+    if (added) { inp.value = ""; inp.classList.remove("is-err"); inp.removeAttribute("aria-invalid"); }
+    else {
+      inp.classList.add("is-err");
+      inp.setAttribute("aria-invalid", "true");
+      setTimeout(() => { inp.classList.remove("is-err"); inp.removeAttribute("aria-invalid"); }, 900);
+    }
   }
   document.getElementById("csHexAdd").addEventListener("click", tryAddHex);
   document.getElementById("csHexInput").addEventListener("keydown", e => {
@@ -565,8 +591,8 @@
 
   document.getElementById("csPalette").addEventListener("click", e => {
     const rem = e.target.closest("[data-remove]");
-    if (rem) { e.stopPropagation(); removeGlobal(rem.dataset.remove); return; }
-    const pal = e.target.closest(".cs-pal");
+    if (rem) { removeGlobal(rem.dataset.remove); return; }
+    const pal = e.target.closest("[data-hex]");
     if (pal) copyAndMaybeAdd(pal.dataset.hex, null, false);
   });
 
@@ -597,7 +623,13 @@
     if (spec) pickColor(spec.dataset.hex);
   });
   document.addEventListener("click", e => {
-    if (!e.target.closest("#csPop") && !e.target.closest(".cs-dot")) closePop();
+    if (!e.target.closest("#csPop") && !e.target.closest(".cs-dot")) closePop(false);
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && document.getElementById("csPop").classList.contains("is-open")) {
+      e.preventDefault();
+      closePop(true);
+    }
   });
 
   const upload = document.getElementById("csUpload");
@@ -606,12 +638,14 @@
   function resetUpload() {
     uploadText.textContent = "Upload image to extract";
     upload.classList.remove("is-err");
+    fileInput.removeAttribute("aria-invalid");
   }
   async function handleFile(file) {
     if (!file) return;
     if (!ALLOWED.includes(file.type)) {
       uploadText.textContent = "Try PNG, JPG, or SVG";
       upload.classList.add("is-err");
+      fileInput.setAttribute("aria-invalid", "true");
       setTimeout(resetUpload, 3500);
       return;
     }
