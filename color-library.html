@@ -17,7 +17,7 @@
     background:
       linear-gradient(to top, #000, transparent),
       linear-gradient(to right, #fff, transparent),
-      var(--picker-hue, #2592c2);
+      var(--picker-hue, var(--accent));
   }
   .color-picker__cursor {
     position: absolute; top: 14%; left: 16%; width: 16px; height: 16px;
@@ -43,7 +43,7 @@
   .slider--hue { background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00); }
   .slider--alpha {
     background:
-      linear-gradient(to right, transparent, var(--picker-hue, #2592c2)),
+      linear-gradient(to right, transparent, var(--picker-hue, var(--accent))),
       repeating-conic-gradient(var(--surface-2) 0% 25%, var(--surface) 0% 50%) 0 / 8px 8px;
   }
 
