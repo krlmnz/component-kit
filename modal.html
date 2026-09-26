@@ -147,6 +147,14 @@
 (function () {
   var openers = new WeakMap();
 
+  function tabbable(container) {
+    return Array.prototype.filter.call(container.querySelectorAll('a[href], button, input, select, textarea, [tabindex]'), function (el) {
+      if (el.disabled || el.tabIndex < 0 || el.closest('[hidden]')) return false;
+      var style = window.getComputedStyle(el);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    });
+  }
+
   function openDialog(dialog, opener) {
     if (!dialog || dialog.open || typeof dialog.showModal !== 'function') return;
     openers.set(dialog, opener || document.activeElement);
@@ -169,6 +177,24 @@
   document.querySelectorAll('dialog.modal').forEach(function (dialog) {
     dialog.addEventListener('click', function (event) {
       if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', function (event) {
+      if (event.key !== 'Tab') return;
+      var items = tabbable(dialog);
+      if (!items.length) {
+        event.preventDefault();
+        return;
+      }
+      var first = items[0];
+      var last = items[items.length - 1];
+      var active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialog.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
     });
     dialog.addEventListener('close', function () {
       var opener = openers.get(dialog);
