@@ -18,7 +18,19 @@ Open `index.html` at the repository root. That is the same tree Pages serves. Wh
 
 `src/` is the source tree, including the CodePen project config at `src/.codepen/`. The repository root is the published copy of the kit files (HTML, CSS, and JS) and does not include `.codepen/`.
 
-After changing a file under `src/`, copy that file to the repository root so the live site stays in sync. Leave `src/.codepen/` only under `src/`.
+After changing a file under `src/`, copy that file to the repository root so the live site stays in sync. Leave `src/.codepen/` only under `src/`. Run the publish copy check before you push.
+
+## Publish copy check
+
+Top-level `.html`, `.css`, and `.js` files at the repository root must match the same filenames under `src/`. That set is the GitHub Pages copy. `src/.codepen/` stays only under `src/`. Root-only files such as `README.md`, `LICENSE.txt`, `.gitignore`, and `.nojekyll` are not compared.
+
+From the repository root:
+
+```bash
+./scripts/check-publish-sync.sh
+```
+
+The command exits with an error if a shared file differs, or if a kit file exists on only one side. The same check runs in GitHub Actions on pull requests and on pushes to `main`.
 
 Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`](docs/CONTRAST.md).
 
