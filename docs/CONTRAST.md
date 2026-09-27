@@ -12,7 +12,7 @@ Theme ids, Studio hexes, and the deltas below are in [`THEMES.md`](THEMES.md).
 
 ## Shared status fills
 
-| Token | Light, note, draft, news | Night, signal, and `dark` |
+| Token | Light, note, draft, news | Night and signal |
 | --- | --- | --- |
 | `--success` | `#00A470` | `#00A470` |
 | `--success-text` | `#0E7850` (news `#0C6946`) | `#14AA75` |

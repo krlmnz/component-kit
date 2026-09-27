@@ -1,6 +1,6 @@
 # Writer themes
 
-The kit uses the same theme ids as Andean Road Studio (Customize view). Put `data-theme` on the document element. Light / Minimal is `:root`, so the attribute is omitted.
+The kit uses the same theme ids as Andean Road Studio (Customize view). Put `data-theme` on the document element. Light / Minimal is `:root` only. There is no `[data-theme="light"]` block. Setting `data-theme="light"` still resolves to `:root`, because nothing overrides it. The kit omits the attribute for light.
 
 | Id | Studio name | Attribute |
 | --- | --- | --- |
@@ -11,7 +11,9 @@ The kit uses the same theme ids as Andean Road Studio (Customize view). Put `dat
 | `news` | Grey Newspaper | `data-theme="news"` |
 | `draft` | Drafting Grid | `data-theme="draft"` |
 
-`data-theme="dark"` sets the same custom properties as `night`. Older specimens and saved `component-kit-theme=dark` values still resolve. The theme menu stores `night`, not `dark`.
+Studio has no `dark` id. The dark atmospheres are Night Sky and Signal Hacker (`color-scheme: dark`). The kit does not ship a `[data-theme="dark"]` alias. Specimens that used to toggle `dark` now use `night`.
+
+Migration: a saved `component-kit-theme` value of `dark`, or a parent message `{ type: 'component-kit:theme', theme: 'dark' }`, is rewritten to `night` and stored as `night`. After that read, the old value is gone. Do not add `dark` back.
 
 ```html
 <html lang="en" data-theme="note">
@@ -19,8 +21,9 @@ The kit uses the same theme ids as Andean Road Studio (Customize view). Put `dat
 
 ```js
 document.documentElement.dataset.theme = 'signal';
-// Light / Minimal:
+// Light / Minimal. Either line is light; there is no light override block.
 document.documentElement.removeAttribute('data-theme');
+document.documentElement.dataset.theme = 'light';
 ```
 
 Specimen pages and the reference index share `theme.js`. Each page has a `<select data-theme-select>` that lists the six Studio names. The choice is saved as `component-kit-theme`. Embedded previews take the theme from the parent message `{ type: 'component-kit:theme', theme }` instead of that saved value. `?theme=night` sets it for a standalone page.
@@ -45,7 +48,7 @@ These keep WCAG AA on controls. Ratios are in [`CONTRAST.md`](CONTRAST.md).
 
 ## Map layer tokens
 
-Set on `:root` and on every `[data-theme]`, including the `dark` alias. Chrome does not use the brand hues. Those stay on data: `--viz-1` … `--viz-8`, `--route-line`, `--route-ink`, `--route-casing`.
+Set on `:root` (light) and on `night`, `note`, `signal`, `news`, and `draft`. These are basemap layers, not the light-only map chrome on the Studio site. Chrome does not use the brand hues. Those stay on data: `--viz-1` … `--viz-8`, `--route-line`, `--route-ink`, `--route-casing`.
 
 | Token | Layer |
 | --- | --- |

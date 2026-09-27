@@ -1,6 +1,7 @@
 /* Writer themes. Studio ids: light, night, note, signal, news, draft.
-   light is :root (the attribute is removed). dark is a CSS alias of night
-   and is stored as night. Specimens mark a <select data-theme-select>. */
+   Light / Minimal is :root, so the attribute is omitted. There is no
+   data-theme="light" block and no data-theme="dark" theme. A saved
+   "dark" value is rewritten to night. Specimens mark <select data-theme-select>. */
 (function () {
   var THEMES = [
     { id: 'light', label: 'Light / Minimal' },
@@ -56,6 +57,10 @@
     if (!selects.length || started) return;
     started = true;
     Array.prototype.forEach.call(selects, fillSelect);
+
+    if (document.documentElement.dataset.theme === 'dark') {
+      document.documentElement.dataset.theme = 'night';
+    }
 
     var embedded = window.self !== window.top ||
       new URLSearchParams(window.location.search).get('embed') === '1';

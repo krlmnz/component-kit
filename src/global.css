@@ -126,10 +126,9 @@
   --ease: cubic-bezier(.4, 0, .2, 1);
 }
 
-/* Night Sky. [data-theme="dark"] is the same set, so older light/dark
-   specimens keep working. Status fills are the dark AA retune from main. */
-[data-theme="night"],
-[data-theme="dark"] {
+/* Night Sky. Status fills are the dark-atmosphere AA retune. Signal uses
+   the same status pair. There is no data-theme="dark" block. */
+[data-theme="night"] {
   --bg: #071018;       --surface: #0D1722;
   --surface-2: #121F2C;
   --text: #EAF1F7;     --text-2: #A9B9C7;
@@ -284,8 +283,7 @@
 
 html { color-scheme: light; }
 [data-theme="night"],
-[data-theme="signal"],
-[data-theme="dark"] { color-scheme: dark; }
+[data-theme="signal"] { color-scheme: dark; }
 
 body {
   font-family: 'Rethink Sans', system-ui, sans-serif;

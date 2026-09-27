@@ -151,7 +151,7 @@
 
   function themeLabel() {
     var id = document.documentElement.dataset.theme || 'light';
-    if (id === 'dark') id = 'night';
+    if (id === 'dark') id = 'night'; /* old saved value; not a theme id */
     var themes = window.ComponentKitTheme ? window.ComponentKitTheme.themes : [];
     for (var i = 0; i < themes.length; i++) {
       if (themes[i].id === id) return themes[i].label;
