@@ -16,6 +16,8 @@ Link `global.css` once. Badge, chip, switch, tabs, menu, modal, alert, toast, to
 
 **Border or fill.** `.btn--icon.btn--touch` uses that same 44×44 box and 20×20 glyph. Pair it with `.btn` and a variant such as `.btn--secondary` or `.btn--primary`.
 
+**Primary button.** `.btn--primary` is the solid emphatic action. It uses `--btn-primary`, `--btn-primary-hover`, `--btn-primary-active`, and `--on-btn-primary`. Light theme is black `#000000` with a white label; hover is charcoal `#24272B` and active is ink `#111416`. Dark theme inverts the plate: white fill, ink label `#111416`, hover `#F2F2F2`, active `#E5E5E5`. Do not paint it with `--accent`. Blue stays on links, tabs, selection, switches, and the focus ring. Ratios are in `docs/CONTRAST.md`.
+
 ## Atoms the specimens use
 
 `.combo`, `.swatch`, `.tile` / `.tile-grid`, `.panel`, `.list-row`, `.visibility-toggle`, `.field-label`, `.prop-row`.
