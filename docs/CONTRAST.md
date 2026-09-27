@@ -162,3 +162,28 @@ Surfaces: `--surface` `#1C1F22`, `--bg` `#111416`, `--surface-2` `#24272B`. `--t
 - **One accent and one error for both themes.** `#1A7EAA` and `#DA3540` clear 4.5:1 with white text and 3:1 against dark surfaces, so the dark theme does not need a second fill. Hover is slightly different per theme: light `#18749C` can go darker; dark `#177A9E` stays just darker than the fill so it still clears 3:1 on `--surface-2`.
 - **Disabled controls** use `opacity: .45`. WCAG contrast does not apply to disabled UI.
 - **Color Scale palette swatches** such as `#FF4E4F` and `#2592C2` are sample paints, not chrome. Invalid color-scale fields use `--error` and `--error-text`.
+
+## Added tokens (fill hexes unchanged)
+
+`--success`, `--warn`, `--error`, `--accent`, and every `*-text` / `--error-soft` hex above are unchanged. These tokens are aliases or the same `color-mix` channel math. Ratios use the method at the top of this file.
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--error-wash` (8% `--error` on `--surface`) | `#FCEFF0` | `#2B2124` |
+| `--info` / `--info-text` / `--info-soft` / `--info-wash` | alias of the accent pair | alias of the accent pair |
+| `--info-border` (35%) | `#638696` | `#517685` |
+| `--success-border` (35%) | `#5A9382` | `#488471` |
+| `--warn-border` (40%) | `#B6915D` | `#A5824D` |
+| `--error-border` (35%) | `#A66C71` | `#945D60` |
+| `--selection-bg` | `--accent-wash` `#F1F7FA` | `--accent-wash` `#1C252A` |
+| `--selection-text` | `--text` `#111416` | `--text` `#FFFFFF` |
+
+| Pair | Light | Dark | Need | Result |
+| --- | --- | --- | --- | --- |
+| `--error-text` on `--error-wash` | 4.92:1 | 6.95:1 | 4.5 text | Pass |
+| `--text` on `--selection-bg` | 17.11:1 | 15.59:1 | 4.5 text | Pass |
+| `--info-text` on `--info-wash` | same as `--accent-text` on `--accent-wash` | same | 4.5 text | Pass |
+
+`--focus-color` defaults to `--accent`, so the focus stroke ratios are the `--accent` on surface rows above (4.56:1 light, 3.63:1 dark). Invalid field borders stay `--error` on `--surface` (4.60:1 light, 3.60:1 dark).
+
+The alert strokes are the previous inline mixes, now named `*-border`. `--warn-border` on light `--bg` is 2.80:1. That amber stroke is not a control boundary; the warn label is `--warn-text`. `--error-border` against dark `--error-soft` is 2.88:1; the error label is `--error-text` on that fill (6.75:1). Do not paint labels with `--warn-border` or with the raw fills.

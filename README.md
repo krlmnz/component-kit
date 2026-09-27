@@ -32,7 +32,7 @@ From the repository root:
 
 The command exits with an error if a shared file differs, or if a kit file exists on only one side. The same check runs in GitHub Actions on pull requests and on pushes to `main`.
 
-Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`](docs/CONTRAST.md).
+Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`](docs/CONTRAST.md). Status, focus, and selection tokens, and the classes to use for them, are in [`docs/STATUS-FOCUS.md`](docs/STATUS-FOCUS.md).
 
 ## Design system atoms
 
@@ -40,7 +40,7 @@ Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`
 - **`.tile` / `.tile-grid`** — selectable icon and pattern tiles
 - **`.panel`** — kit chrome for editor panels
 
-Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, Map Layers, and Place Card also live in `global.css`. See `docs/PATTERNS.md` for the canonical tabs, search, and icon-button patterns.
+Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, Map Layers, and Place Card also live in `global.css`. See `docs/PATTERNS.md` for the canonical tabs, search, and icon-button patterns, and `docs/STATUS-FOCUS.md` for error, success, warn, info, focus, and selection.
 
 ## Recent fixes
 
