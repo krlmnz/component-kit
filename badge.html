@@ -8,7 +8,10 @@
 </head>
 <body>
 <header class="theme-toggle">
-  <button class="btn" type="button" onclick="document.body.parentElement.dataset.theme = document.body.parentElement.dataset.theme === 'dark' ? '' : 'dark'">Toggle theme</button>
+  <label class="theme-switcher">
+    <span class="theme-switcher__label">Theme</span>
+    <select class="select select--sm theme-switcher__select" data-theme-select aria-label="Writer theme"></select>
+  </label>
 </header>
 
 <main class="stage">
@@ -48,5 +51,7 @@
   </section>
 </main>
 <script src="component-embed.js"></script>
+
+<script src="theme.js"></script>
 </body>
 </html>

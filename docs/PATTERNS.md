@@ -12,7 +12,7 @@ Link `global.css` once. Badge, chip, switch, tabs, menu, modal, alert, toast, to
 
 **Desktop compact (28/16).** `.icon-btn` and the default `.btn--icon` are `--icon-btn-size` (`--control-height-xs`, 28px) square. The glyph is 16×16. `.btn--md` steps up to `--control-height-sm`; `.btn--lg` steps up to `--control-height-md`.
 
-**Touch (44/20).** `.icon-btn--touch` is `--icon-btn-size-touch`, which is `--control-height-touch` (44px) square. Its glyph is `--icon-size-md` (20px). Use this for a toolbar mirror, including Studio’s editor toolbar.
+**Touch (44/20).** `.icon-btn--touch` is `--icon-btn-size-touch`, which is `--control-height-touch` (44px) square. Its glyph is `--icon-size-md` (20px). Use this for a toolbar mirror, including Studio’s editor toolbar. Map controls (`.map-controls`, `.map-toolbar`) use that same button. On the map the rules are quiet: translucent surface, the shared border, `--text-2`, and no shadow. Glyphs are Phosphor paths with `currentColor`. Map Editor reuses this skin. There is no separate map-chrome color API, and the atoms do not require MapLibre.
 
 **Border or fill.** `.btn--icon.btn--touch` uses that same 44×44 box and 20×20 glyph. Pair it with `.btn` and a variant such as `.btn--secondary` or `.btn--primary`.
 

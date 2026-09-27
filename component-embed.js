@@ -26,8 +26,10 @@
   }
 
   function applyTheme(theme) {
-    if (theme === 'dark') document.documentElement.dataset.theme = 'dark';
-    else document.documentElement.removeAttribute('data-theme');
+    var root = document.documentElement;
+    if (!theme || theme === 'light') root.removeAttribute('data-theme');
+    else if (theme === 'dark') root.dataset.theme = 'night';
+    else root.dataset.theme = theme;
     sendHeight();
   }
 

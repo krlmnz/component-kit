@@ -19,9 +19,10 @@
 <span class="docs-topbar__meta">Reference</span>
 </a>
 <div class="docs-topbar__actions">
-<button aria-label="Toggle color theme" class="btn btn--secondary btn--icon btn--sm" id="theme-button" type="button">
-<svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M13.1 10.2A5.5 5.5 0 0 1 5.8 2.9 5.5 5.5 0 1 0 13.1 10.2Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.4"></path></svg>
-</button>
+<label class="theme-switcher">
+<span class="theme-switcher__label">Theme</span>
+<select class="select select--sm theme-switcher__select" data-theme-select aria-label="Writer theme"></select>
+</label>
 </div>
 </header>
 <div aria-hidden="true" class="docs-overlay" id="docs-overlay"></div>
@@ -69,6 +70,7 @@
 <li><a class="side-nav__link" href="#component-color-scale">Color scale</a></li>
 <li><a class="side-nav__link" href="#component-place-card">Place card</a></li>
 <li><a class="side-nav__link" href="#component-map-layers">Map layers</a></li>
+<li><a class="side-nav__link" href="#component-map">Map</a></li>
 <li><a class="side-nav__link" href="#component-button">Button</a></li>
 <li><a class="side-nav__link" href="#component-inputs">Form inputs</a></li>
 
@@ -168,7 +170,7 @@
 <div class="docs-subsection" id="color">
 <header class="docs-subsection__header">
 <h3>Color</h3>
-<p>Semantic tokens are theme-aware. Toggle the theme in the top bar and the embedded components receive the same theme state.</p>
+<p>Semantic tokens follow the six Studio writer themes. Choose one in the top bar and the embedded components receive the same <code class="code-inline">data-theme</code>. Theme ids and map layers are in <code class="code-inline">docs/THEMES.md</code>.</p>
 </header>
 <div class="token-grid">
 <div class="token-card"><span class="token-card__label">--bg</span><span class="token-card__value">Background</span><span class="token-card__sample color-token" style="--token-color:var(--bg);"></span></div>
@@ -279,6 +281,13 @@
 </header>
 <div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="map-layers.html?embed=1" title="Map Layers live component reference"></iframe></div>
 </article>
+<article class="docs-subsection component-reference" id="component-map">
+<header class="component-reference__header">
+<div class="component-reference__heading"><span class="component-reference__meta">Map</span><h3 class="component-reference__title">Map</h3><p class="component-reference__description">Quiet map atoms for the Studio editor. This preview does not load MapLibre. Open map.html for the live basemap. Paint and controls follow the page theme.</p></div>
+<a aria-label="Open map.html as a standalone page" class="component-reference__source" href="map.html"><span>map.html</span><svg aria-hidden="true" fill="none" viewbox="0 0 16 16"><path d="M5.5 3H3.8A1.8 1.8 0 0 0 2 4.8v7.4A1.8 1.8 0 0 0 3.8 14h7.4a1.8 1.8 0 0 0 1.8-1.8v-1.7M8.5 2H14v5.5M14 2 7.5 8.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path></svg></a>
+</header>
+<div class="component-preview-shell"><iframe class="component-preview" loading="lazy" src="map.html?embed=1&amp;chrome=1" title="Map chrome reference, MapLibre not loaded"></iframe></div>
+</article>
 <article class="docs-subsection component-reference" id="component-button">
 <header class="component-reference__header">
 <div class="component-reference__heading"><span class="component-reference__meta">Action</span><h3 class="component-reference__title">Button</h3><p class="component-reference__description">Primary, secondary, ghost, danger, link, icon, disabled, and size variants.</p></div>
@@ -378,12 +387,12 @@
 </div>
 </main>
 </div>
+<script src="theme.js"></script>
 <script>
 (function () {
   var root = document.documentElement;
   var menuButton = document.getElementById('docs-menu-button');
   var overlay = document.getElementById('docs-overlay');
-  var themeButton = document.getElementById('theme-button');
   var navLinks = Array.prototype.slice.call(document.querySelectorAll('.side-nav__link[href^="#"]'));
   var frames = Array.prototype.slice.call(document.querySelectorAll('.component-preview'));
 
@@ -429,7 +438,8 @@
   }
 
   function currentTheme() {
-    return root.dataset.theme === 'dark' ? 'dark' : '';
+    if (window.ComponentKitTheme) return window.ComponentKitTheme.current();
+    return root.dataset.theme || 'light';
   }
 
   function syncFrameTheme(frame) {
@@ -474,16 +484,7 @@
     });
   });
 
-  themeButton.addEventListener('click', function () {
-    if (root.dataset.theme === 'dark') root.removeAttribute('data-theme');
-    else root.dataset.theme = 'dark';
-    try { localStorage.setItem('component-kit-theme', currentTheme()); } catch (e) {}
-    syncAllFrameThemes();
-  });
-
-  try {
-    if (localStorage.getItem('component-kit-theme') === 'dark') root.dataset.theme = 'dark';
-  } catch (e) {}
+  document.addEventListener('component-kit:theme-change', syncAllFrameThemes);
 
   frames.forEach(function (frame) {
     frame.addEventListener('load', function () { syncFrameTheme(frame); });

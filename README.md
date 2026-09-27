@@ -32,7 +32,7 @@ From the repository root:
 
 The command exits with an error if a shared file differs, or if a kit file exists on only one side. The same check runs in GitHub Actions on pull requests and on pushes to `main`.
 
-Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`](docs/CONTRAST.md).
+Writer themes (Light, Night Sky, Warm Note, Signal Hacker, Grey Newspaper, Drafting Grid) and the map layer tokens are in [`docs/THEMES.md`](docs/THEMES.md). Contrast ratios are in [`docs/CONTRAST.md`](docs/CONTRAST.md).
 
 ## Design system atoms
 
@@ -40,7 +40,7 @@ Contrast ratios for the color tokens, in both themes, are in [`docs/CONTRAST.md`
 - **`.tile` / `.tile-grid`** — selectable icon and pattern tiles
 - **`.panel`** — kit chrome for editor panels
 
-Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, Map Layers, and Place Card also live in `global.css`. See `docs/PATTERNS.md` for the canonical tabs, search, and icon-button patterns.
+Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, Map Layers, Place Card, and the map block (`.map-viewport`, `.map-controls`, `.map-toolbar`, `.map-popup`, `.map-legend`) also live in `global.css`. The map is a quiet drop-in for the Studio editor: it inherits the page theme, and v1 has no separate chrome color API. Map Editor reuses the same atoms. Layer ids and paint roles are in [`docs/THEMES.md`](docs/THEMES.md). The reference index embeds `map.html?embed=1&chrome=1` so the kit does not load MapLibre. The live basemap is `map.html`. See `docs/PATTERNS.md` for the canonical tabs, search, and icon-button patterns.
 
 ## Recent fixes
 
