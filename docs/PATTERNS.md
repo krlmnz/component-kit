@@ -30,3 +30,13 @@ Put `.panel--flush` on the `.panel`, not on a wrapper. A combo’s swatch and he
 - The Color Library picker is a static anatomy diagram. The field does not write the swatch.
 - Map Layers reorders when you drag a handle with a pointer. This reference does not reorder from the keyboard.
 - Dialogs are native `<dialog class="modal">` elements. Closed dialogs stay out of the accessibility tree; focus moves in, stays inside, and returns to the opener. Menus hide their panels until opened. Toasts announce through polite and assertive live regions.
+
+## Status, focus, and selection
+
+Use the kit tokens and classes. Do not add a page stylesheet for an error banner or a focus ring. Token roles, both themes, and the Studio markup are in `docs/STATUS-FOCUS.md`.
+
+- Inline field error: `.field.field--invalid` with `.field__error`, `aria-invalid`, and `aria-describedby`. Specimen: `inputs.html`.
+- Banner: `.alert.alert--error` (also `--success`, `--warn`, `--info`). An upload failure uses the same error alert. Specimen: `toast.html`.
+- Toast: `.toast.toast--error` or `.toast.toast--success`.
+- Focus: `:focus-visible` and `--focus-outline` / `--focus-ring`. Recolor focus with `--focus-color` (defaults to `--accent`).
+- Selected chrome: `.tile--selected` and `--selected-ring`. Text selection is `::selection`.

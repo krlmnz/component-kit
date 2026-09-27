@@ -22,9 +22,12 @@
   --radius-sm:    6px;
   --radius-full: 9999px;
 
-  /* Color. *-text tokens are the AA label colors (11–12px). Fills are
-     button backgrounds, icons, and tint sources. Soft/wash mixes are
-     opaque so badge and alert contrast does not depend on the parent. */
+  /* Color. *-text tokens are the AA label colors (11–12px). Fills
+     (--success, --warn, --error, --info) are borders, icons, and tint
+     sources — not label paint. Soft is the badge (and error alert) fill.
+     Wash is the lighter large-surface tint. *-border is the alert stroke.
+     Mixes are opaque so badge and alert contrast does not depend on the parent.
+     Info is the accent hue; do not add a second blue. */
   --bg:        #FAFAFA;   --surface:   #FFFFFF;
   --surface-2: #F2F2F2;
   --text:      #111416;   --text-2:    #666D7B;
@@ -54,6 +57,17 @@
   --error:   #DA3540;
   --error-text: #C62A42;
   --error-soft: #FFECEC;
+  --error-wash: color-mix(in srgb, var(--error) 8%, var(--surface));
+
+  --info: var(--accent);
+  --info-text: var(--accent-text);
+  --info-soft: var(--accent-soft);
+  --info-wash: var(--accent-wash);
+
+  --info-border: color-mix(in srgb, var(--info) 35%, var(--border));
+  --success-border: color-mix(in srgb, var(--success) 35%, var(--border));
+  --warn-border: color-mix(in srgb, var(--warn) 40%, var(--border));
+  --error-border: color-mix(in srgb, var(--error) 35%, var(--border));
 
   --shadow:      0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.07);
   --shadow-pop:  0 8px 32px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.08);
@@ -80,9 +94,17 @@
   --icon-btn-size-touch: var(--control-height-touch);
   --icon-size-md: 20px;
 
-  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+  /* Focus defaults to accent. Override --focus-color to recolor rings
+     without a second focus stylesheet. Selection is a separate state. */
+  --focus-color: var(--accent);
+  --focus-outline: 2px solid var(--focus-color);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--focus-color) 12%, transparent);
+  --error-outline: 2px solid var(--error);
   --error-ring: 0 0 0 3px var(--error-soft);
-  --selected-ring: 0 0 0 1px var(--accent);
+  --selected-color: var(--accent);
+  --selected-ring: 0 0 0 1px var(--selected-color);
+  --selection-bg: var(--accent-wash);
+  --selection-text: var(--text);
 
   --duration-fast: 120ms;
   --duration:      200ms;
@@ -112,6 +134,14 @@
   --error:        #DA3540;
   --error-text:   #FF8B91;
   --error-soft:   #3A1E20;
+  /* Washes, *-border, and the selection pair are color-mix / aliases on
+     :root, so they follow these dark fills. Info and focus stay on accent. */
+  --info: var(--accent);
+  --info-text: var(--accent-text);
+  --info-soft: var(--accent-soft);
+  --info-wash: var(--accent-wash);
+  --focus-color: var(--accent);
+  --selected-color: var(--accent);
   --shadow:      0 1px 3px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.28);
   --shadow-pop:  0 8px 32px rgba(0,0,0,.5), 0 2px 8px rgba(0,0,0,.3);
 }
@@ -307,7 +337,7 @@ svg { display: block; }
 .select:focus-visible,
 .textarea:focus-visible {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--focus-color);
   box-shadow: var(--focus-ring);
 }
 .input::placeholder,
@@ -338,7 +368,13 @@ svg { display: block; }
 .field--invalid .select:focus,
 .field--invalid .select:focus-visible,
 .field--invalid .textarea:focus,
-.field--invalid .textarea:focus-visible { box-shadow: var(--error-ring); }
+.field--invalid .textarea:focus-visible {
+  /* The border is already --error at rest, so the soft halo alone does not
+     show focus. The outline is the visible focus indicator (3:1 on --surface). */
+  outline: var(--error-outline);
+  outline-offset: var(--space-0125);
+  box-shadow: var(--error-ring);
+}
 .field--disabled .field__label { color: var(--text-2); }
 .input:disabled,
 .select:disabled,
@@ -613,7 +649,7 @@ svg { display: block; }
   transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
 }
 .icon-btn:hover { background: var(--surface-2); color: var(--text); }
-.icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
+.icon-btn:focus-visible { outline: var(--focus-outline); outline-offset: var(--space-0125); }
 .icon-btn svg { width: 16px; height: 16px; }
 .icon-btn--touch {
   width: var(--icon-btn-size-touch);
@@ -625,8 +661,16 @@ svg { display: block; }
   height: var(--icon-size-md);
 }
 
-/* ── Focus & scroll baseline ──────────────────────────────────────── */
-:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
+/* ── Focus, selection, and scroll baseline ────────────────────────── */
+:focus-visible { outline: var(--focus-outline); outline-offset: var(--space-0125); }
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
+}
+::-moz-selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    MAP EDITOR PRIMITIVES
@@ -701,10 +745,10 @@ svg { display: block; }
 }
 button.swatch { cursor: pointer; }
 button.swatch:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
-button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
+button.swatch:focus-visible { outline: var(--focus-outline); outline-offset: var(--space-0125); }
 .swatch--sm { --swatch-size: 20px; }
 .swatch--lg { --swatch-size: 56px; border-radius: var(--radius-sm); }
-.swatch--selected { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); }
+.swatch--selected { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--selected-color); }
 
 /* ── Combo row ─────────────────────────────────────────────────────
    A joined strip of inputs sharing one visual boundary: swatch, then
@@ -741,7 +785,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .combo__hex:focus-within,
 .combo__opacity:focus-within,
 .combo__width:focus-within {
-  border-color: var(--accent);
+  border-color: var(--focus-color);
   box-shadow: var(--focus-ring);
 }
 
@@ -766,7 +810,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .combo__width svg { width: 14px; height: 14px; color: var(--text-2); flex-shrink: 0; }
 .combo__width .combo__input { text-align: center; }
 /* Apply while that segment is the active control. Do not leave it on at rest. */
-.combo__width--active { border-color: var(--accent); box-shadow: var(--focus-ring); }
+.combo__width--active { border-color: var(--focus-color); box-shadow: var(--focus-ring); }
 
 .combo__input:focus-visible { outline: none; }
 
@@ -782,7 +826,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
 }
 .visibility-toggle:hover { background: var(--surface-2); color: var(--text); }
-.visibility-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
+.visibility-toggle:focus-visible { outline: var(--focus-outline); outline-offset: var(--space-0125); }
 .visibility-toggle svg { width: 16px; height: 16px; }
 .visibility-toggle[aria-pressed="false"] .visibility-toggle__open,
 .visibility-toggle[aria-pressed="true"] .visibility-toggle__closed { display: none; }
@@ -860,8 +904,8 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 }
 .tile:hover { background: var(--surface-2); }
 .tile svg, .tile img { width: 60%; height: 60%; }
-.tile--selected { border-color: var(--accent); box-shadow: var(--selected-ring); color: var(--accent-text); }
-.tile:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
+.tile--selected { border-color: var(--selected-color); box-shadow: var(--selected-ring); color: var(--accent-text); }
+.tile:focus-visible { outline: var(--focus-outline); outline-offset: var(--space-0125); }
 .tile--empty { color: var(--text-2); }
 
 
@@ -872,6 +916,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
    tooltip, color picker, Color Scale, Place Card, and Map Layers.
    Page <style> blocks should not redeclare these.
    Canonical forks (tabs, search, icon buttons): docs/PATTERNS.md.
+   Status, focus, and selection: docs/STATUS-FOCUS.md.
 ═══════════════════════════════════════════════════════════════════ */
 
 /* Badge / chip ---------------------------------------------------- */
@@ -974,7 +1019,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .switch input:checked ~ .switch__track { background: var(--accent); }
 .switch input:checked ~ .switch__track::after { transform: translateX(18px); }
 .switch input:focus-visible ~ .switch__track {
-  outline: 2px solid var(--accent);
+  outline: var(--focus-outline);
   outline-offset: var(--space-0125);
 }
 
@@ -1112,22 +1157,22 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .alert__body { flex: 1; }
 .alert__title { font-weight: 700; margin-bottom: var(--space-0125); }
 .alert--info {
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
-  background: var(--accent-wash);
-  color: var(--accent-text);
+  border-color: var(--info-border);
+  background: var(--info-wash);
+  color: var(--info-text);
 }
 .alert--success {
-  border-color: color-mix(in srgb, var(--success) 35%, var(--border));
+  border-color: var(--success-border);
   background: var(--success-wash);
   color: var(--success-text);
 }
 .alert--warn {
-  border-color: color-mix(in srgb, var(--warn) 40%, var(--border));
+  border-color: var(--warn-border);
   background: var(--warn-wash);
   color: var(--warn-text);
 }
 .alert--error {
-  border-color: color-mix(in srgb, var(--error) 35%, var(--border));
+  border-color: var(--error-border);
   background: var(--error-soft);
   color: var(--error-text);
 }
@@ -1292,7 +1337,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   cursor: pointer;
 }
 .slider:focus { outline: none; }
-.slider:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.slider:focus-visible { outline: var(--focus-outline); outline-offset: 3px; }
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px;
@@ -1334,7 +1379,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .icon-picker-trigger:hover { background: var(--surface-2); }
 .icon-picker-trigger:focus-visible {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--focus-color);
   background: var(--accent-wash);
   color: var(--accent-text);
 }
@@ -1492,7 +1537,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   background: var(--accent-wash);
   color: var(--accent-text);
 }
-.cs-upload:focus-within { box-shadow: var(--focus-ring); }
+.cs-upload:focus-within { border-color: var(--focus-color); box-shadow: var(--focus-ring); }
 .cs-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .cs-upload.is-err { color: var(--error-text); border-color: var(--error); }
 
@@ -1582,7 +1627,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .cs-row { display: flex; gap: 2px; }
 .cs-step { flex: 1; min-width: 0; }
 .cs-step .swatch { width: 100%; height: auto; aspect-ratio: 1; }
-.cs-step .swatch.is-flash { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); }
+.cs-step .swatch.is-flash { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--selected-color); }
 
 .cs-readout {
   font-size: var(--text-xs);
@@ -1952,7 +1997,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
 }
 .side-nav__toggle:hover { background: var(--surface-2); color: var(--text); }
-.side-nav__toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
+.side-nav__toggle:focus-visible { outline: var(--focus-outline); outline-offset: var(--space-0125); }
 .side-nav__toggle svg {
   width: 16px;
   height: 16px;
@@ -1987,7 +2032,7 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease), border-color var(--duration-fast) var(--ease);
 }
 .docs-section__toggle:hover { background: var(--surface-2); color: var(--text); }
-.docs-section__toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--space-0125); }
+.docs-section__toggle:focus-visible { outline: var(--focus-outline); outline-offset: var(--space-0125); }
 .docs-section__toggle svg {
   width: 16px;
   height: 16px;
