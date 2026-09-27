@@ -22,18 +22,25 @@
   --radius-sm:    6px;
   --radius-full: 9999px;
 
-  /* Color. *-text tokens are the AA label colors (11–12px). Fills are
-     button backgrounds, icons, and tint sources. Soft/wash mixes are
-     opaque so badge and alert contrast does not depend on the parent. */
-  --bg:        #FAFAFA;   --surface:   #FFFFFF;
-  --surface-2: #F2F2F2;
-  --text:      #111416;   --text-2:    #666D7B;
-  --border:    #8A8A8C;   --accent:    #1A7EAA;
-  --accent-hover: #18749C;
-  --accent-text:  #1B6E96;
+  /* Color. :root is Studio Light / Minimal. Writer themes override the
+     semantic set below. *-text tokens are the AA label colors (11–12px).
+     Fills are button backgrounds, icons, and tint sources. Soft/wash mixes
+     are opaque so badge and alert contrast does not depend on the parent.
+     --border is nudged off the Studio hex until it clears 3:1; --border-strong
+     keeps the Studio value. Deltas are listed in docs/THEMES.md. */
+  --bg:        #F5F5F2;   --surface:   #FFFFFF;
+  --surface-2: #F0F0EC;
+  --text:      #111416;   --text-2:    #5C625F;
+  --border:    #868886;   --border-strong: #161918;
+  --accent:    #1D5FD0;
+  --accent-hover: #174CA8;
+  --accent-text:  #194FAD;
   --on-accent:    #FFFFFF;
-  --accent-soft:  color-mix(in srgb, var(--accent) 12%, var(--surface));
-  --accent-wash:  color-mix(in srgb, var(--accent) 6%, var(--surface));
+  /* Danger labels. Night and signal --on-accent is dark ink for the cyan
+     primary fill; that ink misses 4.5:1 on --error, so danger stays white. */
+  --on-error:     #FFFFFF;
+  --accent-soft:  #D9E6FF;
+  --accent-wash:  color-mix(in srgb, var(--accent) 7%, var(--surface));
 
   --success: #00A470;
   --success-text: #0E7850;
@@ -46,9 +53,47 @@
   --error:   #DA3540;
   --error-text: #C62A42;
   --error-soft: #FFECEC;
+  /* Info is the accent hue. Aliases follow the active theme. */
+  --info: var(--accent);
+  --info-text: var(--accent-text);
+  --info-soft: var(--accent-soft);
+  --info-wash: var(--accent-wash);
+
+  /* Categorical map data. For legends and markers, not chrome. */
+  --brand-sky: #A5CCDE;     --brand-sky-deep: #2796D5;
+  --brand-teal: #1A97A9;    --brand-cobalt: #2B498D;
+  --brand-jade: #33978B;    --brand-green: #34935C;
+  --brand-lime: #BACD2F;    --brand-moss: #747A4C;
+  --brand-amber: #A77943;   --brand-gold: #EFB42A;
+  --brand-terra: #D7561D;   --brand-rust: #CD351D;
+  --brand-fuchsia: #D556AA; --brand-orchid: #8E558D;
+  --brand-violet: #5C508D;
+  --brand-cream: #FCF9E8;   --brand-sand: #F1E3BE;
+  --viz-1: var(--brand-terra); --viz-2: var(--brand-teal);
+  --viz-3: #A87B12;            --viz-4: var(--brand-cobalt);
+  --viz-5: var(--brand-green); --viz-6: var(--brand-fuchsia);
+  --viz-7: var(--brand-moss);  --viz-8: var(--brand-orchid);
+  --route-line: var(--brand-terra);
+  --route-ink: #A03D12;
+  --route-casing: rgba(24, 23, 22, 0.14);
+
+  /* Basemap layers. Each writer theme overrides these. */
+  --map-land: #F3F1EA;
+  --map-water: #C5D7E4;
+  --map-park: #D5E4CC;
+  --map-wood: #B7CDA8;
+  --map-beach: #F1E3BE;
+  --map-scrub: #D5D6B4;
+  --map-glacier: #E7EEF2;
+  --map-road: #FFFFFF;
+  --map-road-casing: #D4D0C8;
+  --map-building: #E4E1DA;
+  --map-hillshade: #8A867C;
+  --map-hillshade-opacity: 0.28;
+  --map-label: #3C433F;
 
   --shadow:      0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.07);
-  --shadow-pop:  0 8px 32px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.08);
+  --shadow-pop:  0 8px 32px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.07);
 
   --text-xs:   11px;
   --text-sm:   12px;
@@ -81,31 +126,165 @@
   --ease: cubic-bezier(.4, 0, .2, 1);
 }
 
+/* Night Sky. [data-theme="dark"] is the same set, so older light/dark
+   specimens keep working. Status fills are the dark AA retune from main. */
+[data-theme="night"],
 [data-theme="dark"] {
-  --bg:      #111416;  --surface:  #1C1F22;
-  --surface-2: #24272B;
-  --text:    #FFFFFF;  --text-2:   #9CA3AF;
-  --border:  #6E7271;
-  /* Fills are restated so dark mode does not silently keep a light-only value. */
-  --accent:       #1A7EAA;
-  --accent-hover: #177A9E;
-  --on-accent:    #FFFFFF;
-  --accent-text:  #2399DC;
-  --success:      #00A470;
+  --bg: #071018;       --surface: #0D1722;
+  --surface-2: #121F2C;
+  --text: #EAF1F7;     --text-2: #A9B9C7;
+  --border: #5A6D7F;   --border-strong: #DCE9F7;
+  --accent: #67D6FF;
+  --accent-hover: #8DE1FF;
+  --accent-text: #86DDFF;
+  --on-accent: #071018;
+  --accent-soft: #0A3247;
+  --success: #00A470;
   --success-text: #14AA75;
-  --warn:         #F89B17;
-  --warn-text:    #F89B17;
-  --error:        #DA3540;
-  --error-text:   #FF8B91;
-  --error-soft:   #3A1E20;
-  --shadow:      0 1px 3px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.28);
-  --shadow-pop:  0 8px 32px rgba(0,0,0,.5), 0 2px 8px rgba(0,0,0,.3);
+  --warn: #F89B17;
+  --warn-text: #F89B17;
+  --error: #DA3540;
+  --error-text: #FF8B91;
+  --error-soft: #3A1E20;
+  --map-land: #101820;
+  --map-water: #0A2433;
+  --map-park: #163024;
+  --map-wood: #12281C;
+  --map-beach: #2A261C;
+  --map-scrub: #1C2820;
+  --map-glacier: #1A2830;
+  --map-road: #3A4D60;
+  --map-road-casing: #070D14;
+  --map-building: #1A2836;
+  --map-hillshade: #05080C;
+  --map-hillshade-opacity: 0.16;
+  --map-label: #D5E2EE;
+  --shadow: 0 1px 3px rgba(0,0,0,.32), 0 4px 16px rgba(0,0,0,.28);
+  --shadow-pop: 0 8px 32px rgba(0,0,0,.48), 0 2px 8px rgba(0,0,0,.28);
+}
+
+[data-theme="note"] {
+  --bg: #F8F1CF;       --surface: #FFFDF7;
+  --surface-2: #F5ECD1;
+  --text: #3F3024;     --text-2: #6F5A49;
+  --border: #9D805F;   --border-strong: #6A4B31;
+  --accent: #8D5B2A;
+  --accent-hover: #70451E;
+  --accent-text: #71471F;
+  --on-accent: #FFFFFF;
+  --accent-soft: #F0DFBD;
+  --map-land: #F4ECD0;
+  --map-water: #C5CBB0;
+  --map-park: #E2D39A;
+  --map-wood: #CBB97A;
+  --map-beach: #F3E6C0;
+  --map-scrub: #DDD2A4;
+  --map-glacier: #EFE8D4;
+  --map-road: #FFFAF0;
+  --map-road-casing: #C6AA84;
+  --map-building: #EADFBE;
+  --map-hillshade: #A89068;
+  --map-hillshade-opacity: 0.22;
+  --map-label: #3F3024;
+  --shadow: 0 1px 3px rgba(102,76,42,.07), 0 4px 16px rgba(102,76,42,.08);
+  --shadow-pop: 0 8px 32px rgba(102,76,42,.14), 0 2px 8px rgba(102,76,42,.08);
+}
+
+[data-theme="signal"] {
+  --bg: #030608;       --surface: #090D10;
+  --surface-2: #0D1419;
+  --text: #E9F8FF;     --text-2: #94B1BE;
+  --border: #4E6873;   --border-strong: #D8F6FF;
+  --accent: #35C9FF;
+  --accent-hover: #6AD8FF;
+  --accent-text: #63D5FF;
+  --on-accent: #030608;
+  --accent-soft: #082B39;
+  --success: #00A470;
+  --success-text: #14AA75;
+  --warn: #F89B17;
+  --warn-text: #F89B17;
+  --error: #DA3540;
+  --error-text: #FF8B91;
+  --error-soft: #3A1E20;
+  --map-land: #0A1014;
+  --map-water: #062028;
+  --map-park: #0E241C;
+  --map-wood: #0A1C16;
+  --map-beach: #1A1C12;
+  --map-scrub: #122018;
+  --map-glacier: #102028;
+  --map-road: #1E4652;
+  --map-road-casing: #030608;
+  --map-building: #121C22;
+  --map-hillshade: #021014;
+  --map-hillshade-opacity: 0.18;
+  --map-label: #D5F4FF;
+  --shadow: 0 1px 3px rgba(0,0,0,.38), 0 4px 16px rgba(0,0,0,.38);
+  --shadow-pop: 0 8px 32px rgba(0,0,0,.58), 0 2px 8px rgba(0,0,0,.34);
+}
+
+/* Grey Newspaper. Page background is darker than white, so status labels
+   are a step darker than the light set. Fills stay the shared AA hues. */
+[data-theme="news"] {
+  --bg: #D9D9D4;       --surface: #F4F3EF;
+  --surface-2: #E4E3DD;
+  --text: #171717;     --text-2: #555550;
+  --border: #787875;   --border-strong: #161616;
+  --accent: #303030;
+  --accent-hover: #111111;
+  --accent-text: #202020;
+  --on-accent: #FFFFFF;
+  --accent-soft: #D0D0CB;
+  --success-text: #0C6946;
+  --warn-text: #8A4D02;
+  --error-text: #AF253B;
+  --map-land: #E6E5E0;
+  --map-water: #C5C5C0;
+  --map-park: #D4D4CC;
+  --map-wood: #C2C2BA;
+  --map-beach: #DDDCD4;
+  --map-scrub: #D0D0C8;
+  --map-glacier: #ECEBE6;
+  --map-road: #F7F6F2;
+  --map-road-casing: #8E8E89;
+  --map-building: #D8D7D2;
+  --map-hillshade: #6E6E6A;
+  --map-hillshade-opacity: 0.3;
+  --map-label: #171717;
+}
+
+[data-theme="draft"] {
+  --bg: #EDF1EE;       --surface: #FFFFFF;
+  --surface-2: #F5F7F5;
+  --text: #1A2321;     --text-2: #60706D;
+  --border: #7D8A87;   --border-strong: #2F3D3A;
+  --accent: #52665F;
+  --accent-hover: #3D514A;
+  --accent-text: #40554E;
+  --on-accent: #FFFFFF;
+  --accent-soft: #E6ECE9;
+  --map-land: #E6EEEA;
+  --map-water: #C3D4D0;
+  --map-park: #D2E3D6;
+  --map-wood: #B9CFC0;
+  --map-beach: #E4E6D2;
+  --map-scrub: #D5DDC8;
+  --map-glacier: #E4EEEA;
+  --map-road: #F7FAF8;
+  --map-road-casing: #9AADA8;
+  --map-building: #D5E0DB;
+  --map-hillshade: #7D918B;
+  --map-hillshade-opacity: 0.26;
+  --map-label: #1A2321;
 }
 
 /* ── Reset ─────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { color-scheme: light; }
+[data-theme="night"],
+[data-theme="signal"],
 [data-theme="dark"] { color-scheme: dark; }
 
 body {
@@ -160,6 +339,19 @@ svg { display: block; }
   right: var(--space-2);
   z-index: 100;
 }
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-05);
+  color: var(--text-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+.select.theme-switcher__select {
+  width: 14rem;
+  max-width: 52vw;
+  background: var(--surface);
+}
 /* Specimen column shared by editor panels. Not a product component. */
 .kit-frame { width: 340px; max-width: 100%; }
 
@@ -208,7 +400,7 @@ svg { display: block; }
 .btn--secondary:hover:not(:disabled) { background: var(--surface-2); }
 .btn--ghost { background: transparent; color: var(--text); border-color: transparent; }
 .btn--ghost:hover:not(:disabled) { background: var(--surface-2); }
-.btn--danger { background: var(--error); border-color: var(--error); color: var(--on-accent); }
+.btn--danger { background: var(--error); border-color: var(--error); color: var(--on-error); }
 .btn--danger:hover:not(:disabled) { filter: brightness(.92); }
 .btn--link {
   background: transparent;
@@ -2060,6 +2252,243 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   font-size: var(--text-sm);
 }
 .component-source-note strong { color: var(--text); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MAP CHROME
+   -------------------------------------------------------------------
+   Framed MapLibre stage, the control stack, the tool row, a place
+   callout, and a layer legend. Controls are .icon-btn.icon-btn--touch.
+   Layer colors are the --map-* tokens. Specimen: map.html.
+═══════════════════════════════════════════════════════════════════ */
+.map-viewport {
+  position: relative;
+  height: 520px;
+  background: var(--map-land);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.map-viewport:fullscreen {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+.map-viewport__canvas,
+.map-viewport .maplibregl-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.map-viewport .maplibregl-map { font-family: inherit; }
+.map-viewport .maplibregl-ctrl-attrib {
+  font-size: 10px;
+  line-height: 1.3;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--text-2);
+}
+.map-viewport .maplibregl-ctrl-attrib a { color: var(--accent-text); }
+.map-viewport.is-drawing .maplibregl-canvas-container { cursor: crosshair; }
+
+.map-controls,
+.map-toolbar {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  gap: var(--space-025);
+}
+.map-controls {
+  top: var(--space-1);
+  right: var(--space-1);
+  flex-direction: column;
+}
+.map-toolbar {
+  top: var(--space-1);
+  left: var(--space-1);
+  flex-wrap: wrap;
+  align-items: flex-start;
+  max-width: calc(100% - 72px);
+}
+.map-controls .icon-btn,
+.map-toolbar .icon-btn,
+.map-popup .icon-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+.map-controls .icon-btn[aria-pressed="true"],
+.map-toolbar .icon-btn[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+.map-compass svg {
+  transform: rotate(calc(-1 * var(--map-bearing, 0deg)));
+  transition: transform var(--duration) var(--ease);
+}
+.map-toolbar__search {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-025);
+}
+.map-toolbar__search[hidden] { display: none; }
+.map-toolbar__search .input {
+  width: 12rem;
+  max-width: 46vw;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.map-toolbar__hint {
+  margin: 0;
+  padding: var(--space-025) var(--space-05);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: var(--text-xs);
+  box-shadow: var(--shadow);
+}
+
+.map-basemap {
+  position: absolute;
+  top: calc(var(--space-1) + var(--icon-btn-size-touch) + var(--space-025));
+  left: var(--space-1);
+  z-index: 2;
+  width: min(240px, calc(100% - 80px));
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-pop);
+}
+.map-basemap[hidden] { display: none; }
+.map-basemap__title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.map-basemap__body {
+  margin-top: var(--space-025);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+.map-legend {
+  position: absolute;
+  left: var(--space-1);
+  bottom: var(--space-1);
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-025) var(--space-1);
+  max-width: min(460px, calc(100% - 6.5rem));
+  margin: 0;
+  padding: var(--space-05) var(--space-1);
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  font-size: var(--text-xs);
+  box-shadow: var(--shadow);
+}
+.map-legend[hidden] { display: none; }
+.map-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-025);
+}
+.map-legend__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--text) 22%, transparent);
+  background: var(--swatch, var(--map-land));
+}
+.map-legend__swatch--line {
+  height: 4px;
+  border-radius: var(--radius-full);
+}
+
+.map-popup {
+  width: min(260px, 72vw);
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-pop);
+}
+.map-popup__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-05);
+}
+.map-popup__kicker {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.map-popup__title {
+  margin-top: var(--space-0125);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.map-popup__body {
+  margin-top: var(--space-05);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--text-2);
+}
+.map-popup-host .maplibregl-popup-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.map-popup-host.maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: var(--surface); }
+.map-popup-host.maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: var(--surface); }
+.map-popup-host.maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: var(--surface); }
+.map-popup-host.maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: var(--surface); }
+
+.map-pin {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .35));
+}
+.map-pin svg { width: 28px; height: 28px; }
+
+.map-icon-sheet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.map-icon-sheet li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-025);
+  width: 76px;
+  color: var(--text-2);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+.map-icon-sheet .icon-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
 
 @media (max-width: 560px) {
   .docs-section__header--toggleable,

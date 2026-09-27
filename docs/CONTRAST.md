@@ -1,164 +1,67 @@
-# Contrast table (post-retune)
+# Contrast
 
-WCAG 2.x relative luminance, computed from the sRGB hex values in `global.css`. `color-mix(in srgb, …)` backgrounds are channel interpolations rounded to 8-bit, which is the color the mix resolves to. Ratios below are rounded to two decimal places. A pair passes when the unrounded ratio meets the threshold.
+WCAG 2.x relative luminance from the sRGB hexes in `global.css`. `color-mix(in srgb, …)` backgrounds are channel interpolations rounded to 8-bit. A pair passes when the unrounded ratio meets the threshold. Ratios below are rounded to two decimals.
 
-Thresholds used here:
+Thresholds:
 
-- **Text 4.5:1.** Button labels are `--text-sm` (12px) and badges are `--text-xs` (11px). Both are normal text, including when the weight is 600 or 700.
-- **UI 3:1.** Boundaries and icons that identify a control (borders, focus/selected strokes, invalid field borders, filled buttons against the page).
-- **Link 3:1.** `--accent-text` against `--text`, so link color is not the only distinction. Anchors and `.btn--link` are also underlined.
+- **Text 4.5:1.** Button labels are `--text-sm` (12px). Badges are `--text-xs` (11px). Both are normal text.
+- **UI 3:1.** Control boundaries, focus and selected strokes, invalid borders, and non-text parts of a control.
+- **Link color is not the only cue.** `--accent-text` matches Studio and does not clear 3:1 against `--text`. Anchors and `.btn--link` are underlined.
 
-Body text (`--text` on `--surface`) was already well above 4.5:1 and is unchanged. Hues stay in the original families: accent around OKLCH hue 233, error around 23, success around 162, warn around 62–67. Lightness is what moved.
+Theme ids, Studio hexes, and the deltas below are in [`THEMES.md`](THEMES.md).
 
-## Token values
+## Shared status fills
 
-| Token | Light before | Light after | Dark before | Dark after |
-| --- | --- | --- | --- | --- |
-| `--border` | `#E5E5E5` | `#8A8A8C` | `#434547` | `#6E7271` |
-| `--accent` | `#2592C2` | `#1A7EAA` | inherited `#2592C2` | `#1A7EAA` |
-| `--accent-hover` | `#1F7FAB` | `#18749C` | inherited `#1F7FAB` | `#177A9E` |
-| `--on-accent` | `#FFFFFF` | `#FFFFFF` | inherited `#FFFFFF` | `#FFFFFF` |
-| `--accent-text` | `#1B6E96` | `#1B6E96` | `#69C4EA` | `#2399DC` |
-| `--text-2` | `#6B7280` | `#666D7B` | `#9CA3AF` | `#9CA3AF` |
-| `--success` | `#00A470` | `#00A470` | inherited `#00A470` | `#00A470` |
-| `--success-text` | — (labels used `--success`) | `#0E7850` | — | `#14AA75` |
-| `--warn` | `#F89B17` | `#F89B17` | inherited `#F89B17` | `#F89B17` |
-| `--warn-text` | — (labels mixed `--warn` with `black`) | `#9F5A03` | — (same black mix, ~2.57:1) | `#F89B17` |
-| `--error` | `#E5484D` | `#DA3540` | inherited `#E5484D` | `#DA3540` |
-| `--error-text` | `#C62A42` | `#C62A42` | `#FF8B91` | `#FF8B91` |
-| `--error-soft` | `#FFECEC` | `#FFECEC` | `#3A1E20` | `#3A1E20` |
-
-`--success` and `--warn` stay the bright status hues. They are tint sources, not label colors. Badges, alerts, and the success toast icon use the `*-text` tokens. Soft and wash tokens are `color-mix` with `--surface`, so the badge fill is the same on `--bg` and inside a panel.
-
-Computed mixes:
-
-| Token | Light | Dark |
+| Token | Light, note, draft, news | Night, signal, and `dark` |
 | --- | --- | --- |
-| `--accent-soft` (12%) | `#E4F0F5` | `#1C2A32` |
-| `--accent-wash` (6%) | `#F1F7FA` | `#1C252A` |
-| `--success-soft` (14%) | `#DBF2EB` | `#18322D` |
-| `--success-wash` (8%) | `#EBF8F4` | `#1A2A28` |
-| `--warn-soft` (16%) | `#FEEFDA` | `#3F3320` |
-| `--warn-wash` (10%) | `#FEF5E8` | `#322B21` |
+| `--success` | `#00A470` | `#00A470` |
+| `--success-text` | `#0E7850` (news `#0C6946`) | `#14AA75` |
+| `--warn` | `#F89B17` | `#F89B17` |
+| `--warn-text` | `#9F5A03` (news `#8A4D02`) | `#F89B17` |
+| `--error` | `#DA3540` | `#DA3540` |
+| `--error-text` | `#C62A42` (news `#AF253B`) | `#FF8B91` |
+| `--error-soft` | `#FFECEC` | `#3A1E20` |
+| `--on-error` | `#FFFFFF` | `#FFFFFF` |
 
-## Previously failing pairs
+`--success-soft` is 14% `--success` on `--surface`. `--success-wash` is 8%. `--warn-soft` is 16%. `--warn-wash` is 10%. `--accent-wash` is 7% `--accent` on `--surface`. Info aliases the accent pair, so its text ratios are the `--accent-text` rows.
 
-| Pair | Before | After |
-| --- | --- | --- |
-| `#FFFFFF` on `--accent` (primary label, both themes) | 3.52:1 | 4.56:1 |
-| `#FFFFFF` on `--accent-hover` | 4.49:1 | 5.23:1 light, 4.87:1 dark |
-| `#FFFFFF` on `--error` (danger label, both themes) | 3.91:1 | 4.60:1 |
-| `--success` on white, and on the success badge tint | 3.21:1 and 2.74:1 | labels use `--success-text`: 5.50:1 and 4.69:1 light; 5.55:1 and 4.59:1 dark |
-| `--warn` on white | 2.17:1 | labels use `--warn-text`: 5.33:1 on white, 4.72:1 on the warn tint |
-| Dark warn badge (warn mixed with black on a dark tint) | 2.57:1 | 5.68:1 (`#F89B17` on `#3F3320`) |
-| `--border` on `--surface` | 1.26:1 light, 1.72:1 dark | 3.45:1 light, 3.40:1 dark |
-| Dark `--accent-text` against `--text` `#FFFFFF` | 1.97:1, no underline | 3.15:1, and links are underlined |
-| `--text-2` on `--surface-2` (neutral badge) | 4.32:1 | 4.64:1 light; dark was already 5.91:1 |
+Do not paint labels with `--success` or `--warn`. On white, `--success` is 3.21:1 and `--warn` is 2.17:1.
 
-## Light theme
+## Surfaces, text, borders, focus
 
-Surfaces: `--surface` `#FFFFFF`, `--bg` `#FAFAFA`, `--surface-2` `#F2F2F2`.
+Focus and the selected stroke use `--accent`. The strict surface for each theme is the one with the lowest ratio.
 
-| Pair | Ratio | Need | Result |
-| --- | --- | --- | --- |
-| `--on-accent` on `--accent` | 4.56:1 | 4.5 text | Pass |
-| `--on-accent` on `--accent-hover` | 5.23:1 | 4.5 text | Pass |
-| `--on-accent` on `--error` | 4.60:1 | 4.5 text | Pass |
-| `--on-accent` on danger hover (`brightness(.92)` → `#C9313B`) | 5.27:1 | 4.5 text | Pass |
-| `--accent-text` on `--surface` | 5.65:1 | 4.5 text | Pass |
-| `--accent-text` on `--bg` | 5.41:1 | 4.5 text | Pass |
-| `--accent-text` on `--surface-2` | 5.05:1 | 4.5 text | Pass |
-| `--accent-text` on `--accent-soft` `#E4F0F5` | 4.86:1 | 4.5 text | Pass |
-| `--accent-text` on `--accent-wash` `#F1F7FA` | 5.23:1 | 4.5 text | Pass |
-| `--accent-text` vs `--text` | 3.27:1 | 3.0 link | Pass |
-| `--success-text` on `--surface` | 5.50:1 | 4.5 text | Pass |
-| `--success-text` on `--bg` | 5.27:1 | 4.5 text | Pass |
-| `--success-text` on `--surface-2` | 4.91:1 | 4.5 text | Pass |
-| `--success-text` on `--success-soft` `#DBF2EB` | 4.69:1 | 4.5 text | Pass |
-| `--success-text` on `--success-wash` `#EBF8F4` | 5.04:1 | 4.5 text | Pass |
-| `--warn-text` on `--surface` | 5.33:1 | 4.5 text | Pass |
-| `--warn-text` on `--bg` | 5.11:1 | 4.5 text | Pass |
-| `--warn-text` on `--surface-2` | 4.76:1 | 4.5 text | Pass |
-| `--warn-text` on `--warn-soft` `#FEEFDA` | 4.72:1 | 4.5 text | Pass |
-| `--warn-text` on `--warn-wash` `#FEF5E8` | 4.94:1 | 4.5 text | Pass |
-| `--error-text` on `--surface` | 5.51:1 | 4.5 text | Pass |
-| `--error-text` on `--bg` | 5.28:1 | 4.5 text | Pass |
-| `--error-text` on `--surface-2` | 4.92:1 | 4.5 text | Pass |
-| `--error-text` on `--error-soft` | 4.84:1 | 4.5 text | Pass |
-| `--text` on `--surface` | 18.49:1 | 4.5 text | Pass |
-| `--text` on `--bg` | 17.72:1 | 4.5 text | Pass |
-| `--text-2` on `--surface` | 5.20:1 | 4.5 text | Pass |
-| `--text-2` on `--bg` | 4.98:1 | 4.5 text | Pass |
-| `--text-2` on `--surface-2` | 4.64:1 | 4.5 text | Pass |
-| `--border` on `--surface` | 3.45:1 | 3.0 UI | Pass |
-| `--border` on `--bg` | 3.30:1 | 3.0 UI | Pass |
-| `--border` on `--surface-2` | 3.08:1 | 3.0 UI | Pass |
-| `--accent` on `--surface` (focus / selected stroke) | 4.56:1 | 3.0 UI | Pass |
-| `--accent` on `--bg` | 4.37:1 | 3.0 UI | Pass |
-| `--accent` on `--surface-2` | 4.07:1 | 3.0 UI | Pass |
-| `--accent-hover` on `--surface` | 5.23:1 | 3.0 UI | Pass |
-| `--accent-hover` on `--surface-2` | 4.67:1 | 3.0 UI | Pass |
-| `--error` on `--surface` (invalid border) | 4.60:1 | 3.0 UI | Pass |
-| `--error` on `--surface-2` | 4.11:1 | 3.0 UI | Pass |
-| `--success` on `--surface` (tint source, not a label) | 3.21:1 | 3.0 UI / 4.5 text | Pass as UI, fail as text |
-| `--success` on `--success-soft` `#DBF2EB` | 2.74:1 | 4.5 text | Fail — labels use `--success-text` |
-| `--warn` on `--surface` (tint source, not a label) | 2.17:1 | — | Not used as text or as a control boundary |
-| `--warn` on `--warn-soft` `#FEEFDA` | 1.92:1 | 4.5 text | Fail — labels use `--warn-text` |
+| Theme | `--text` on `--surface` | `--text-2` strict | `--border` strict | `--accent` strict (focus) | `--on-accent` on `--accent` | `--accent-text` on `--surface` |
+| --- | --- | --- | --- | --- | --- | --- |
+| light | 18.49:1 | 5.46:1 on `--surface-2` | 3.13:1 on `--surface-2` | 5.11:1 on `--surface-2` | 5.83:1 | 7.60:1 |
+| night | 15.84:1 | 8.31:1 on `--surface-2` | 3.12:1 on `--surface-2` | 10.05:1 on `--surface-2` | 11.53:1 | 11.87:1 |
+| signal | 17.96:1 | 8.21:1 on `--surface-2` | 3.14:1 on `--surface-2` | 9.68:1 on `--surface-2` | 10.60:1 | 11.60:1 |
+| note | 12.44:1 | 5.50:1 on `--surface-2` | 3.13:1 on `--surface-2` | 4.86:1 on `--surface-2` | 5.73:1 | 7.87:1 |
+| news | 16.15:1 | 5.29:1 on `--bg` | 3.13:1 on `--bg` | 9.32:1 on `--bg` | 13.20:1 | 14.67:1 |
+| draft | 16.08:1 | 4.56:1 on `--bg` | 3.14:1 on `--bg` | 5.38:1 on `--bg` | 6.13:1 | 7.99:1 |
 
-## Dark theme
+`--text` also clears 4.5:1 on `--bg` and `--surface-2` in every theme. `--on-accent` on `--accent-hover` is higher than on `--accent` (the hover fill is darker on light themes and lighter on night and signal, where the label is dark). `--border` also clears 3:1 on the other two surfaces.
 
-Surfaces: `--surface` `#1C1F22`, `--bg` `#111416`, `--surface-2` `#24272B`. `--text` is `#FFFFFF`.
+`--accent-text` on `--accent-soft` is at least 6.05:1 (light). On the 7% wash it stays above the surface row, because the wash is closer to `--surface` than the soft fill is.
 
-| Pair | Ratio | Need | Result |
-| --- | --- | --- | --- |
-| `--on-accent` on `--accent` | 4.56:1 | 4.5 text | Pass |
-| `--on-accent` on `--accent-hover` | 4.87:1 | 4.5 text | Pass |
-| `--on-accent` on `--error` | 4.60:1 | 4.5 text | Pass |
-| `--on-accent` on danger hover (`brightness(.92)` → `#C9313B`) | 5.27:1 | 4.5 text | Pass |
-| `--accent-text` on `--surface` | 5.25:1 | 4.5 text | Pass |
-| `--accent-text` on `--bg` | 5.87:1 | 4.5 text | Pass |
-| `--accent-text` on `--surface-2` | 4.76:1 | 4.5 text | Pass |
-| `--accent-text` on `--accent-soft` `#1C2A32` | 4.67:1 | 4.5 text | Pass |
-| `--accent-text` on `--accent-wash` `#1C252A` | 4.94:1 | 4.5 text | Pass |
-| `--accent-text` vs `--text` | 3.15:1 | 3.0 link | Pass |
-| `--success-text` on `--surface` | 5.55:1 | 4.5 text | Pass |
-| `--success-text` on `--bg` | 6.20:1 | 4.5 text | Pass |
-| `--success-text` on `--surface-2` | 5.03:1 | 4.5 text | Pass |
-| `--success-text` on `--success-soft` `#18322D` | 4.59:1 | 4.5 text | Pass |
-| `--success-text` on `--success-wash` `#1A2A28` | 5.01:1 | 4.5 text | Pass |
-| `--warn-text` on `--surface` | 7.64:1 | 4.5 text | Pass |
-| `--warn-text` on `--bg` | 8.54:1 | 4.5 text | Pass |
-| `--warn-text` on `--surface-2` | 6.92:1 | 4.5 text | Pass |
-| `--warn-text` on `--warn-soft` `#3F3320` | 5.68:1 | 4.5 text | Pass |
-| `--warn-text` on `--warn-wash` `#322B21` | 6.45:1 | 4.5 text | Pass |
-| `--error-text` on `--surface` | 7.37:1 | 4.5 text | Pass |
-| `--error-text` on `--bg` | 8.24:1 | 4.5 text | Pass |
-| `--error-text` on `--surface-2` | 6.68:1 | 4.5 text | Pass |
-| `--error-text` on `--error-soft` | 6.75:1 | 4.5 text | Pass |
-| `--text` on `--surface` | 16.56:1 | 4.5 text | Pass |
-| `--text` on `--bg` | 18.49:1 | 4.5 text | Pass |
-| `--text-2` on `--surface` | 6.52:1 | 4.5 text | Pass |
-| `--text-2` on `--bg` | 7.28:1 | 4.5 text | Pass |
-| `--text-2` on `--surface-2` | 5.91:1 | 4.5 text | Pass |
-| `--border` on `--surface` | 3.40:1 | 3.0 UI | Pass |
-| `--border` on `--bg` | 3.79:1 | 3.0 UI | Pass |
-| `--border` on `--surface-2` | 3.08:1 | 3.0 UI | Pass |
-| `--accent` on `--surface` | 3.63:1 | 3.0 UI | Pass |
-| `--accent` on `--bg` | 4.06:1 | 3.0 UI | Pass |
-| `--accent` on `--surface-2` | 3.29:1 | 3.0 UI | Pass |
-| `--accent-hover` on `--surface` | 3.40:1 | 3.0 UI | Pass |
-| `--accent-hover` on `--surface-2` | 3.08:1 | 3.0 UI | Pass |
-| `--error` on `--surface` | 3.60:1 | 3.0 UI | Pass |
-| `--error` on `--surface-2` | 3.26:1 | 3.0 UI | Pass |
-| `--success` on `--surface` (tint source) | 5.16:1 | 4.5 text | Pass on the bare surface |
-| `--success` on `--success-soft` `#18322D` | 4.27:1 | 4.5 text | Fail — labels use `--success-text` |
-| `--warn` on `--surface` | 7.64:1 | 4.5 text | Pass (same hex as `--warn-text`) |
+## Status labels
+
+Strict pair is the lowest of `--surface`, `--bg`, `--surface-2`, the soft fill, and the wash.
+
+| Theme | `--success-text` | `--warn-text` | `--error-text` | `#FFFFFF` on `--error` | `--error` on strict surface |
+| --- | --- | --- | --- | --- | --- |
+| light | 4.69:1 on soft | 4.67:1 on `--surface-2` | 4.82:1 on `--surface-2` | 4.60:1 | 4.03:1 on `--surface-2` |
+| night | 5.03:1 on soft | 6.37:1 on soft | 6.75:1 on `#3A1E20` | 4.60:1 | 3.63:1 on `--surface-2` |
+| signal | 5.60:1 on soft | 7.02:1 on soft | 6.75:1 on `#3A1E20` | 4.60:1 | 4.03:1 on `--surface-2` |
+| note | 4.64:1 on soft | 4.52:1 on `--surface-2` | 4.67:1 on `--surface-2` | 4.60:1 | 3.90:1 on `--surface-2` |
+| news | 4.74:1 on `--bg` | 4.72:1 on `--bg` | 4.71:1 on `--bg` | 4.60:1 | 3.25:1 on `--bg` |
+| draft | 4.69:1 on soft | 4.68:1 on `--bg` | 4.83:1 on `--bg` | 4.60:1 | 4.04:1 on `--bg` |
+
+Danger buttons use `--on-error` (`#FFFFFF`), not `--on-accent`. Night ink `#071018` on `#DA3540` is 4.16:1. Signal ink `#030608` on `#DA3540` is 4.42:1. The switch thumb still uses `--on-accent`: on night it is 3.58:1 against `--border` and 11.53:1 against `--accent`; on signal, 3.44:1 and 10.60:1.
 
 ## Notes
 
-- **Do not paint labels with `--success` or `--warn`.** On white, `--success` is 3.21:1 (large enough for a non-text icon, short of 4.5 for text) and `--warn` is 2.17:1. Use `--success-text` and `--warn-text`. Dark `--warn-text` can stay the bright amber because that amber is light against the dark surfaces.
-- **Links.** `--accent-text` clears 3:1 against `--text` in both themes (3.27:1 light, 3.15:1 dark). `a` and `.btn--link` are underlined anyway, so a link is not identified by color alone. Nav, brand, and resource-card anchors keep `text-decoration: none`; current nav items also carry the accent wash.
-- **Borders.** `#8A8A8C` and `#6E7271` are the lightest cool grays that still clear 3:1 against every surface token, including `--surface-2`. The strict pair in each theme is border on `--surface-2` at 3.08:1.
-- **One accent and one error for both themes.** `#1A7EAA` and `#DA3540` clear 4.5:1 with white text and 3:1 against dark surfaces, so the dark theme does not need a second fill. Hover is slightly different per theme: light `#18749C` can go darker; dark `#177A9E` stays just darker than the fill so it still clears 3:1 on `--surface-2`.
+- **Grey Newspaper** is the theme that needed new status text. `#0E7850` on `#D9D9D4` is 3.88:1. The news text hexes are the darker step.
 - **Disabled controls** use `opacity: .45`. WCAG contrast does not apply to disabled UI.
-- **Color Scale palette swatches** such as `#FF4E4F` and `#2592C2` are sample paints, not chrome. Invalid color-scale fields use `--error` and `--error-text`.
+- **Color Scale swatches** are sample paints, not chrome.
+- **Map layer colors** separate land, water, and roads. They are not text and are not in this table.
