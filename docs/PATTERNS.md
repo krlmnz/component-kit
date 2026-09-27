@@ -16,6 +16,8 @@ Link `global.css` once. Badge, chip, switch, tabs, menu, modal, alert, toast, to
 
 **Border or fill.** `.btn--icon.btn--touch` uses that same 44×44 box and 20×20 glyph. Pair it with `.btn` and a variant such as `.btn--secondary` or `.btn--primary`.
 
+**Primary button.** `.btn--primary` is the solid emphatic action. It uses `--btn-primary`, `--btn-primary-hover`, `--btn-primary-active`, and `--on-btn-primary`. Light theme is black `#000000` with a white label; hover is charcoal `#24272B` and active is ink `#111416`. Dark theme inverts the plate: white fill, ink label `#111416`, hover `#F2F2F2`, active `#E5E5E5`. Do not paint it with `--accent`. Blue stays on links, tabs, selection, switches, and the focus ring. Ratios are in `docs/CONTRAST.md`.
+
 ## Atoms the specimens use
 
 `.combo`, `.swatch`, `.tile` / `.tile-grid`, `.panel`, `.list-row`, `.visibility-toggle`, `.field-label`, `.prop-row`.
@@ -28,3 +30,13 @@ Put `.panel--flush` on the `.panel`, not on a wrapper. A combo’s swatch and he
 - The Color Library picker is a static anatomy diagram. The field does not write the swatch.
 - Map Layers reorders when you drag a handle with a pointer. This reference does not reorder from the keyboard.
 - Dialogs are native `<dialog class="modal">` elements. Closed dialogs stay out of the accessibility tree; focus moves in, stays inside, and returns to the opener. Menus hide their panels until opened. Toasts announce through polite and assertive live regions.
+
+## Status, focus, and selection
+
+Use the kit tokens and classes. Do not add a page stylesheet for an error banner or a focus ring. Token roles, both themes, and the Studio markup are in `docs/STATUS-FOCUS.md`.
+
+- Inline field error: `.field.field--invalid` with `.field__error`, `aria-invalid`, and `aria-describedby`. Specimen: `inputs.html`.
+- Banner: `.alert.alert--error` (also `--success`, `--warn`, `--info`). An upload failure uses the same error alert. Specimen: `toast.html`.
+- Toast: `.toast.toast--error` or `.toast.toast--success`.
+- Focus: `:focus-visible` and `--focus-outline` / `--focus-ring`. Recolor focus with `--focus-color` (defaults to `--accent`).
+- Selected chrome: `.tile--selected` and `--selected-ring`. Text selection is `::selection`.

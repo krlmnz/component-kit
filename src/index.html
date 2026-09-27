@@ -168,13 +168,15 @@
 <div class="docs-subsection" id="color">
 <header class="docs-subsection__header">
 <h3>Color</h3>
-<p>Semantic tokens are theme-aware. Toggle the theme in the top bar and the embedded components receive the same theme state.</p>
+<p>Semantic tokens are theme-aware. Toggle the theme in the top bar and the embedded components receive the same theme state. <code class="code-inline">--accent</code> stays blue for links, selection, and focus. Primary buttons use <code class="code-inline">--btn-primary</code>.</p>
 </header>
 <div class="token-grid">
 <div class="token-card"><span class="token-card__label">--bg</span><span class="token-card__value">Background</span><span class="token-card__sample color-token" style="--token-color:var(--bg);"></span></div>
 <div class="token-card"><span class="token-card__label">--surface</span><span class="token-card__value">Surface</span><span class="token-card__sample color-token" style="--token-color:var(--surface);"></span></div>
 <div class="token-card"><span class="token-card__label">--text</span><span class="token-card__value">Text</span><span class="token-card__sample color-token" style="--token-color:var(--text);"></span></div>
 <div class="token-card"><span class="token-card__label">--accent</span><span class="token-card__value">Accent</span><span class="token-card__sample color-token" style="--token-color:var(--accent);"></span></div>
+<div class="token-card"><span class="token-card__label">--btn-primary</span><span class="token-card__value">Primary button</span><span class="token-card__sample color-token" style="--token-color:var(--btn-primary);"></span></div>
+<div class="token-card"><span class="token-card__label">--on-btn-primary</span><span class="token-card__value">On primary</span><span class="token-card__sample color-token" style="--token-color:var(--on-btn-primary);"></span></div>
 </div>
 </div>
 <div class="docs-subsection" id="type">
@@ -202,13 +204,13 @@
 <header class="docs-section__header">
 <span class="eyebrow">Foundations</span>
 <h2>Shared primitives</h2>
-<p>Link <code class="code-inline">global.css</code> once. These classes are the kit. A page <code class="code-inline">&lt;style&gt;</code> block is only for specimen layout that is not a component, such as the Place Card state key. <code class="code-inline">.kit-frame</code> is the shared 340px specimen column. Canonical tabs, search, and icon-button choices are in <code class="code-inline">docs/PATTERNS.md</code>.</p>
+<p>Link <code class="code-inline">global.css</code> once. These classes are the kit. A page <code class="code-inline">&lt;style&gt;</code> block is only for specimen layout that is not a component, such as the Place Card state key. <code class="code-inline">.kit-frame</code> is the shared 340px specimen column. Canonical tabs, search, and icon-button choices are in <code class="code-inline">docs/PATTERNS.md</code>. Status, focus, and selection tokens are in <code class="code-inline">docs/STATUS-FOCUS.md</code>.</p>
 </header>
 <div class="data-table-wrap">
 <table class="data-table">
 <thead><tr><th>Primitive</th><th>Purpose</th><th>Source</th></tr></thead>
 <tbody>
-<tr><td><code class="code-inline">.btn</code> / <code class="code-inline">.btn--icon</code></td><td>Text actions. <code class="code-inline">.btn--icon</code> is the bordered icon-only button and shares its box with <code class="code-inline">.icon-btn</code>.</td><td><code class="code-inline">global.css</code></td></tr>
+<tr><td><code class="code-inline">.btn</code> / <code class="code-inline">.btn--icon</code></td><td>Text actions. <code class="code-inline">.btn--primary</code> uses the ink button tokens, not <code class="code-inline">--accent</code>. <code class="code-inline">.btn--icon</code> is the bordered icon-only button and shares its box with <code class="code-inline">.icon-btn</code>.</td><td><code class="code-inline">global.css</code></td></tr>
 <tr><td><code class="code-inline">.icon-btn</code></td><td>Canonical icon-only control for panel headers, toolbars, and tips. Size is <code class="code-inline">--icon-btn-size</code>.</td><td><code class="code-inline">global.css</code></td></tr>
 <tr><td><code class="code-inline">.panel</code></td><td>Cards, dialogs, menus, and editor surfaces. Put <code class="code-inline">.panel--flush</code> on the panel, not on a wrapper.</td><td><code class="code-inline">global.css</code></td></tr>
 <tr><td><code class="code-inline">.field</code> / <code class="code-inline">.input</code> / <code class="code-inline">.select</code> / <code class="code-inline">.textarea</code></td><td>Shared form geometry.</td><td><code class="code-inline">global.css</code></td></tr>

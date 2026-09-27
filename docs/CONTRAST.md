@@ -2,6 +2,8 @@
 
 WCAG 2.x relative luminance, computed from the sRGB hex values in `global.css`. `color-mix(in srgb, …)` backgrounds are channel interpolations rounded to 8-bit, which is the color the mix resolves to. Ratios below are rounded to two decimal places. A pair passes when the unrounded ratio meets the threshold.
 
+Primary buttons no longer use `--accent`. They use the ink tokens in **Primary button** below. The accent rows stay because links, tabs, selection, switches, and the focus outline still use the blue.
+
 Thresholds used here:
 
 - **Text 4.5:1.** Button labels are `--text-sm` (12px) and badges are `--text-xs` (11px). Both are normal text, including when the weight is 600 or 700.
@@ -45,7 +47,7 @@ Computed mixes:
 
 | Pair | Before | After |
 | --- | --- | --- |
-| `#FFFFFF` on `--accent` (primary label, both themes) | 3.52:1 | 4.56:1 |
+| `#FFFFFF` on `--accent` (white on the accent fill, both themes) | 3.52:1 | 4.56:1 |
 | `#FFFFFF` on `--accent-hover` | 4.49:1 | 5.23:1 light, 4.87:1 dark |
 | `#FFFFFF` on `--error` (danger label, both themes) | 3.91:1 | 4.60:1 |
 | `--success` on white, and on the success badge tint | 3.21:1 and 2.74:1 | labels use `--success-text`: 5.50:1 and 4.69:1 light; 5.55:1 and 4.59:1 dark |
@@ -154,11 +156,91 @@ Surfaces: `--surface` `#1C1F22`, `--bg` `#111416`, `--surface-2` `#24272B`. `--t
 | `--success` on `--success-soft` `#18322D` | 4.27:1 | 4.5 text | Fail — labels use `--success-text` |
 | `--warn` on `--surface` | 7.64:1 | 4.5 text | Pass (same hex as `--warn-text`) |
 
+## Primary button
+
+`.btn--primary` consumes `--btn-primary`, `--btn-primary-hover`, `--btn-primary-active`, and `--on-btn-primary`. It does not consume `--accent` or `--on-accent`. `--on-accent` remains the label on `.btn--danger` and the switch knob.
+
+Light theme is a black fill with a white label. Hover is charcoal `#24272B` (the dark theme `--surface-2`, so the step stays on the existing neutral ramp). Active is `#111416` (light `--text`), darker than the hover. Focus is the shared `:focus-visible` rule: a 2px `--accent` outline offset by `--space-0125`. The ring is blue on purpose, separate from the fill.
+
+Dark theme inverts the plate. A near-black fill on `#111416` / `#1C1F22` / `#24272B` would not read as the solid control, so primary is white with an ink label. Hover `#F2F2F2` (light `--surface-2`) and active `#E5E5E5` step that paper down. The same blue focus outline sits off the control.
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--btn-primary` | `#000000` | `#FFFFFF` |
+| `--btn-primary-hover` | `#24272B` | `#F2F2F2` |
+| `--btn-primary-active` | `#111416` | `#E5E5E5` |
+| `--on-btn-primary` | `#FFFFFF` | `#111416` |
+
+### Light theme
+
+| Pair | Ratio | Need | Result |
+| --- | --- | --- | --- |
+| `--on-btn-primary` on `--btn-primary` | 21.00:1 | 4.5 text | Pass |
+| `--on-btn-primary` on `--btn-primary-hover` `#24272B` | 15.00:1 | 4.5 text | Pass |
+| `--on-btn-primary` on `--btn-primary-active` `#111416` | 18.49:1 | 4.5 text | Pass |
+| `--btn-primary` on `--surface` | 21.00:1 | 3.0 UI | Pass |
+| `--btn-primary` on `--bg` | 20.12:1 | 3.0 UI | Pass |
+| `--btn-primary` on `--surface-2` | 18.76:1 | 3.0 UI | Pass |
+| `--btn-primary-hover` on `--surface` | 15.00:1 | 3.0 UI | Pass |
+| `--btn-primary-hover` on `--bg` | 14.37:1 | 3.0 UI | Pass |
+| `--btn-primary-hover` on `--surface-2` | 13.40:1 | 3.0 UI | Pass |
+| `--btn-primary-active` on `--surface` | 18.49:1 | 3.0 UI | Pass |
+| `--btn-primary-active` on `--bg` | 17.72:1 | 3.0 UI | Pass |
+| `--btn-primary-active` on `--surface-2` | 16.52:1 | 3.0 UI | Pass |
+| Focus `--accent` on `--bg` (ring sits off the control) | 4.37:1 | 3.0 UI | Pass |
+| Focus `--accent` against the black fill | 4.61:1 | 3.0 UI | Pass |
+
+### Dark theme
+
+| Pair | Ratio | Need | Result |
+| --- | --- | --- | --- |
+| `--on-btn-primary` on `--btn-primary` | 18.49:1 | 4.5 text | Pass |
+| `--on-btn-primary` on `--btn-primary-hover` `#F2F2F2` | 16.52:1 | 4.5 text | Pass |
+| `--on-btn-primary` on `--btn-primary-active` `#E5E5E5` | 14.68:1 | 4.5 text | Pass |
+| `--btn-primary` on `--surface` | 16.56:1 | 3.0 UI | Pass |
+| `--btn-primary` on `--bg` | 18.49:1 | 3.0 UI | Pass |
+| `--btn-primary` on `--surface-2` | 15.00:1 | 3.0 UI | Pass |
+| `--btn-primary-hover` on `--surface` | 14.79:1 | 3.0 UI | Pass |
+| `--btn-primary-hover` on `--bg` | 16.52:1 | 3.0 UI | Pass |
+| `--btn-primary-hover` on `--surface-2` | 13.40:1 | 3.0 UI | Pass |
+| `--btn-primary-active` on `--surface` | 13.14:1 | 3.0 UI | Pass |
+| `--btn-primary-active` on `--bg` | 14.68:1 | 3.0 UI | Pass |
+| `--btn-primary-active` on `--surface-2` | 11.91:1 | 3.0 UI | Pass |
+| Focus `--accent` on `--bg` (ring sits off the control) | 4.06:1 | 3.0 UI | Pass |
+| Focus `--accent` against the white fill | 4.56:1 | 3.0 UI | Pass |
+
+`--btn-primary-active` `#111416` on light `--bg` `#FAFAFA` is the same pair as `--text` on `--bg` (17.72:1). Dark `--btn-primary-hover` `#F2F2F2` on `--bg` `#111416` is the same pair as light `--text` on `--surface-2` (16.52:1). Dark active `#E5E5E5` on `--bg` is the same luminance pair as `--on-btn-primary` on that active fill (14.68:1).
+
 ## Notes
 
 - **Do not paint labels with `--success` or `--warn`.** On white, `--success` is 3.21:1 (large enough for a non-text icon, short of 4.5 for text) and `--warn` is 2.17:1. Use `--success-text` and `--warn-text`. Dark `--warn-text` can stay the bright amber because that amber is light against the dark surfaces.
 - **Links.** `--accent-text` clears 3:1 against `--text` in both themes (3.27:1 light, 3.15:1 dark). `a` and `.btn--link` are underlined anyway, so a link is not identified by color alone. Nav, brand, and resource-card anchors keep `text-decoration: none`; current nav items also carry the accent wash.
 - **Borders.** `#8A8A8C` and `#6E7271` are the lightest cool grays that still clear 3:1 against every surface token, including `--surface-2`. The strict pair in each theme is border on `--surface-2` at 3.08:1.
-- **One accent and one error for both themes.** `#1A7EAA` and `#DA3540` clear 4.5:1 with white text and 3:1 against dark surfaces, so the dark theme does not need a second fill. Hover is slightly different per theme: light `#18749C` can go darker; dark `#177A9E` stays just darker than the fill so it still clears 3:1 on `--surface-2`.
+- **One accent and one error for both themes.** `#1A7EAA` and `#DA3540` clear 4.5:1 with white text and 3:1 against dark surfaces, so the dark theme does not need a second accent or error fill. Hover is slightly different per theme: light `#18749C` can go darker; dark `#177A9E` stays just darker than the fill so it still clears 3:1 on `--surface-2`. Primary buttons do not use this fill. See **Primary button**.
 - **Disabled controls** use `opacity: .45`. WCAG contrast does not apply to disabled UI.
 - **Color Scale palette swatches** such as `#FF4E4F` and `#2592C2` are sample paints, not chrome. Invalid color-scale fields use `--error` and `--error-text`.
+
+## Added tokens (fill hexes unchanged)
+
+`--success`, `--warn`, `--error`, `--accent`, and every `*-text` / `--error-soft` hex above are unchanged. These tokens are aliases or the same `color-mix` channel math. Ratios use the method at the top of this file.
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--error-wash` (8% `--error` on `--surface`) | `#FCEFF0` | `#2B2124` |
+| `--info` / `--info-text` / `--info-soft` / `--info-wash` | alias of the accent pair | alias of the accent pair |
+| `--info-border` (35%) | `#638696` | `#517685` |
+| `--success-border` (35%) | `#5A9382` | `#488471` |
+| `--warn-border` (40%) | `#B6915D` | `#A5824D` |
+| `--error-border` (35%) | `#A66C71` | `#945D60` |
+| `--selection-bg` | `--accent-wash` `#F1F7FA` | `--accent-wash` `#1C252A` |
+| `--selection-text` | `--text` `#111416` | `--text` `#FFFFFF` |
+
+| Pair | Light | Dark | Need | Result |
+| --- | --- | --- | --- | --- |
+| `--error-text` on `--error-wash` | 4.92:1 | 6.95:1 | 4.5 text | Pass |
+| `--text` on `--selection-bg` | 17.11:1 | 15.59:1 | 4.5 text | Pass |
+| `--info-text` on `--info-wash` | same as `--accent-text` on `--accent-wash` | same | 4.5 text | Pass |
+
+`--focus-color` defaults to `--accent`, so the focus stroke ratios are the `--accent` on surface rows above (4.56:1 light, 3.63:1 dark). Invalid field borders stay `--error` on `--surface` (4.60:1 light, 3.60:1 dark). Focus on an invalid field also draws `--error-outline` (`2px solid var(--error)`), the same `--error` stroke, because a halo of `--error-soft` is not visible on `--surface`.
+
+The alert strokes are the previous inline mixes, now named `*-border`. `--warn-border` on light `--bg` is 2.80:1. That amber stroke is not a control boundary; the warn label is `--warn-text`. `--error-border` against dark `--error-soft` is 2.88:1; the error label is `--error-text` on that fill (6.75:1). Do not paint labels with `--warn-border` or with the raw fills.
