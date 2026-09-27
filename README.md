@@ -40,7 +40,7 @@ Writer themes (Light, Night Sky, Warm Note, Signal Hacker, Grey Newspaper, Draft
 - **`.tile` / `.tile-grid`** — selectable icon and pattern tiles
 - **`.panel`** — kit chrome for editor panels
 
-Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, Map Layers, Place Card, and the map stage (`.map-viewport`, `.map-controls`, `.map-toolbar`, `.map-popup`, `.map-legend`) also live in `global.css`. See `docs/PATTERNS.md` for the canonical tabs, search, and icon-button patterns. The map specimen is `map.html`.
+Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, Map Layers, Place Card, and the map block (`.map-viewport`, `.map-controls`, `.map-toolbar`, `.map-popup`, `.map-legend`) also live in `global.css`. The map is a drop-in for the Studio editor: it inherits the page theme, and v1 has no separate chrome color API. See `docs/PATTERNS.md` for the canonical tabs, search, and icon-button patterns. The specimen is `map.html`.
 
 ## Recent fixes
 

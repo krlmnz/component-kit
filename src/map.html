@@ -17,53 +17,53 @@
 
 <main class="stage">
   <h1 class="stage__title">Map</h1>
-  <p class="stage__label">OpenFreeMap vector basemap, colored from the active writer theme. Esri hillshade sits under the water. The callout is the same place as Place Card.</p>
+  <p class="stage__label">Drop-in block for the Studio editor. It inherits the page theme. One OpenFreeMap vector source, kit icon controls, and visible source attribution.</p>
 
   <div class="map-viewport" id="map-viewport">
     <div class="map-viewport__canvas" id="map"></div>
 
     <div class="map-toolbar">
       <button class="icon-btn icon-btn--touch" id="map-search-toggle" type="button" aria-expanded="false" aria-controls="map-search" aria-label="Search">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="3.6" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.2 13 13.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
       </button>
       <form class="map-toolbar__search" id="map-search" role="search" hidden>
         <input class="input input--sm" id="map-search-input" type="search" aria-label="Search places" placeholder="Villarrica, Cusco…">
         <p class="map-toolbar__hint" id="map-search-hint" role="status" hidden></p>
       </form>
       <button class="icon-btn icon-btn--touch" id="map-layers" type="button" aria-pressed="true" aria-controls="map-legend" aria-label="Layers">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5 13 5.2 8 7.9 3 5.2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M3 8 8 10.7 13 8M3 10.6 8 13.3 13 10.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch" id="map-basemap" type="button" aria-expanded="false" aria-controls="map-basemap-panel" aria-label="Basemap">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 10.5 6 7.5 8.5 10 11 7.8 13.5 10.2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM104,52.94l48,24V203.06l-48-24ZM40,62.25l48-12v127.5l-48,12Zm176,131.5-48,12V78.25l48-12Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch" id="map-pin" type="button" aria-pressed="false" aria-label="Drop a pin">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14.2s4.2-3.6 4.2-6.7a4.2 4.2 0 1 0-8.4 0c0 3.1 4.2 6.7 4.2 6.7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="7.4" r="1.3" fill="currentColor"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch" id="map-route" type="button" aria-pressed="false" aria-label="Route">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 12.5c2.2-4.2 3.2-4.2 5-4.2s2.6 2 5-4.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="3" cy="12.5" r="1.1" fill="currentColor"/><circle cx="13" cy="4" r="1.1" fill="currentColor"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M200,168a32.06,32.06,0,0,0-31,24H72a32,32,0,0,1,0-64h96a40,40,0,0,0,0-80H72a8,8,0,0,0,0,16h96a24,24,0,0,1,0,48H72a48,48,0,0,0,0,96h97a32,32,0,1,0,31-40Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,200,216Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch" id="map-expand" type="button" aria-pressed="false" aria-label="Expand map">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 2.5H2.5V6M10 2.5h3.5V6M6 13.5H2.5V10M10 13.5h3.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V96a8,8,0,0,1-16,0V67.31l-42.34,42.35a8,8,0,0,1-11.32-11.32L188.69,56H160a8,8,0,0,1,0-16h48A8,8,0,0,1,216,48ZM98.34,146.34,56,188.69V160a8,8,0,0,0-16,0v48a8,8,0,0,0,8,8H96a8,8,0,0,0,0-16H67.31l42.35-42.34a8,8,0,0,0-11.32-11.32ZM208,152a8,8,0,0,0-8,8v28.69l-42.34-42.35a8,8,0,0,0-11.32,11.32L188.69,200H160a8,8,0,0,0,0,16h48a8,8,0,0,0,8-8V160A8,8,0,0,0,208,152ZM67.31,56H96a8,8,0,0,0,0-16H48a8,8,0,0,0-8,8V96a8,8,0,0,0,16,0V67.31l42.34,42.35a8,8,0,0,0,11.32-11.32Z"/></svg>
       </button>
     </div>
 
     <div class="map-basemap" id="map-basemap-panel" hidden>
       <p class="map-basemap__title">Basemap</p>
-      <p class="map-basemap__body">Custom style for <strong id="map-basemap-name">Light / Minimal</strong>. Land, water, nature, roads, and buildings follow the writer theme.</p>
+      <p class="map-basemap__body">Paint for <strong id="map-basemap-name">Light / Minimal</strong>. Land, water, nature, roads, and buildings follow the page theme.</p>
     </div>
 
     <div class="map-controls">
       <button class="icon-btn icon-btn--touch" id="map-zoom-in" type="button" aria-label="Zoom in">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch" id="map-zoom-out" type="button" aria-label="Zoom out">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch" id="map-locate" type="button" aria-label="Current location">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v2.2M8 12.3v2.2M1.5 8h2.2M12.3 8h2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M232,120h-8.34A96.14,96.14,0,0,0,136,32.34V24a8,8,0,0,0-16,0v8.34A96.14,96.14,0,0,0,32.34,120H24a8,8,0,0,0,0,16h8.34A96.14,96.14,0,0,0,120,223.66V232a8,8,0,0,0,16,0v-8.34A96.14,96.14,0,0,0,223.66,136H232a8,8,0,0,0,0-16Zm-96,87.6V200a8,8,0,0,0-16,0v7.6A80.15,80.15,0,0,1,48.4,136H56a8,8,0,0,0,0-16H48.4A80.15,80.15,0,0,1,120,48.4V56a8,8,0,0,0,16,0V48.4A80.15,80.15,0,0,1,207.6,120H200a8,8,0,0,0,0,16h7.6A80.15,80.15,0,0,1,136,207.6ZM128,88a40,40,0,1,0,40,40A40,40,0,0,0,128,88Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,152Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch map-compass" id="map-compass" type="button" aria-label="Reset north">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.25" stroke="currentColor" stroke-width="1.5"/><path d="M8 3.2 9.4 8.2 8 7.2 6.6 8.2Z" fill="currentColor"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z"/></svg>
       </button>
     </div>
 
@@ -80,19 +80,19 @@
   </div>
 
   <section>
-    <p class="stage__label">Map icons</p>
+    <p class="stage__label">Map icons — Phosphor, currentColor</p>
     <ul class="map-icon-sheet">
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Zoom in</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Zoom out</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v2.2M8 12.3v2.2M1.5 8h2.2M12.3 8h2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Locate</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.25" stroke="currentColor" stroke-width="1.5"/><path d="M8 3.2 9.4 8.2 8 7.2 6.6 8.2Z" fill="currentColor"/></svg></span>Compass</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M8 2.5 13 5.2 8 7.9 3 5.2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M3 8 8 10.7 13 8M3 10.6 8 13.3 13 10.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Layers</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 10.5 6 7.5 8.5 10 11 7.8 13.5 10.2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></span>Basemap</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M8 14.2s4.2-3.6 4.2-6.7a4.2 4.2 0 1 0-8.4 0c0 3.1 4.2 6.7 4.2 6.7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="7.4" r="1.3" fill="currentColor"/></svg></span>Pin</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 12.5c2.2-4.2 3.2-4.2 5-4.2s2.6 2 5-4.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="3" cy="12.5" r="1.1" fill="currentColor"/><circle cx="13" cy="4" r="1.1" fill="currentColor"/></svg></span>Route</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="3.6" stroke="currentColor" stroke-width="1.5"/><path d="M10 10.2 13 13.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Search</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2.5H2.5V6M10 2.5h3.5V6M6 13.5H2.5V10M10 13.5h3.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Expand</li>
-      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 3.5 12.5 12.5M12.5 3.5 3.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>Close</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/></svg></span>Zoom in</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128Z"/></svg></span>Zoom out</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M232,120h-8.34A96.14,96.14,0,0,0,136,32.34V24a8,8,0,0,0-16,0v8.34A96.14,96.14,0,0,0,32.34,120H24a8,8,0,0,0,0,16h8.34A96.14,96.14,0,0,0,120,223.66V232a8,8,0,0,0,16,0v-8.34A96.14,96.14,0,0,0,223.66,136H232a8,8,0,0,0,0-16Zm-96,87.6V200a8,8,0,0,0-16,0v7.6A80.15,80.15,0,0,1,48.4,136H56a8,8,0,0,0,0-16H48.4A80.15,80.15,0,0,1,120,48.4V56a8,8,0,0,0,16,0V48.4A80.15,80.15,0,0,1,207.6,120H200a8,8,0,0,0,0,16h7.6A80.15,80.15,0,0,1,136,207.6ZM128,88a40,40,0,1,0,40,40A40,40,0,0,0,128,88Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,152Z"/></svg></span>Locate</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z"/></svg></span>Compass</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></svg></span>Layers</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM104,52.94l48,24V203.06l-48-24ZM40,62.25l48-12v127.5l-48,12Zm176,131.5-48,12V78.25l48-12Z"/></svg></span>Basemap</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></svg></span>Pin</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M200,168a32.06,32.06,0,0,0-31,24H72a32,32,0,0,1,0-64h96a40,40,0,0,0,0-80H72a8,8,0,0,0,0,16h96a24,24,0,0,1,0,48H72a48,48,0,0,0,0,96h97a32,32,0,1,0,31-40Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,200,216Z"/></svg></span>Route</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg></span>Search</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V96a8,8,0,0,1-16,0V67.31l-42.34,42.35a8,8,0,0,1-11.32-11.32L188.69,56H160a8,8,0,0,1,0-16h48A8,8,0,0,1,216,48ZM98.34,146.34,56,188.69V160a8,8,0,0,0-16,0v48a8,8,0,0,0,8,8H96a8,8,0,0,0,0-16H67.31l42.35-42.34a8,8,0,0,0-11.32-11.32ZM208,152a8,8,0,0,0-8,8v28.69l-42.34-42.35a8,8,0,0,0-11.32,11.32L188.69,200H160a8,8,0,0,0,0,16h48a8,8,0,0,0,8-8V160A8,8,0,0,0,208,152ZM67.31,56H96a8,8,0,0,0,0-16H48a8,8,0,0,0-8,8V96a8,8,0,0,0,16,0V67.31l42.34,42.35a8,8,0,0,0,11.32-11.32Z"/></svg></span>Expand</li>
+      <li><span class="icon-btn icon-btn--touch" aria-hidden="true"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></span>Close</li>
     </ul>
   </section>
 </main>
@@ -105,7 +105,7 @@
         <h2 class="map-popup__title">Volcán Villarrica</h2>
       </div>
       <button class="icon-btn" type="button" data-map-close aria-label="Close">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 3.5 12.5 12.5M12.5 3.5 3.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
       </button>
     </div>
     <p class="map-popup__body">Open lava lake above Pucón. The same place is edited in Place Card.</p>
@@ -145,7 +145,7 @@
     style: window.KitMapStyle.build(),
     center: [place.lng, place.lat],
     zoom: 12.4,
-    attributionControl: true,
+    attributionControl: { compact: false },
     cooperativeGestures: true
   });
 
@@ -258,7 +258,7 @@
     if (!drawing) return;
     var pin = document.createElement('div');
     pin.className = 'map-pin';
-    pin.innerHTML = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 14.2s4.2-3.6 4.2-6.7a4.2 4.2 0 1 0-8.4 0c0 3.1 4.2 6.7 4.2 6.7Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="7.4" r="1.3" fill="currentColor"/></svg>';
+    pin.innerHTML = '<svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></svg>';
     new maplibregl.Marker({ element: pin, anchor: 'bottom' }).setLngLat(event.lngLat).addTo(map);
   });
 

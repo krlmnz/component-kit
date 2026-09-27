@@ -2254,8 +2254,12 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 /* ═══════════════════════════════════════════════════════════════════
    MAP CHROME
    -------------------------------------------------------------------
-   Framed MapLibre stage, the control stack, the tool row, a place
-   callout, and a layer legend. Controls are .icon-btn.icon-btn--touch.
+   Drop-in block for the Studio editor. It inherits html[data-theme]
+   and the page tokens (--surface, --text, --border, --shadow).
+   There is no separate map-chrome color API. Controls are
+   .icon-btn.icon-btn--touch. Glyphs are Phosphor paths in currentColor.
+   MapLibre's default navigation group and logo are hidden.
+   OpenStreetMap / source attribution stays visible.
    Layer colors are the --map-* tokens. Specimen: map.html.
 ═══════════════════════════════════════════════════════════════════ */
 .map-viewport {
@@ -2280,6 +2284,10 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   height: 100%;
 }
 .map-viewport .maplibregl-map { font-family: inherit; }
+.map-viewport .maplibregl-ctrl-logo,
+.map-viewport .maplibregl-ctrl-group {
+  display: none;
+}
 .map-viewport .maplibregl-ctrl-attrib {
   font-size: 10px;
   line-height: 1.3;
@@ -2287,6 +2295,15 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   color: var(--text-2);
 }
 .map-viewport .maplibregl-ctrl-attrib a { color: var(--accent-text); }
+.map-viewport .maplibregl-ctrl-attrib.maplibregl-compact {
+  padding: 2px 6px;
+}
+.map-viewport .maplibregl-ctrl-attrib.maplibregl-compact .maplibregl-ctrl-attrib-inner {
+  display: block;
+}
+.map-viewport .maplibregl-ctrl-attrib.maplibregl-compact .maplibregl-ctrl-attrib-button {
+  display: none;
+}
 .map-viewport.is-drawing .maplibregl-canvas-container { cursor: crosshair; }
 
 .map-controls,

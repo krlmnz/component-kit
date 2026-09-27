@@ -48,7 +48,9 @@ These keep WCAG AA on controls. Ratios are in [`CONTRAST.md`](CONTRAST.md).
 
 ## Map layer tokens
 
-Set on `:root` (light) and on `night`, `note`, `signal`, `news`, and `draft`. These are basemap layers, not the light-only map chrome on the Studio site. Chrome does not use the brand hues. Those stay on data: `--viz-1` … `--viz-8`, `--route-line`, `--route-ink`, `--route-casing`.
+The map is a drop-in block for the Studio editor (`map.html`, classes in `global.css`). It inherits `html[data-theme]` and the page tokens. v1 has no separate map-chrome customization API. Controls are `.icon-btn.icon-btn--touch` inside `.map-controls` and `.map-toolbar`, painted with `--surface`, `--text`, `--border`, and `--shadow`. Glyphs are Phosphor paths in `currentColor`. MapLibre’s default navigation group and logo are hidden. OpenStreetMap, OpenFreeMap, OpenMapTiles, and Esri attribution stay visible.
+
+`--map-*` is set on `:root` (light) and on `night`, `note`, `signal`, `news`, and `draft`. These are basemap layers. Chrome does not use the brand hues. Those stay on data: `--viz-1` … `--viz-8`, `--route-line`, `--route-ink`, `--route-casing`.
 
 | Token | Layer |
 | --- | --- |
@@ -66,8 +68,8 @@ Set on `:root` (light) and on `night`, `note`, `signal`, `news`, and `draft`. Th
 | `--map-hillshade-opacity` | Strength of the specimen’s hillshade raster |
 | `--map-label` | Place labels |
 
-`map-style.js` builds one MapLibre style from the computed values. Changing `data-theme` recolors the live map with `setPaintProperty`. It does not reload the page. The specimen sets MapLibre `cooperativeGestures` so a long page that embeds the map can still scroll.
+`map-style.js` builds one MapLibre style from one [OpenFreeMap](https://openfreemap.org/) vector source (OpenMapTiles schema, the same layers Liberty uses, no API key). Layer ids stay stable. Changing `data-theme` recolors the live map with `setPaintProperty`. It does not reload tiles or swap in a second style JSON. The specimen sets MapLibre `cooperativeGestures` so a long page that embeds the map can still scroll. `attributionControl` stays on, with `compact: false`, so the source line remains readable.
 
-The specimen (`map.html`) uses [OpenFreeMap](https://openfreemap.org/) vector tiles (OpenMapTiles schema, no API key) and the Esri World Hillshade raster for relief. OpenFreeMap does not include a DEM. The public terrarium elevation bucket does not send `Access-Control-Allow-Origin`, so a MapLibre `hillshade` layer cannot read it. The Esri overlay is grayscale; `--map-hillshade` is the matching ink token for Studio and Atelier.
+OpenFreeMap does not include a DEM. The public terrarium elevation bucket does not send `Access-Control-Allow-Origin`, so a MapLibre `hillshade` layer cannot read it. Relief is the Esri World Hillshade raster, drawn in grayscale. `--map-hillshade` is the matching ink token for a legend.
 
-Map controls are `.icon-btn.icon-btn--touch` inside `.map-viewport`, `.map-controls`, and `.map-toolbar`. The place callout is `.map-popup`. The swatch row is `.map-legend`.
+The place callout is `.map-popup`. The swatch row is `.map-legend`.

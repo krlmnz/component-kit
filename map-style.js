@@ -1,10 +1,12 @@
-/* Theme basemap for the map specimen.
-   Vector tiles: OpenFreeMap (OpenMapTiles schema, no API key).
-   https://tiles.openfreemap.org/planet
+/* Drop-in basemap for the Studio editor.
+   One vector source: OpenFreeMap planet (OpenMapTiles / Liberty schema,
+   no API key, HTTPS). https://tiles.openfreemap.org/planet
    Relief: Esri World Hillshade raster (CORS-enabled, no key). OpenFreeMap
    does not ship a DEM, and the public terrarium bucket does not send
    Access-Control-Allow-Origin, so a MapLibre hillshade layer cannot read it.
-   Colors come from the --map-* custom properties on the active theme. */
+   One style object. Layer ids stay stable. A theme change calls
+   setPaintProperty from the --map-* custom properties. No per-theme
+   style JSON. Chrome colors are page tokens, not this module. */
 (function () {
   var SOURCE = 'openfreemap';
   var HILLSHADE = 'hillshade';
