@@ -47,3 +47,8 @@ Badge, tabs, menu, modal, toast, tooltip, the color picker, Color Scale chrome, 
 - Color Scale: fixed seed, token anchors with one `--error` red, shared `.swatch`, monotonic OKLab sequential ramps (see `docs/color-scale.md`)
 - Place Card: choosing an icon applies it to the trigger
 - Compact utility inputs: hex / opacity / weight use one `.combo` (same height) across Inputs, Map Layers, and Color Library
+
+## Consume surfaces
+
+- [Studio recipe](docs/STUDIO-RECIPE.md)
+- [Map editor ↔ kit matrix](docs/MAP-EDITOR-KIT-MATRIX.md)
