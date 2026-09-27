@@ -1,15 +1,37 @@
-/* Drop-in basemap for the Studio editor.
+/* Shared basemap for the Studio editor and Map Editor.
    One vector source: OpenFreeMap planet (OpenMapTiles / Liberty schema,
    no API key, HTTPS). https://tiles.openfreemap.org/planet
    Relief: Esri World Hillshade raster (CORS-enabled, no key). OpenFreeMap
    does not ship a DEM, and the public terrarium bucket does not send
    Access-Control-Allow-Origin, so a MapLibre hillshade layer cannot read it.
-   One style object. Layer ids stay stable. A theme change calls
-   setPaintProperty from the --map-* custom properties. No per-theme
-   style JSON. Chrome colors are page tokens, not this module. */
+   One style object. Layer ids stay stable. KitMapStyle.layers is the
+   setPaintProperty contract (also in docs/THEMES.md). A theme change
+   recolors those properties only. Opacities and line widths stay at the
+   quiet defaults below. No per-theme style JSON. Chrome is page tokens. */
 (function () {
   var SOURCE = 'openfreemap';
   var HILLSHADE = 'hillshade';
+
+  /* Draw order is array order (first = underneath). */
+  var LAYERS = [
+    { id: 'background', paint: 'background-color', token: '--map-land', role: 'Ground' },
+    { id: 'landcover-wood', paint: 'fill-color', token: '--map-wood', role: 'Forest landcover' },
+    { id: 'landuse-wood', paint: 'fill-color', token: '--map-wood', role: 'Forest landuse' },
+    { id: 'landcover-grass', paint: 'fill-color', token: '--map-park', role: 'Grass and wetland' },
+    { id: 'landcover-scrub', paint: 'fill-color', token: '--map-scrub', role: 'Scrub and farmland' },
+    { id: 'landcover-sand', paint: 'fill-color', token: '--map-beach', role: 'Sand' },
+    { id: 'landcover-glacier', paint: 'fill-color', token: '--map-glacier', role: 'Glacier, ice shelf, ice' },
+    { id: 'park', paint: 'fill-color', token: '--map-park', role: 'Park polygons' },
+    { id: 'landuse-park', paint: 'fill-color', token: '--map-park', role: 'Park, grass, and garden landuse' },
+    { id: 'hillshade', paint: 'raster-opacity', token: '--map-hillshade-opacity', role: 'Relief strength' },
+    { id: 'water', paint: 'fill-color', token: '--map-water', role: 'Water bodies' },
+    { id: 'waterway', paint: 'line-color', token: '--map-water', role: 'Rivers and streams' },
+    { id: 'building', paint: 'fill-color', token: '--map-building', role: 'Buildings' },
+    { id: 'road-casing', paint: 'line-color', token: '--map-road-casing', role: 'Road casing' },
+    { id: 'road', paint: 'line-color', token: '--map-road', role: 'Road fill' },
+    { id: 'place-label', paint: 'text-color', token: '--map-label', role: 'Place names' },
+    { id: 'place-label', paint: 'text-halo-color', token: '--map-land', role: 'Place-name halo' }
+  ];
 
   function read(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -66,7 +88,7 @@
           source: SOURCE,
           'source-layer': 'landcover',
           filter: ['==', ['get', 'class'], 'wood'],
-          paint: { 'fill-color': wood, 'fill-opacity': 0.9 }
+          paint: { 'fill-color': wood, 'fill-opacity': 0.5 }
         },
         {
           id: 'landuse-wood',
@@ -74,7 +96,7 @@
           source: SOURCE,
           'source-layer': 'landuse',
           filter: ['match', ['get', 'class'], ['forest', 'wood'], true, false],
-          paint: { 'fill-color': wood, 'fill-opacity': 0.9 }
+          paint: { 'fill-color': wood, 'fill-opacity': 0.5 }
         },
         {
           id: 'landcover-grass',
@@ -82,7 +104,7 @@
           source: SOURCE,
           'source-layer': 'landcover',
           filter: ['match', ['get', 'class'], ['grass', 'wetland'], true, false],
-          paint: { 'fill-color': park, 'fill-opacity': 0.85 }
+          paint: { 'fill-color': park, 'fill-opacity': 0.45 }
         },
         {
           id: 'landcover-scrub',
@@ -90,7 +112,7 @@
           source: SOURCE,
           'source-layer': 'landcover',
           filter: ['match', ['get', 'class'], ['scrub', 'farmland'], true, false],
-          paint: { 'fill-color': scrub, 'fill-opacity': 0.85 }
+          paint: { 'fill-color': scrub, 'fill-opacity': 0.4 }
         },
         {
           id: 'landcover-sand',
@@ -98,7 +120,7 @@
           source: SOURCE,
           'source-layer': 'landcover',
           filter: ['==', ['get', 'class'], 'sand'],
-          paint: { 'fill-color': beach, 'fill-opacity': 0.95 }
+          paint: { 'fill-color': beach, 'fill-opacity': 0.5 }
         },
         {
           id: 'landcover-glacier',
@@ -110,7 +132,7 @@
             ['==', ['get', 'subclass'], 'ice_shelf'],
             ['==', ['get', 'class'], 'ice']
           ],
-          paint: { 'fill-color': glacier, 'fill-opacity': 0.95 }
+          paint: { 'fill-color': glacier, 'fill-opacity': 0.45 }
         },
         {
           id: 'park',
@@ -118,7 +140,7 @@
           source: SOURCE,
           'source-layer': 'park',
           filter: ['match', ['geometry-type'], ['Polygon', 'MultiPolygon'], true, false],
-          paint: { 'fill-color': park, 'fill-opacity': 0.8 }
+          paint: { 'fill-color': park, 'fill-opacity': 0.4 }
         },
         {
           id: 'landuse-park',
@@ -126,7 +148,7 @@
           source: SOURCE,
           'source-layer': 'landuse',
           filter: ['match', ['get', 'class'], ['park', 'grass', 'garden'], true, false],
-          paint: { 'fill-color': park, 'fill-opacity': 0.75 }
+          paint: { 'fill-color': park, 'fill-opacity': 0.35 }
         },
         {
           id: 'hillshade',
@@ -134,8 +156,8 @@
           source: HILLSHADE,
           paint: {
             'raster-opacity': opacity(),
-            'raster-saturation': -0.85,
-            'raster-contrast': 0.15,
+            'raster-saturation': -1,
+            'raster-contrast': 0,
             'raster-fade-duration': 0
           }
         },
@@ -155,7 +177,7 @@
           filter: ['!=', ['get', 'brunnel'], 'tunnel'],
           paint: {
             'line-color': water,
-            'line-width': lineWidth(0.6, 3)
+            'line-width': lineWidth(0.3, 1.6)
           }
         },
         {
@@ -164,7 +186,7 @@
           source: SOURCE,
           'source-layer': 'building',
           minzoom: 13,
-          paint: { 'fill-color': building, 'fill-opacity': 0.95 }
+          paint: { 'fill-color': building, 'fill-opacity': 0.55 }
         },
         {
           id: 'road-casing',
@@ -178,7 +200,7 @@
           ],
           paint: {
             'line-color': casing,
-            'line-width': lineWidth(1.2, 9)
+            'line-width': lineWidth(0.6, 5)
           }
         },
         {
@@ -193,7 +215,7 @@
           ],
           paint: {
             'line-color': road,
-            'line-width': lineWidth(0.5, 6)
+            'line-width': lineWidth(0.25, 2.6)
           }
         },
         {
@@ -201,17 +223,17 @@
           type: 'symbol',
           source: SOURCE,
           'source-layer': 'place',
-          minzoom: 5,
+          minzoom: 6,
           filter: ['match', ['get', 'class'], ['city', 'town', 'village'], true, false],
           layout: {
             'text-field': ['coalesce', ['get', 'name:en'], ['get', 'name']],
             'text-font': ['Noto Sans Regular'],
-            'text-size': ['interpolate', ['linear'], ['zoom'], 5, 11, 12, 14]
+            'text-size': ['interpolate', ['linear'], ['zoom'], 6, 10, 12, 12]
           },
           paint: {
             'text-color': label,
             'text-halo-color': land,
-            'text-halo-width': 1.25
+            'text-halo-width': 1
           }
         }
       ]
@@ -220,25 +242,13 @@
 
   function paint(map) {
     if (!map.getLayer('background')) return;
-    var land = read('--map-land');
-    map.setPaintProperty('background', 'background-color', land);
-    map.setPaintProperty('landcover-wood', 'fill-color', read('--map-wood'));
-    map.setPaintProperty('landuse-wood', 'fill-color', read('--map-wood'));
-    map.setPaintProperty('landcover-grass', 'fill-color', read('--map-park'));
-    map.setPaintProperty('landcover-scrub', 'fill-color', read('--map-scrub'));
-    map.setPaintProperty('landcover-sand', 'fill-color', read('--map-beach'));
-    map.setPaintProperty('landcover-glacier', 'fill-color', read('--map-glacier'));
-    map.setPaintProperty('park', 'fill-color', read('--map-park'));
-    map.setPaintProperty('landuse-park', 'fill-color', read('--map-park'));
-    map.setPaintProperty('hillshade', 'raster-opacity', opacity());
-    map.setPaintProperty('water', 'fill-color', read('--map-water'));
-    map.setPaintProperty('waterway', 'line-color', read('--map-water'));
-    map.setPaintProperty('building', 'fill-color', read('--map-building'));
-    map.setPaintProperty('road-casing', 'line-color', read('--map-road-casing'));
-    map.setPaintProperty('road', 'line-color', read('--map-road'));
-    map.setPaintProperty('place-label', 'text-color', read('--map-label'));
-    map.setPaintProperty('place-label', 'text-halo-color', land);
+    for (var i = 0; i < LAYERS.length; i++) {
+      var layer = LAYERS[i];
+      if (!map.getLayer(layer.id)) continue;
+      var value = layer.paint === 'raster-opacity' ? opacity() : read(layer.token);
+      map.setPaintProperty(layer.id, layer.paint, value);
+    }
   }
 
-  window.KitMapStyle = { build: build, paint: paint };
+  window.KitMapStyle = { build: build, paint: paint, layers: LAYERS };
 })();

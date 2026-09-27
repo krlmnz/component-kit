@@ -77,20 +77,20 @@
   --route-ink: #A03D12;
   --route-casing: rgba(24, 23, 22, 0.14);
 
-  /* Basemap layers. Each writer theme overrides these. */
-  --map-land: #F3F1EA;
-  --map-water: #C5D7E4;
-  --map-park: #D5E4CC;
-  --map-wood: #B7CDA8;
-  --map-beach: #F1E3BE;
-  --map-scrub: #D5D6B4;
-  --map-glacier: #E7EEF2;
-  --map-road: #FFFFFF;
-  --map-road-casing: #D4D0C8;
-  --map-building: #E4E1DA;
+  /* Quiet basemap. Landcover sits close to the ground so prose wins. */
+  --map-land: #F4F2EC;
+  --map-water: #D4DFE6;
+  --map-park: #E3E8DE;
+  --map-wood: #D6DDD0;
+  --map-beach: #EFE6D4;
+  --map-scrub: #E6E6D8;
+  --map-glacier: #EEF1F2;
+  --map-road: #F7F6F2;
+  --map-road-casing: #E4E0D8;
+  --map-building: #EBE8E2;
   --map-hillshade: #8A867C;
-  --map-hillshade-opacity: 0.28;
-  --map-label: #3C433F;
+  --map-hillshade-opacity: 0.12;
+  --map-label: #6A706C;
 
   --shadow:      0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.07);
   --shadow-pop:  0 8px 32px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.07);
@@ -145,19 +145,19 @@
   --error: #DA3540;
   --error-text: #FF8B91;
   --error-soft: #3A1E20;
-  --map-land: #101820;
-  --map-water: #0A2433;
-  --map-park: #163024;
-  --map-wood: #12281C;
-  --map-beach: #2A261C;
-  --map-scrub: #1C2820;
-  --map-glacier: #1A2830;
-  --map-road: #3A4D60;
-  --map-road-casing: #070D14;
-  --map-building: #1A2836;
+  --map-land: #12181F;
+  --map-water: #162632;
+  --map-park: #16211B;
+  --map-wood: #141E19;
+  --map-beach: #1C1C17;
+  --map-scrub: #171C19;
+  --map-glacier: #171E24;
+  --map-road: #2C3A48;
+  --map-road-casing: #0C1218;
+  --map-building: #182028;
   --map-hillshade: #05080C;
-  --map-hillshade-opacity: 0.16;
-  --map-label: #D5E2EE;
+  --map-hillshade-opacity: 0.08;
+  --map-label: #8FA3B4;
   --shadow: 0 1px 3px rgba(0,0,0,.32), 0 4px 16px rgba(0,0,0,.28);
   --shadow-pop: 0 8px 32px rgba(0,0,0,.48), 0 2px 8px rgba(0,0,0,.28);
 }
@@ -172,19 +172,19 @@
   --accent-text: #71471F;
   --on-accent: #FFFFFF;
   --accent-soft: #F0DFBD;
-  --map-land: #F4ECD0;
-  --map-water: #C5CBB0;
-  --map-park: #E2D39A;
-  --map-wood: #CBB97A;
-  --map-beach: #F3E6C0;
-  --map-scrub: #DDD2A4;
-  --map-glacier: #EFE8D4;
-  --map-road: #FFFAF0;
-  --map-road-casing: #C6AA84;
-  --map-building: #EADFBE;
+  --map-land: #F6F0DC;
+  --map-water: #DDD8C4;
+  --map-park: #E8E0C4;
+  --map-wood: #DDD4B4;
+  --map-beach: #F3EBD4;
+  --map-scrub: #E6DFC8;
+  --map-glacier: #F3EFE2;
+  --map-road: #FBF6EA;
+  --map-road-casing: #E4D6BE;
+  --map-building: #EFE6D2;
   --map-hillshade: #A89068;
-  --map-hillshade-opacity: 0.22;
-  --map-label: #3F3024;
+  --map-hillshade-opacity: 0.1;
+  --map-label: #7A6554;
   --shadow: 0 1px 3px rgba(102,76,42,.07), 0 4px 16px rgba(102,76,42,.08);
   --shadow-pop: 0 8px 32px rgba(102,76,42,.14), 0 2px 8px rgba(102,76,42,.08);
 }
@@ -206,19 +206,19 @@
   --error: #DA3540;
   --error-text: #FF8B91;
   --error-soft: #3A1E20;
-  --map-land: #0A1014;
-  --map-water: #062028;
-  --map-park: #0E241C;
-  --map-wood: #0A1C16;
-  --map-beach: #1A1C12;
-  --map-scrub: #122018;
-  --map-glacier: #102028;
-  --map-road: #1E4652;
-  --map-road-casing: #030608;
-  --map-building: #121C22;
+  --map-land: #0C1216;
+  --map-water: #12242C;
+  --map-park: #111C16;
+  --map-wood: #0E1814;
+  --map-beach: #141610;
+  --map-scrub: #101814;
+  --map-glacier: #10181E;
+  --map-road: #1C3640;
+  --map-road-casing: #070C10;
+  --map-building: #121A20;
   --map-hillshade: #021014;
-  --map-hillshade-opacity: 0.18;
-  --map-label: #D5F4FF;
+  --map-hillshade-opacity: 0.08;
+  --map-label: #7E9EAC;
   --shadow: 0 1px 3px rgba(0,0,0,.38), 0 4px 16px rgba(0,0,0,.38);
   --shadow-pop: 0 8px 32px rgba(0,0,0,.58), 0 2px 8px rgba(0,0,0,.34);
 }
@@ -238,19 +238,19 @@
   --success-text: #0C6946;
   --warn-text: #8A4D02;
   --error-text: #AF253B;
-  --map-land: #E6E5E0;
-  --map-water: #C5C5C0;
-  --map-park: #D4D4CC;
-  --map-wood: #C2C2BA;
-  --map-beach: #DDDCD4;
-  --map-scrub: #D0D0C8;
-  --map-glacier: #ECEBE6;
-  --map-road: #F7F6F2;
-  --map-road-casing: #8E8E89;
-  --map-building: #D8D7D2;
+  --map-land: #E8E7E2;
+  --map-water: #D8D8D3;
+  --map-park: #DEDED6;
+  --map-wood: #D4D4CC;
+  --map-beach: #E4E3DC;
+  --map-scrub: #DCDCD4;
+  --map-glacier: #EEEDE8;
+  --map-road: #F3F2EE;
+  --map-road-casing: #C9C9C3;
+  --map-building: #E0DFDA;
   --map-hillshade: #6E6E6A;
-  --map-hillshade-opacity: 0.3;
-  --map-label: #171717;
+  --map-hillshade-opacity: 0.12;
+  --map-label: #5A5A55;
 }
 
 [data-theme="draft"] {
@@ -263,19 +263,19 @@
   --accent-text: #40554E;
   --on-accent: #FFFFFF;
   --accent-soft: #E6ECE9;
-  --map-land: #E6EEEA;
-  --map-water: #C3D4D0;
-  --map-park: #D2E3D6;
-  --map-wood: #B9CFC0;
-  --map-beach: #E4E6D2;
-  --map-scrub: #D5DDC8;
-  --map-glacier: #E4EEEA;
-  --map-road: #F7FAF8;
-  --map-road-casing: #9AADA8;
-  --map-building: #D5E0DB;
+  --map-land: #E8EEEA;
+  --map-water: #D4DEDA;
+  --map-park: #DCE6DE;
+  --map-wood: #D0DCD4;
+  --map-beach: #E4E6DC;
+  --map-scrub: #DCE2D6;
+  --map-glacier: #E6EEEC;
+  --map-road: #F4F7F5;
+  --map-road-casing: #C6D2CE;
+  --map-building: #DEE6E2;
   --map-hillshade: #7D918B;
-  --map-hillshade-opacity: 0.26;
-  --map-label: #1A2321;
+  --map-hillshade-opacity: 0.1;
+  --map-label: #5C6C68;
 }
 
 /* ── Reset ─────────────────────────────────────────────────────────── */
@@ -2254,13 +2254,14 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 /* ═══════════════════════════════════════════════════════════════════
    MAP CHROME
    -------------------------------------------------------------------
-   Drop-in block for the Studio editor. It inherits html[data-theme]
-   and the page tokens (--surface, --text, --border, --shadow).
-   There is no separate map-chrome color API. Controls are
-   .icon-btn.icon-btn--touch. Glyphs are Phosphor paths in currentColor.
-   MapLibre's default navigation group and logo are hidden.
-   OpenStreetMap / source attribution stays visible.
-   Layer colors are the --map-* tokens. Specimen: map.html.
+   Drop-in block for the Studio editor. Map Editor reuses these
+   atoms; do not fork a second control skin. The block inherits
+   html[data-theme] and the page tokens. There is no chrome color API.
+   Controls are quiet .icon-btn.icon-btn--touch (no shadow, --text-2).
+   Glyphs are Phosphor paths in currentColor. The atoms paint without
+   MapLibre. MapLibre's default navigation group and logo are hidden
+   when the live basemap is loaded. Source attribution stays visible.
+   Layer colors are the --map-* tokens. Live specimen: map.html.
 ═══════════════════════════════════════════════════════════════════ */
 .map-viewport {
   position: relative;
@@ -2328,10 +2329,16 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .map-controls .icon-btn,
 .map-toolbar .icon-btn,
 .map-popup .icon-btn {
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: 1px solid var(--border);
+  color: var(--text-2);
+  box-shadow: none;
+}
+.map-controls .icon-btn:hover,
+.map-toolbar .icon-btn:hover,
+.map-popup .icon-btn:hover {
+  background: var(--surface);
   color: var(--text);
-  box-shadow: var(--shadow);
 }
 .map-controls .icon-btn[aria-pressed="true"],
 .map-toolbar .icon-btn[aria-pressed="true"] {
@@ -2353,7 +2360,6 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   width: 12rem;
   max-width: 46vw;
   background: var(--surface);
-  box-shadow: var(--shadow);
 }
 .map-toolbar__hint {
   margin: 0;
@@ -2362,7 +2368,6 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   background: var(--surface);
   color: var(--text-2);
   font-size: var(--text-xs);
-  box-shadow: var(--shadow);
 }
 
 .map-basemap {
@@ -2407,9 +2412,8 @@ button.swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--surface) 92%, transparent);
-  color: var(--text);
+  color: var(--text-2);
   font-size: var(--text-xs);
-  box-shadow: var(--shadow);
 }
 .map-legend[hidden] { display: none; }
 .map-legend__item {

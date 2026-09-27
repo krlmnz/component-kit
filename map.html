@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Map — Component Kit</title>
 <link rel="stylesheet" href="global.css">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css">
 </head>
 <body>
 <header class="theme-toggle">
@@ -17,7 +16,7 @@
 
 <main class="stage">
   <h1 class="stage__title">Map</h1>
-  <p class="stage__label">Drop-in block for the Studio editor. It inherits the page theme. One OpenFreeMap vector source, kit icon controls, and visible source attribution.</p>
+  <p class="stage__label">Quiet ground for the Studio editor. The place note sits on top. Controls are the same kit icon buttons Map Editor uses.</p>
 
   <div class="map-viewport" id="map-viewport">
     <div class="map-viewport__canvas" id="map"></div>
@@ -30,7 +29,7 @@
         <input class="input input--sm" id="map-search-input" type="search" aria-label="Search places" placeholder="Villarrica, Cusco…">
         <p class="map-toolbar__hint" id="map-search-hint" role="status" hidden></p>
       </form>
-      <button class="icon-btn icon-btn--touch" id="map-layers" type="button" aria-pressed="true" aria-controls="map-legend" aria-label="Layers">
+      <button class="icon-btn icon-btn--touch" id="map-layers" type="button" aria-pressed="false" aria-controls="map-legend" aria-label="Layers">
         <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></svg>
       </button>
       <button class="icon-btn icon-btn--touch" id="map-basemap" type="button" aria-expanded="false" aria-controls="map-basemap-panel" aria-label="Basemap">
@@ -49,7 +48,7 @@
 
     <div class="map-basemap" id="map-basemap-panel" hidden>
       <p class="map-basemap__title">Basemap</p>
-      <p class="map-basemap__body">Paint for <strong id="map-basemap-name">Light / Minimal</strong>. Land, water, nature, roads, and buildings follow the page theme.</p>
+      <p class="map-basemap__body">Quiet ground for <strong id="map-basemap-name">Light / Minimal</strong>. Landcover stays close to the field so the place note reads first.</p>
     </div>
 
     <div class="map-controls">
@@ -67,7 +66,7 @@
       </button>
     </div>
 
-    <ul class="map-legend" id="map-legend">
+    <ul class="map-legend" id="map-legend" hidden>
       <li class="map-legend__item"><span class="map-legend__swatch" style="--swatch:var(--map-land)"></span>Land</li>
       <li class="map-legend__item"><span class="map-legend__swatch" style="--swatch:var(--map-water)"></span>Water</li>
       <li class="map-legend__item"><span class="map-legend__swatch" style="--swatch:var(--map-park)"></span>Park</li>
@@ -114,10 +113,10 @@
 
 <script src="component-embed.js"></script>
 <script src="theme.js"></script>
-<script src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script>
 <script src="map-style.js"></script>
 <script>
-(function () {
+function bootKitMap() {
+  if (!window.maplibregl || !window.KitMapStyle) return;
   var viewport = document.getElementById('map-viewport');
   var basemapName = document.getElementById('map-basemap-name');
   var legend = document.getElementById('map-legend');
@@ -346,6 +345,21 @@
     attributes: true,
     attributeFilter: ['data-theme']
   });
+}
+(function () {
+  if (new URLSearchParams(location.search).get('chrome') === '1') return;
+  if (window.maplibregl) {
+    bootKitMap();
+    return;
+  }
+  var css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css';
+  document.head.appendChild(css);
+  var loader = document.createElement('script');
+  loader.src = 'https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js';
+  loader.onload = bootKitMap;
+  document.body.appendChild(loader);
 })();
 </script>
 </body>

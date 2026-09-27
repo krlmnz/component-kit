@@ -46,30 +46,56 @@ These keep WCAG AA on controls. Ratios are in [`CONTRAST.md`](CONTRAST.md).
 - **Status text on Grey Newspaper.** Fills stay `#00A470`, `#F89B17`, and `#DA3540`. `--bg` `#D9D9D4` is darker than white, so `--success-text`, `--warn-text`, and `--error-text` are darker than the light set. Night and signal reuse the dark-theme status retune already on main (`#14AA75`, `#F89B17`, `#FF8B91`, `--error-soft` `#3A1E20`).
 - **Info.** `--info`, `--info-text`, `--info-soft`, and `--info-wash` alias the accent pair. There is no second blue.
 
-## Map layer tokens
+## Shared map contract
 
-The map is a drop-in block for the Studio editor (`map.html`, classes in `global.css`). It inherits `html[data-theme]` and the page tokens. v1 has no separate map-chrome customization API. Controls are `.icon-btn.icon-btn--touch` inside `.map-controls` and `.map-toolbar`, painted with `--surface`, `--text`, `--border`, and `--shadow`. Glyphs are Phosphor paths in `currentColor`. MapLibre’s default navigation group and logo are hidden. OpenStreetMap, OpenFreeMap, OpenMapTiles, and Esri attribution stay visible.
+Studio gets this quiet embed. Map Editor keeps customization and reuses the same atoms. Do not fork a second control skin, and do not add a map-chrome color API.
 
-`--map-*` is set on `:root` (light) and on `night`, `note`, `signal`, `news`, and `draft`. These are basemap layers. Chrome does not use the brand hues. Those stay on data: `--viz-1` … `--viz-8`, `--route-line`, `--route-ink`, `--route-casing`.
+`data-theme` selects the `--map-*` paint. Light / Minimal is `:root` with the attribute omitted. The block is `.map-viewport` (the canvas is `.map-viewport__canvas`). Quiet controls are `.icon-btn.icon-btn--touch` inside `.map-controls` and `.map-toolbar`. They use page `--surface`, `--text-2`, and `--border`, with no shadow. Glyphs are Phosphor paths in `currentColor`. Pressed state uses `--accent-soft` and `--accent-text`. The place callout is `.map-popup` (this is the prose that should read first). The swatch row is `.map-legend`, hidden until asked for.
 
-| Token | Layer |
-| --- | --- |
-| `--map-land` | Background / land |
-| `--map-water` | Water and waterways |
-| `--map-park` | Grass, wetland, parks |
-| `--map-wood` | Forest |
-| `--map-beach` | Sand |
-| `--map-scrub` | Scrub and farmland |
-| `--map-glacier` | Glacier, ice shelf, ice |
-| `--map-road` | Road fill |
-| `--map-road-casing` | Road casing |
-| `--map-building` | Buildings |
-| `--map-hillshade` | Relief ink for a legend or a client-drawn hillshade |
-| `--map-hillshade-opacity` | Strength of the specimen’s hillshade raster |
-| `--map-label` | Place labels |
+These classes live in `global.css`. They paint with no MapLibre script on the page. The reference index embeds `map.html?embed=1&chrome=1`, which is that chrome only. `map.html` without `chrome=1` injects MapLibre GL JS after first paint. Other kit pages do not load it.
 
-`map-style.js` builds one MapLibre style from one [OpenFreeMap](https://openfreemap.org/) vector source (OpenMapTiles schema, the same layers Liberty uses, no API key). Layer ids stay stable. Changing `data-theme` recolors the live map with `setPaintProperty`. It does not reload tiles or swap in a second style JSON. The specimen sets MapLibre `cooperativeGestures` so a long page that embeds the map can still scroll. `attributionControl` stays on, with `compact: false`, so the source line remains readable.
+### Quiet ground
 
-OpenFreeMap does not include a DEM. The public terrarium elevation bucket does not send `Access-Control-Allow-Origin`, so a MapLibre `hillshade` layer cannot read it. Relief is the Esri World Hillshade raster, drawn in grayscale. `--map-hillshade` is the matching ink token for a legend.
+The default basemap is a field, not a figure. Landcover colors sit close to `--map-land`, roads are thin, hillshade opacity stays low, and place labels use a softer ink than page `--text`. A place note on `.map-popup` should win. Brand and viz hues stay off the ground (`--viz-1` … `--viz-8`, `--route-line`, `--route-ink`, `--route-casing`).
 
-The place callout is `.map-popup`. The swatch row is `.map-legend`.
+`map-style.js` builds one style from one [OpenFreeMap](https://openfreemap.org/) vector source (OpenMapTiles schema, the same layers Liberty uses, no API key). Source id is `openfreemap`. Relief is a second source, id `hillshade` (Esri World Hillshade, grayscale). OpenFreeMap has no DEM, and the public terrarium bucket does not send `Access-Control-Allow-Origin`. Changing `data-theme` calls `KitMapStyle.paint(map)`, which is `setPaintProperty` on the rows below. It does not reload tiles or swap a style JSON. Fill opacities, line widths, and label size are fixed in `build()` and are not part of the theme paint.
+
+The live page sets `cooperativeGestures` so a long page can still scroll, and `attributionControl` with `compact: false`. OpenStreetMap, OpenFreeMap, OpenMapTiles, and Esri attribution stays visible. MapLibre’s default navigation group and logo stay hidden.
+
+### Layer ids and paint roles
+
+`KitMapStyle.layers` is the same list. Draw order is top to bottom of the table (first row is underneath). Skip a row when `map.getLayer(id)` is missing. `--map-hillshade` is legend ink only. The hillshade layer is a grayscale raster, so its theme paint is `raster-opacity`, not a color.
+
+| Layer id | Paint property | Token | Role |
+| --- | --- | --- | --- |
+| `background` | `background-color` | `--map-land` | Ground |
+| `landcover-wood` | `fill-color` | `--map-wood` | Forest landcover |
+| `landuse-wood` | `fill-color` | `--map-wood` | Forest landuse |
+| `landcover-grass` | `fill-color` | `--map-park` | Grass and wetland |
+| `landcover-scrub` | `fill-color` | `--map-scrub` | Scrub and farmland |
+| `landcover-sand` | `fill-color` | `--map-beach` | Sand |
+| `landcover-glacier` | `fill-color` | `--map-glacier` | Glacier, ice shelf, ice |
+| `park` | `fill-color` | `--map-park` | Park polygons |
+| `landuse-park` | `fill-color` | `--map-park` | Park, grass, and garden landuse |
+| `hillshade` | `raster-opacity` | `--map-hillshade-opacity` | Relief strength |
+| `water` | `fill-color` | `--map-water` | Water bodies |
+| `waterway` | `line-color` | `--map-water` | Rivers and streams |
+| `building` | `fill-color` | `--map-building` | Buildings, from zoom 13 |
+| `road-casing` | `line-color` | `--map-road-casing` | Road casing |
+| `road` | `line-color` | `--map-road` | Road fill |
+| `place-label` | `text-color` | `--map-label` | Place names |
+| `place-label` | `text-halo-color` | `--map-land` | Place-name halo |
+
+```js
+KitMapStyle.layers.forEach(function (layer) {
+  if (!map.getLayer(layer.id)) return;
+  var value = layer.paint === 'raster-opacity'
+    ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue(layer.token))
+    : getComputedStyle(document.documentElement).getPropertyValue(layer.token).trim();
+  map.setPaintProperty(layer.id, layer.paint, value);
+});
+```
+
+`route-line` and `route-casing` are specimen overlays on the live page. They are not in `KitMapStyle.layers`. Map Editor owns data layers.
+
+`--map-*` is set on `:root` (light) and on `night`, `note`, `signal`, `news`, and `draft`.
