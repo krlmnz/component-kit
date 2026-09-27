@@ -184,6 +184,6 @@ Surfaces: `--surface` `#1C1F22`, `--bg` `#111416`, `--surface-2` `#24272B`. `--t
 | `--text` on `--selection-bg` | 17.11:1 | 15.59:1 | 4.5 text | Pass |
 | `--info-text` on `--info-wash` | same as `--accent-text` on `--accent-wash` | same | 4.5 text | Pass |
 
-`--focus-color` defaults to `--accent`, so the focus stroke ratios are the `--accent` on surface rows above (4.56:1 light, 3.63:1 dark). Invalid field borders stay `--error` on `--surface` (4.60:1 light, 3.60:1 dark).
+`--focus-color` defaults to `--accent`, so the focus stroke ratios are the `--accent` on surface rows above (4.56:1 light, 3.63:1 dark). Invalid field borders stay `--error` on `--surface` (4.60:1 light, 3.60:1 dark). Focus on an invalid field also draws `--error-outline` (`2px solid var(--error)`), the same `--error` stroke, because a halo of `--error-soft` is not visible on `--surface`.
 
 The alert strokes are the previous inline mixes, now named `*-border`. `--warn-border` on light `--bg` is 2.80:1. That amber stroke is not a control boundary; the warn label is `--warn-text`. `--error-border` against dark `--error-soft` is 2.88:1; the error label is `--error-text` on that fill (6.75:1). Do not paint labels with `--warn-border` or with the raw fills.

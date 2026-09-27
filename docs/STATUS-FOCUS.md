@@ -18,7 +18,8 @@ Ratios are in [`CONTRAST.md`](CONTRAST.md). Fill hexes are unchanged from that t
 | `--focus-color` | Keyboard-focus hue. Defaults to `--accent`. Set this to recolor focus everywhere the kit draws it. | Selected tiles. Those use `--selected-color`. |
 | `--focus-outline` | The `:focus-visible` outline (`2px solid var(--focus-color)`). | Input box-shadows. Those use `--focus-ring`. |
 | `--focus-ring` | The 3px halo on text fields, combos, and other controls that hide the outline. | Invalid fields. Those use `--error-ring`. |
-| `--error-ring` | Box-shadow when an invalid field is focused. | A resting border. The resting invalid border is `--error`. |
+| `--error-outline` | `2px solid var(--error)`. The visible focus indicator on an invalid field, because the border is already red at rest. Clears 3:1 on `--surface`. | Resting invalid chrome. That is the 1px `--error` border. |
+| `--error-ring` | Soft halo behind that outline, and the Color Scale invalid hex shadow. | The only focus indicator. On white it is nearly the same color as the surface. |
 | `--selected-color` | Selected stroke. Defaults to `--accent`. | Focus, unless you want them to be the same color (they start that way). |
 | `--selected-ring` | The 1px ring on `.tile--selected`. | Text selection. |
 | `--selection-bg` | `::selection` background. This is `--accent-wash`. | Alert backgrounds. |
@@ -40,7 +41,7 @@ Specimen: `inputs.html`.
 </label>
 ```
 
-`.field__error` is `--error-text`. The control border is `--error`. Focus keeps that border and swaps the halo to `--error-ring`.
+`.field__error` is `--error-text`. The control border is `--error`. Focus keeps that border, draws `--error-outline`, and keeps the `--error-ring` halo.
 
 ### Banner, including an upload failure
 
@@ -83,7 +84,7 @@ To recolor focus without forking components:
 
 | Need | Class | Tokens the class already applies |
 | --- | --- | --- |
-| Field error | `.field.field--invalid` + `.field__error` | `--error`, `--error-text`, `--error-ring` |
+| Field error | `.field.field--invalid` + `.field__error` | `--error`, `--error-text`, `--error-outline`, `--error-ring` |
 | Upload or other error banner | `.alert.alert--error` | `--error-border`, `--error-soft`, `--error-text` |
 | Success / warn / info banner | `.alert.alert--success` / `--warn` / `--info` | `*-border`, `*-wash`, `*-text` |
 | Error or success toast | `.toast.toast--error` / `.toast.toast--success` | icon `*-text` |

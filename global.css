@@ -91,6 +91,7 @@
   --focus-color: var(--accent);
   --focus-outline: 2px solid var(--focus-color);
   --focus-ring: 0 0 0 3px color-mix(in srgb, var(--focus-color) 12%, transparent);
+  --error-outline: 2px solid var(--error);
   --error-ring: 0 0 0 3px var(--error-soft);
   --selected-color: var(--accent);
   --selected-ring: 0 0 0 1px var(--selected-color);
@@ -352,7 +353,13 @@ svg { display: block; }
 .field--invalid .select:focus,
 .field--invalid .select:focus-visible,
 .field--invalid .textarea:focus,
-.field--invalid .textarea:focus-visible { box-shadow: var(--error-ring); }
+.field--invalid .textarea:focus-visible {
+  /* The border is already --error at rest, so the soft halo alone does not
+     show focus. The outline is the visible focus indicator (3:1 on --surface). */
+  outline: var(--error-outline);
+  outline-offset: var(--space-0125);
+  box-shadow: var(--error-ring);
+}
 .field--disabled .field__label { color: var(--text-2); }
 .input:disabled,
 .select:disabled,
